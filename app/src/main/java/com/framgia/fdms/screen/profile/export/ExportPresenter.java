@@ -34,6 +34,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.framgia.fdms.utils.Constant.FOLDER_NAME_FAMS;
 import static com.framgia.fdms.utils.Constant.KeyExport.TITLE_ASSIGNED;
 import static com.framgia.fdms.utils.Constant.KeyExport.TITLE_DEVICE_NAME;
 import static com.framgia.fdms.utils.Constant.KeyExport.TITLE_MODEL_NUMBER;
@@ -45,7 +46,6 @@ import static com.framgia.fdms.utils.Constant.KeyExport.TITLE_SERIES_NUMBER;
 
 public class ExportPresenter implements ExportContract.Presenter {
     private static final int NUMBER_COLUMN_TABLE = 4;
-    private static final String FOLDER_NAME_FAMS = "Report FAMS";
     private static final String FILE_NAME_SAVED_PDF = ".pdf";
     private static final int VALUE_IMAGE = 100;
     private static final float sTextSize = 20.7f;
@@ -55,11 +55,13 @@ public class ExportPresenter implements ExportContract.Presenter {
     private List<Device> mList = new ArrayList<>(); // get List device
     private User mUser;
     private CompositeSubscription mCompositeSubscription;
+    private ExportContract.ViewModel mViewModel;
 
-    public ExportPresenter(Context context, User user) {
+    public ExportPresenter(Context context, User user, ExportContract.ViewModel viewModel) {
         mContext = context;
         mUser = user;
         mCompositeSubscription = new CompositeSubscription();
+        mViewModel = viewModel;
     }
 
     @Override
@@ -153,11 +155,12 @@ public class ExportPresenter implements ExportContract.Presenter {
                     @Override
                     public void call(Object o) {
                         if (o instanceof String) {
-                            String fileName = (String) o;
-                            String mess = fileName.length() > 0 ? mContext.getString(
-                                    (R.string.message_export_success)) + fileName
+                            String filePath = (String) o;
+                            String mess = filePath.length() > 0 ? mContext.getString(
+                                    (R.string.message_export_success)) + filePath
                                     : mContext.getString(R.string.message_export_error);
                             Toast.makeText(mContext, mess, Toast.LENGTH_LONG).show();
+                            mViewModel.openFilePDF(filePath);
                         } else {
                             String error = o instanceof NullPointerException
                                     ? ((NullPointerException) o).getCause().getMessage() : null;

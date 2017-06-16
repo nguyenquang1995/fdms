@@ -41,7 +41,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_10"
             android:onClick="@{() -> viewModel.exportData()}"
-            android:src="@drawable/ic_import_export_black_24px"
+            android:src="@drawable/ic_import_export_white_24px"
             app:fab_colorNormal="@color/color_red_aceent_700"
             app:fab_label="@string/title_export"
             />

@@ -21,6 +21,8 @@ public class Constant {
     public static final String TITLE_UNKNOWN = "Unknown";
     public static final String ACTION_CLEAR = "Clear";
     public static final String TYPE_DIALOG = "TYPE_DIALOG";
+    public static final String FOLDER_NAME_FAMS = "Report FAMS";
+    public static final String TYPE_PDF = "application/pdf";
 
     private Constant() {
         // No-op
@@ -68,7 +70,7 @@ public class Constant {
         public static final String BUNDLE_RESPONE = "BUNDLE_RESPONE";
         public static final String EXTRA_DEVICE_ID = "EXTRA_DEVICE_ID";
         public static final String BUNDLE_TAB = "BUNDLE_TAB";
-        public static final String  BUNDLE_USER = "USER_BUND";
+        public static final String BUNDLE_USER = "USER_BUND";
     }
 
     public static final class RequestConstant {

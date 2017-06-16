@@ -186,4 +186,5 @@
     <string name="msg_no_request_manager">Not request device</string>
     <string name="msg_request_write_file">Write list device using</string>
     <string name="title_used">Used</string>
+    <string name="title_open_with">Open with</string>
 </resources>

@@ -37,7 +37,7 @@ public class ExportDialogFragment extends DialogFragment {
         mBinding = DialogExportBinding.inflate(inflater, container, false);
         getDataFromIntent();
         mViewModel = new ExportViewModel(this);
-        ExportContract.Presenter presenter = new ExportPresenter(getActivity(), mUser);
+        ExportContract.Presenter presenter = new ExportPresenter(getActivity(), mUser, mViewModel);
         mViewModel.setPresenter(presenter);
         mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();

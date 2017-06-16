@@ -12,6 +12,8 @@ public interface ExportContract {
         void exportPdf();
 
         void onDestroy();
+
+        void openFilePDF(String filePath);
     }
 
     interface Presenter extends BasePresenter {
