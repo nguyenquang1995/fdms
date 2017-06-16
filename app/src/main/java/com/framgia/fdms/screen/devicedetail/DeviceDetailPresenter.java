@@ -8,6 +8,8 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.itextpdf.text.html.HtmlTags.S;
+
 /**
  * Listens to user actions from the UI ({@link DeviceDetailActivity}), retrieves the data and
  * updates
@@ -42,11 +44,15 @@ final class DeviceDetailPresenter implements DeviceDetailContract.Presenter {
     public void getDevice(int deviceId) {
         Subscription subscription = mRepository.getDevice(deviceId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Device>() {
+                .subscribeOn(Schedulers.io()).subscribe(new Action1<Device>() {
                     @Override
                     public void call(Device device) {
                         mViewModel.onGetDeviceSuccess(device);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mViewModel.onGetDeviceError();
                     }
                 });
         mSubscription.add(subscription);

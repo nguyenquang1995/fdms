@@ -50,22 +50,21 @@ public final class BaseException extends RuntimeException {
     public String getMessage() {
         switch (mType) {
             case Type.SERVER:
+                HttpException httpException = (HttpException) getCause();
+                Response response = httpException.response();
+                String errorResponse;
                 try {
-                    HttpException httpException = (HttpException) getCause();
-                    Response response = httpException.response();
-                    String errorResponse = response.errorBody().string();
-                    if (errorResponse != null) {
-                        Respone error = null;
-                        try {
-                            error = new Gson().fromJson(errorResponse, Respone.class);
-                        } catch (JsonSyntaxException e) {
-                            e.printStackTrace();
-                        }
-                        if (error != null) {
-                            return error.getMessage();
-                        }
-                    }
+                    errorResponse = response.errorBody().string();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                    return "Error";
+                }
+                if (errorResponse == null) return "Error";
+                try {
+                    Respone error = new Gson().fromJson(errorResponse, Respone.class);
+                    return error.getMessage();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
                 }
                 return "Error";
             case Type.NETWORK:

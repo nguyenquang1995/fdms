@@ -15,6 +15,8 @@ interface DeviceDetailContract {
         void onEditDevice();
 
         void onGetDeviceSuccess(Device device);
+
+        void onGetDeviceError();
     }
 
     /**

@@ -198,7 +198,9 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
         hideProgressbar();
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         setRefresh(false);
-        setEmptyViewVisible(View.VISIBLE);
+        if (mAdapter.getItemCount() == 0) {
+            setEmptyViewVisible(View.VISIBLE);
+        }
     }
 
     @Override
