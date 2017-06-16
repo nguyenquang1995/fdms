@@ -3,9 +3,9 @@ package com.framgia.fdms.screen.device;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IntDef;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.ViewPagerScroll;
@@ -61,9 +61,7 @@ public class DeviceViewModel extends BaseObservable
     public void setupViewPager(User user) {
         String role = user.getRole();
         if (role == null) return;
-
         setBo(user.isBo());
-
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ListDeviceFragment.newInstance(TAB_MY_DEVICE));
         if (mIsBo) fragments.add(ListDeviceFragment.newInstance(TAB_MANAGE_DEVICE));
@@ -73,7 +71,8 @@ public class DeviceViewModel extends BaseObservable
 
     @Override
     public void onError(String message) {
-        Toast.makeText(mFragment.getContext(), message, Toast.LENGTH_LONG).show();
+        Snackbar.make(mFragment.getActivity().findViewById(android.R.id.content), message,
+                Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -84,6 +83,7 @@ public class DeviceViewModel extends BaseObservable
     @Override
     public void onClickChangeTab(ViewPager viewPager, @Tab int currentTab) {
         viewPager.setCurrentItem(currentTab);
+        mTab = currentTab;
     }
 
     @Override

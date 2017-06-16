@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
     >
 
     <data>
@@ -45,7 +45,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dp_3"
                         android:layout_marginRight="@dimen/dp_3"
-                        android:background="@drawable/bg_circle_red"
+                        android:background="@{viewModel.tab == Tab.TAB_MY_DEVICE ? @drawable/bg_circle_red :@drawable/bg_circle_grey}"
                         android:onClick="@{()->viewModel.onClickChangeTab(viewpager, Tab.TAB_MY_DEVICE)}"
                         android:paddingBottom="@dimen/dp_5"
                         android:paddingLeft="@dimen/dp_20"
@@ -55,15 +55,13 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
-                        bind:tabDashBoard="@{viewModel.tab}"
-
                         />
 
                     <TextView
                         android:id="@+id/image_device_dashboard"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_circle_grey"
+                        android:background="@{viewModel.tab == Tab.TAB_MANAGE_DEVICE ? @drawable/bg_circle_red :@drawable/bg_circle_grey}"
                         android:gravity="center_vertical"
                         android:onClick="@{()->viewModel.onClickChangeTab(viewpager, Tab.TAB_MANAGE_DEVICE)}"
                         android:paddingBottom="@dimen/dp_5"
@@ -75,7 +73,6 @@
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         android:visibility="@{viewModel.bo ? View.VISIBLE : View.GONE}"
-                        bind:tabDashBoard="@{viewModel.tab}"
                         />
                 </LinearLayout>
             </android.support.v7.widget.CardView>

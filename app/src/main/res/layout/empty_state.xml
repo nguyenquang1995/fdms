@@ -11,7 +11,8 @@
             />
         <variable
             name="image"
-            type="android.graphics.drawable.Drawable"/>
+            type="android.graphics.drawable.Drawable"
+            />
     </data>
     <LinearLayout
         android:id="@+id/linear_empty_item"
