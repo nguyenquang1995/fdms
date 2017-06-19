@@ -1,5 +1,6 @@
 package com.framgia.fdms.data.source.remote;
 
+import android.text.TextUtils;
 import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Dashboard;
 import com.framgia.fdms.data.model.Device;
@@ -116,13 +117,23 @@ public class DeviceRemoteDataSource implements DeviceDataSource.RemoteDataSource
     @Override
     public Observable<Device> updateDevice(Device device) {
         Map<String, RequestBody> parrams = new HashMap<>();
+        RequestBody productionName = null, deviceStatusId = null, deviceCategoryId = null,
+                deviceCode = null;
+        if (!TextUtils.isEmpty(device.getProductionName())) {
+            productionName = createPartFromString(device.getProductionName());
+        }
 
-        RequestBody productionName = createPartFromString(device.getProductionName());
-        RequestBody deviceStatusId =
-                createPartFromString(String.valueOf(device.getDeviceStatusId()));
-        RequestBody deviceCategoryId =
-                createPartFromString(String.valueOf(device.getDeviceStatusId()));
-        RequestBody deviceCode = createPartFromString(device.getDeviceCode());
+        if (device.getDeviceStatusId() != -1) {
+            deviceStatusId = createPartFromString(String.valueOf(device.getDeviceStatusId()));
+        }
+
+        if (device.getDeviceCategoryId() != -1) {
+            deviceCategoryId = createPartFromString(String.valueOf(device.getDeviceCategoryId()));
+        }
+
+        if (!TextUtils.isEmpty(device.getDeviceCode())) {
+            deviceCode = createPartFromString(device.getDeviceCode());
+        }
 
         parrams.put(PRODUCTION_NAME, productionName);
         parrams.put(DEVICE_STATUS_ID, deviceStatusId);

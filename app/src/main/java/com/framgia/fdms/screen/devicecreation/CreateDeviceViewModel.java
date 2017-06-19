@@ -70,9 +70,8 @@ public class CreateDeviceViewModel extends BaseObservable
     private String mCategoryError;
     private String mOriginalPriceError;
     private String mBoughtDate;
-
     private Device mDevice;
-
+    private String mStatusError;
     private List<Status> mStatuses = new ArrayList<>();
     private List<Category> mCategories = new ArrayList<>();
     private List<Status> mBranches = new ArrayList<>();
@@ -95,8 +94,8 @@ public class CreateDeviceViewModel extends BaseObservable
         } else {
             mDevice = device;
             mCategory = new Category(device.getDeviceCategoryId(), device.getDeviceCategoryName());
-            mStatus = new Status(device.getDeviceStatusId(), device.getDeviceStatusName());
             setBoughtDate(Utils.stringBoughtDateDevice(device.getBoughtDate()));
+            mStatus = new Status(device.getDeviceStatusId(), device.getDeviceStatusName());
         }
         mDeviceType = type;
     }
@@ -222,7 +221,8 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onRegisterError() {
-        makeText(mContext, R.string.msg_create_device_error, Toast.LENGTH_LONG).show();
+        Snackbar.make(mActivity.findViewById(android.R.id.content),
+                R.string.msg_create_device_error, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -261,6 +261,12 @@ public class CreateDeviceViewModel extends BaseObservable
     }
 
     @Override
+    public void onInputStatusError() {
+        mStatusError = mContext.getString(R.string.msg_error_user_name);
+        notifyPropertyChanged(BR.statusError);
+    }
+
+    @Override
     public void onInputBoughtDateError() {
         mBoughtDateError = mContext.getString(R.string.msg_error_user_name);
         notifyPropertyChanged(BR.boughtDateError);
@@ -293,11 +299,6 @@ public class CreateDeviceViewModel extends BaseObservable
         PrintHelper photoPrinter = new PrintHelper(getActivity());
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
         photoPrinter.printBitmap(mDevice.getDeviceCode(), dstBitmap);
-    }
-
-    @Override
-    public void onInputStatusError() {
-        // TODO: later
     }
 
     @Override
@@ -422,6 +423,11 @@ public class CreateDeviceViewModel extends BaseObservable
     @Bindable
     public Category getCategory() {
         return mCategory;
+    }
+
+    @Bindable
+    public String getStatusError() {
+        return mStatusError;
     }
 
     public void setCategory(Category category) {

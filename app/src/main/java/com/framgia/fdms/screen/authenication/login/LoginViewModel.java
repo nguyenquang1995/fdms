@@ -6,16 +6,13 @@ import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableField;
-import android.support.v7.widget.AppCompatCheckBox;
+import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
-import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.authenication.forgotpassword.ForgotpasswordActivity;
-import com.framgia.fdms.screen.main.MainActivity;
 import com.framgia.fdms.screen.authenication.register.RegisterActivity;
+import com.framgia.fdms.screen.main.MainActivity;
 
 /**
  * Exposes the data to be used in the Login screen.
@@ -29,11 +26,13 @@ public class LoginViewModel extends BaseObservable implements LoginContract.View
     private String mUsernameError;
     private String mPasswordError;
     private boolean isValid;
+    private Activity mActivity;
     public final ObservableField<Integer> progressBarVisibility = new ObservableField<>();
     private boolean mIsRememberAccount;
 
-    public LoginViewModel(Context context) {
+    public LoginViewModel(Context context, Activity activity) {
         mContext = context;
+        mActivity = activity;
         progressBarVisibility.set(View.GONE);
     }
 
@@ -54,7 +53,8 @@ public class LoginViewModel extends BaseObservable implements LoginContract.View
 
     @Override
     public void onLoginError(String msg) {
-        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+        Snackbar.make(mActivity.findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
+                .show();
         hideProgressbar();
     }
 
