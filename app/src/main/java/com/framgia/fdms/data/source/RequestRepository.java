@@ -64,4 +64,14 @@ public class RequestRepository implements RequestRepositoryContract {
     public Observable<Respone<Request>> updateRequest(Request request) {
         return mRemoteDataSource.updateRequest(request);
     }
+
+    @Override
+    public Observable<Request> getRequest(int requetsId) {
+        return mRemoteDataSource.getRequest(requetsId);
+    }
+
+    @Override
+    public Observable<Request> registerAssignment(Request request) {
+        return mRemoteDataSource.registerAssignment(request);
+    }
 }

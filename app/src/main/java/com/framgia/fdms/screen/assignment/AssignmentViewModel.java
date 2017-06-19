@@ -49,7 +49,18 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
 
     @Override
     public void onAssignClick() {
+        // TODO: 19/06/2017
+    }
 
+    @Override
+    public void onLoadError() {
+        // TODO: 19/06/2017
+    }
+
+    @Override
+    public void onGetRequestSuccess(Request request) {
+        if (request == null) return;
+        setRequest(request);
     }
 
     public AppCompatActivity getActivity() {

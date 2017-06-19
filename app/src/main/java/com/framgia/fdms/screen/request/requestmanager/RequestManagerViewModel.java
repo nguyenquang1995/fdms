@@ -260,7 +260,7 @@ public class RequestManagerViewModel extends BaseFragmentModel
 
     @Override
     public void onAddDeviceClick(int requestId) {
-        mFragment.startActivityForResult(AssignmentActivity.getInstance(mContext),
+        mFragment.startActivityForResult(AssignmentActivity.getInstance(mContext, requestId),
                 REQUEST_CREATE_ASSIGNMENT);
     }
 

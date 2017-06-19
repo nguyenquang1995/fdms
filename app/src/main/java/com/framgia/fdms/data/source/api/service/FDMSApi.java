@@ -111,4 +111,10 @@ public interface FDMSApi {
     @PATCH("/api/v1/requests/{id}")
     Observable<Respone<Request>> updateRequest(@Path("id") int requestId,
             @QueryMap Map<String, String> params);
+
+    @POST("api/v1/assignments")
+    Observable<Respone<Request>> registerAssignment(@QueryMap Map<String, String> params);
+
+    @GET("api/v1/requests/{id}")
+    Observable<Respone<Request>> getRequest(@Path("id") int requetsId);
 }

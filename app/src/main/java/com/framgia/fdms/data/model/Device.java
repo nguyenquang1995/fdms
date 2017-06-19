@@ -6,6 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.framgia.fdms.BR;
 import com.framgia.fdms.R;
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;
@@ -80,6 +81,8 @@ public class Device extends BaseObservable implements Parcelable {
     private boolean mIsSelected;
     @SerializedName("user")
     private UserBorrow mUser;
+    @SerializedName("device_category_group_id")
+    private String mDeviceCategoryGroupId;
 
     public Device() {
     }
@@ -284,6 +287,14 @@ public class Device extends BaseObservable implements Parcelable {
         mSummary = summary;
     }
 
+    public String getDeviceCategoryGroupId() {
+        return mDeviceCategoryGroupId;
+    }
+
+    public void setDeviceCategoryGroupId(String deviceCategoryGroupId) {
+        mDeviceCategoryGroupId = deviceCategoryGroupId;
+    }
+
     @Bindable
     public boolean isSelected() {
         return mIsSelected;
@@ -321,6 +332,11 @@ public class Device extends BaseObservable implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 
     public class UserBorrow implements Parcelable {
