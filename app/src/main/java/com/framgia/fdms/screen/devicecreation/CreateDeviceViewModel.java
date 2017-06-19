@@ -9,10 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-import com.framgia.fdms.BR;
+import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.widget.Toast.makeText;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_CATEGORY;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_STATUE;
 import static com.framgia.fdms.utils.Constant.PICK_IMAGE_REQUEST;
@@ -130,7 +132,7 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onLoadError(String msg) {
-        Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+        makeText(mContext, msg, Toast.LENGTH_LONG).show();
     }
 
     public void onChooseCategory() {
@@ -141,7 +143,17 @@ public class CreateDeviceViewModel extends BaseObservable
     }
 
     public void onChooseStatus() {
-        if (mStatuses == null) return;
+        if (mStatuses == null || mStatus.getName() != null && mStatus.getName()
+                .equals(Status.USING_STATUS)) {
+            return;
+        }
+
+        for (Status status : mStatuses) {
+            if (status == null || status.getName().equals(Status.USING_STATUS)) {
+                mStatuses.remove(status);
+                break;
+            }
+        }
         mActivity.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, mCategories, mStatuses,
                         StatusSelectionType.STATUS), REQUEST_STATUS);
@@ -210,7 +222,7 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onRegisterError() {
-        Toast.makeText(mContext, R.string.msg_create_device_error, Toast.LENGTH_LONG).show();
+        makeText(mContext, R.string.msg_create_device_error, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -436,7 +448,8 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onUpdateError() {
-        Toast.makeText(mContext, R.string.msg_update_device_error, Toast.LENGTH_LONG).show();
+        Snackbar.make(mActivity.findViewById(android.R.id.content),
+                R.string.msg_update_device_error, Snackbar.LENGTH_LONG).show();
     }
 
     public AppCompatActivity getActivity() {

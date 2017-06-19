@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Status implements Parcelable {
+    public static String USING_STATUS = "using";
     @Expose
     @SerializedName("id")
     private int mId;

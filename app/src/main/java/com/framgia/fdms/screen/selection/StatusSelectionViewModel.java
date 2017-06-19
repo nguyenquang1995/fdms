@@ -21,7 +21,6 @@ public class StatusSelectionViewModel implements StatusSelectionContract.ViewMod
 
     private AppCompatActivity mActivity;
     private List<Category> mCategories;
-    private List<Status> mStatuses;
     private StatusSelectionType mSelectionType;
     private StatusSelectionContract.Presenter mPresenter;
     private ObservableField<StatusSelectionAdapter> mAdapter = new ObservableField<>();
@@ -30,12 +29,14 @@ public class StatusSelectionViewModel implements StatusSelectionContract.ViewMod
             List<Status> statuses, StatusSelectionType selectionType) {
         mActivity = activity;
         mCategories = categories;
-        mStatuses = statuses;
         mSelectionType = selectionType;
-        if (mSelectionType == StatusSelectionType.CATEGORY) {
-            mAdapter.set(new StatusSelectionAdapter(this, categories, mSelectionType));
-        } else {
-            mAdapter.set(new StatusSelectionAdapter(this, mStatuses));
+        switch (selectionType) {
+            case CATEGORY:
+                mAdapter.set(new StatusSelectionAdapter(this, categories, mSelectionType));
+                break;
+            case STATUS:
+                mAdapter.set(new StatusSelectionAdapter(this, statuses));
+                break;
         }
     }
 
