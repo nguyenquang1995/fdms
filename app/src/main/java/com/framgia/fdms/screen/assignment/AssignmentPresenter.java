@@ -51,7 +51,7 @@ final class AssignmentPresenter implements AssignmentContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mViewModel.onLoadError();
+                        mViewModel.onLoadError(throwable.getMessage());
                     }
                 });
         mSubscription.add(subscription);
@@ -70,7 +70,7 @@ final class AssignmentPresenter implements AssignmentContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mViewModel.onLoadError();
+                        mViewModel.onLoadError(throwable.getMessage());
                     }
                 });
         mSubscription.add(subscription);

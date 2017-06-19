@@ -3,6 +3,7 @@ package com.framgia.fdms.screen.assignment;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.framgia.fdms.BR;
@@ -53,8 +54,9 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     }
 
     @Override
-    public void onLoadError() {
-        // TODO: 19/06/2017
+    public void onLoadError(String msg) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     @Override
