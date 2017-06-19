@@ -74,7 +74,6 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
         mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new ListDeviceAdapter(mContext, new ArrayList<Device>(), this);
-
         setCategory(new Category(OUT_OF_INDEX, mContext.getString(R.string.title_btn_category)));
         setStatus(new Status(OUT_OF_INDEX, mContext.getString(R.string.title_request_status)));
         mTab = tabDevice;
@@ -176,7 +175,8 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
 
     @Override
     public void onDeviceLoaded(List<Device> devices) {
-        setEmptyViewVisible(devices.isEmpty() ? View.VISIBLE : View.GONE);
+        setEmptyViewVisible(
+                devices.isEmpty() && mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         mIsLoadingMore.set(false);
         mAdapter.onUpdatePage(devices);
         setRefresh(false);

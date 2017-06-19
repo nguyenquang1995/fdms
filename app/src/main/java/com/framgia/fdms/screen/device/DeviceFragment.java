@@ -27,20 +27,18 @@ public class DeviceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new DeviceViewModel(this);
-
-        DeviceContract.Presenter presenter = new DevicePresenter(mViewModel,
-                new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))));
-        mViewModel.setPresenter(presenter);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-
         FragmentDeviceBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_device, container, false);
+        mViewModel = new DeviceViewModel(this);
+        DeviceContract.Presenter presenter = new DevicePresenter(mViewModel,
+                new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))));
+        mViewModel.setPresenter(presenter);
         binding.setViewModel((DeviceViewModel) mViewModel);
         return binding.getRoot();
     }

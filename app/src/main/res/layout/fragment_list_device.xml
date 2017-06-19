@@ -17,29 +17,19 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         bind:refreshAble="@{viewModel.refresh}"
         bind:swipeRefreshListener="@{viewModel.onRefreshListener}"
         >
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             >
-
-            <android.support.v7.widget.SearchView
-                android:id="@+id/searchview"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
-                android:background="@null"
-                android:visibility="gone"
-                app:model="@{viewModel}"
-                />
-
             <LinearLayout
                 android:id="@id/linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/searchview"
                 android:orientation="horizontal"
                 android:padding="@dimen/dp_5"
                 android:visibility="@{viewModel.tab == Tab.TAB_MY_DEVICE ? View.GONE : View.VISIBLE}"
@@ -78,43 +68,46 @@
                     />
 
             </LinearLayout>
-
-            <include
-                layout="@layout/empty_state"
-                bind:image="@{@drawable/ic_no_report}"
-                bind:text="@{@string/msg_no_device}"
-                bind:visibleState="@{viewModel.emptyViewVisible}"
-                />
-
-            <android.support.v7.widget.RecyclerView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/linear_layout"
-                android:scrollbars="vertical"
-                app:layoutManager="LinearLayoutManager"
-                app:recyclerAdapter="@{viewModel.adapter}"
-                app:scrollListenner="@{viewModel.scrollListenner}"
-                />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <include
+                    layout="@layout/empty_state"
+                    bind:image="@{@drawable/ic_no_report}"
+                    bind:text="@{@string/msg_no_device}"
+                    bind:visibleState="@{viewModel.emptyViewVisible}"
+                    />
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/linear_layout"
+                    android:scrollbars="vertical"
+                    app:layoutManager="LinearLayoutManager"
+                    app:recyclerAdapter="@{viewModel.adapter}"
+                    app:scrollListenner="@{viewModel.scrollListenner}"
+                    />
 
-            <ProgressBar
-                android:id="@+id/progress_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:visibility="@{viewModel.progressBarVisibility}"
-                />
+                <ProgressBar
+                    android:id="@+id/progress_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="@{viewModel.progressBarVisibility}"
+                    />
 
-            <ProgressBar
-                android:id="@+id/progress_loading_bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:visibility="@{viewModel.isLoadingMore ? View.VISIBLE : View.GONE}"
-                />
-
-        </RelativeLayout>
-
+                <ProgressBar
+                    android:id="@+id/progress_loading_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="@{viewModel.isLoadingMore ? View.VISIBLE : View.GONE}"
+                    />
+            </LinearLayout>
+        </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

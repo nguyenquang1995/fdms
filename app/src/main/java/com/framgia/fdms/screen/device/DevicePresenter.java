@@ -23,11 +23,11 @@ final class DevicePresenter implements DeviceContract.Presenter {
         mViewModel = viewModel;
         mUserRepository = userRepository;
         mCompositeSubscription = new CompositeSubscription();
+        getCurrentUser();
     }
 
     @Override
     public void onStart() {
-        getCurrentUser();
     }
 
     @Override
