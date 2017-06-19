@@ -30,4 +30,8 @@ public interface RequestRepositoryContract {
     Observable<Respone<Request>> updateActionRequest(int requestId, int statusId);
 
     Observable<Respone<Request>> updateRequest(Request request);
+
+    Observable<Request> getRequest(int requetsId);
+
+    Observable<Request> registerAssignment(Request request);
 }

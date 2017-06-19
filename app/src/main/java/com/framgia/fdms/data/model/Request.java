@@ -54,6 +54,8 @@ public class Request extends BaseObservable implements Serializable, Cloneable{
     @Expose
     @SerializedName("create_at")
     private Date mCreatAt;
+    @SerializedName("device")
+    private List<Device> mDevice;
 
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -172,6 +174,16 @@ public class Request extends BaseObservable implements Serializable, Cloneable{
     public void setCreatAt(Date creatAt) {
         mCreatAt = creatAt;
         notifyPropertyChanged(BR.creatAt);
+    }
+
+    @Bindable
+    public List<Device> getDevice() {
+        return mDevice;
+    }
+
+    public void setDevice(List<Device> device) {
+        mDevice = device;
+        notifyPropertyChanged(BR.device);
     }
 
     @Bindable

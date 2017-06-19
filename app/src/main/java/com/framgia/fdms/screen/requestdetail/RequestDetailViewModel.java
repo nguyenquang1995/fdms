@@ -238,7 +238,7 @@ public class RequestDetailViewModel extends BaseObservable
         if (user == null) return;
         mUser = user;
         if (mUser.isBoStaff() && mRequest.getRequestStatus()
-                .equals(Constant.DeviceStatus.WAITING_DONE)) {
+                .equals(Constant.DeviceStatus.WAITING_DONE) && mRequest.getId() > 0) {
             FloatingActionButton button = new FloatingActionButton(mContext);
             button.setImageResource(R.drawable.ic_timer);
             button.setLabelText(mContext.getString(R.string.title_add_device));
@@ -247,7 +247,8 @@ public class RequestDetailViewModel extends BaseObservable
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mActivity.startActivityForResult(AssignmentActivity.getInstance(mContext),
+                    mActivity.startActivityForResult(
+                            AssignmentActivity.getInstance(mContext, mRequest.getId()),
                             REQUEST_CREATE_ASSIGNMENT);
                 }
             });

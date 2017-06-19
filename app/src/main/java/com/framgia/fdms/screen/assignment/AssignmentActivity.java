@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.source.RequestRepository;
+import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
+import com.framgia.fdms.data.source.remote.RequestRemoteDataSource;
 import com.framgia.fdms.databinding.ActivityAssignmentBinding;
 
 /**
@@ -15,9 +18,11 @@ import com.framgia.fdms.databinding.ActivityAssignmentBinding;
 public class AssignmentActivity extends AppCompatActivity {
 
     private AssignmentContract.ViewModel mViewModel;
+    private static final String EXTRA_REQUEST_ID = "EXTRA_REQUEST_ID";
 
-    public static Intent getInstance(Context context) {
-        Intent intent = new Intent(context, AssignmentActivity.class);
+    public static Intent getInstance(Context context, int requestId) {
+        Intent intent =
+                new Intent(context, AssignmentActivity.class).putExtra(EXTRA_REQUEST_ID, requestId);
         return intent;
     }
 
@@ -25,12 +30,17 @@ public class AssignmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        int deviceId = getIntent().getIntExtra(EXTRA_REQUEST_ID, 0);
+
         mViewModel = new AssignmentViewModel(this);
 
-        AssignmentContract.Presenter presenter = new AssignmentPresenter(mViewModel);
+        AssignmentContract.Presenter presenter = new AssignmentPresenter(mViewModel, deviceId,
+                new RequestRepository(
+                        new RequestRemoteDataSource(FDMSServiceClient.getInstance())));
         mViewModel.setPresenter(presenter);
 
-        ActivityAssignmentBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_assignment);
+        ActivityAssignmentBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_assignment);
         binding.setViewModel((AssignmentViewModel) mViewModel);
         setTitle(getString(R.string.title_assignment));
     }

@@ -408,6 +408,6 @@ public class User extends BaseObservable implements Parcelable {
 
     public boolean isBoStaff() {
         if (mRole == null) return false;
-        return mRole.equals(BO_STAFF) || mRole.equals(Constant.Role.STAFF);
+        return mRole.equals(BO_STAFF) || mRole.equals(BO_MANAGER);
     }
 }
