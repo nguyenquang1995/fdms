@@ -76,5 +76,7 @@ interface CreateDeviceContract {
         boolean validateDataInput(Device device);
 
         void getDeviceCode(int deviceCategoryId, int branchId);
+
+        boolean validateDataEditDevice(Device device);
     }
 }

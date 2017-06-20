@@ -188,4 +188,5 @@
     <string name="title_used">Used</string>
     <string name="title_open_with">Open with</string>
     <string name="error_device_detail">No detail to show</string>
+    <string name="title_edit_device">Edit device</string>
 </resources>
