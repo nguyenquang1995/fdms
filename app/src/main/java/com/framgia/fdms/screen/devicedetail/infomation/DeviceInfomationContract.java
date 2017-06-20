@@ -14,7 +14,7 @@ interface DeviceInfomationContract {
     interface ViewModel extends BaseViewModel<Presenter> {
         void onGetDeviceSuccess(Device device);
 
-        void onError(String msg);
+        void onError();
 
         void onEditDevice();
 

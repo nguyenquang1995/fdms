@@ -121,24 +121,23 @@ public class DeviceRemoteDataSource implements DeviceDataSource.RemoteDataSource
                 deviceCode = null;
         if (!TextUtils.isEmpty(device.getProductionName())) {
             productionName = createPartFromString(device.getProductionName());
+            parrams.put(PRODUCTION_NAME, productionName);
         }
 
         if (device.getDeviceStatusId() != -1) {
             deviceStatusId = createPartFromString(String.valueOf(device.getDeviceStatusId()));
+            parrams.put(DEVICE_STATUS_ID, deviceStatusId);
         }
 
         if (device.getDeviceCategoryId() != -1) {
             deviceCategoryId = createPartFromString(String.valueOf(device.getDeviceCategoryId()));
+            parrams.put(DEVICE_CATEGORY_ID, deviceCategoryId);
         }
 
         if (!TextUtils.isEmpty(device.getDeviceCode())) {
             deviceCode = createPartFromString(device.getDeviceCode());
+            parrams.put(DEVICE_CODE, deviceCode);
         }
-
-        parrams.put(PRODUCTION_NAME, productionName);
-        parrams.put(DEVICE_STATUS_ID, deviceStatusId);
-        parrams.put(DEVICE_CATEGORY_ID, deviceCategoryId);
-        parrams.put(DEVICE_CODE, deviceCode);
 
         MultipartBody.Part filePart = null;
 

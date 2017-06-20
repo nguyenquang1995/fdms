@@ -450,6 +450,8 @@ public class CreateDeviceViewModel extends BaseObservable
     @Override
     public void onUpdateSuccess(Device device) {
         mDevice = device;
+        Snackbar.make(mActivity.findViewById(android.R.id.content),
+                R.string.msg_update_device_success, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
