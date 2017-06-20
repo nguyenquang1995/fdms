@@ -77,10 +77,9 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
         setCategory(new Category(OUT_OF_INDEX, mContext.getString(R.string.title_btn_category)));
         setStatus(new Status(OUT_OF_INDEX, mContext.getString(R.string.title_request_status)));
         mTab = tabDevice;
-        loadData();
     }
 
-    private void loadData() {
+    public void loadData() {
         if (mPresenter == null) return;
         switch (mTab) {
             case TAB_MY_DEVICE:
@@ -160,7 +159,6 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
     @Override
     public void onStart() {
         mPresenter.onStart();
-        loadData();
     }
 
     @Override

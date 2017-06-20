@@ -44,6 +44,8 @@ interface ListDeviceContract {
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
         void setupFloatingActionsMenu(User user);
+
+        void loadData();
     }
 
     /**

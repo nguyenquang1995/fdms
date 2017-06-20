@@ -63,6 +63,7 @@ public class ListDeviceFragment extends Fragment {
         FragmentListDeviceBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_list_device, container, false);
         binding.setViewModel((ListDeviceViewModel) mViewModel);
+        mViewModel.loadData();
         return binding.getRoot();
     }
 
