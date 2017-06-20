@@ -16,7 +16,7 @@ interface AssignmentContract {
 
         void onAssignClick();
 
-        void onLoadError();
+        void onLoadError(String msg);
 
         void onGetRequestSuccess(Request request);
     }

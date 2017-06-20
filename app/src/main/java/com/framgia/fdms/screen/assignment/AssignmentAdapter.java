@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.framgia.fdms.BR;
 import com.framgia.fdms.BaseRecyclerViewAdapter;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.api.request.DeviceRequest;
 import com.framgia.fdms.databinding.ItemAssignmentBinding;
 import java.util.ArrayList;
@@ -22,27 +23,31 @@ import java.util.List;
  */
 
 public class AssignmentAdapter
-        extends BaseRecyclerViewAdapter<DeviceRequest, AssignmentAdapter.ViewHolder> {
-    private List<DeviceRequest> mDeviceRequests;
+        extends BaseRecyclerViewAdapter<Device, AssignmentAdapter.ViewHolder> {
+    private List<Device> mDevices;
     private AssignmentViewModel mViewModel;
 
     protected AssignmentAdapter(@NonNull Context context, @NonNull AssignmentViewModel viewModel) {
         super(context);
         mViewModel = viewModel;
-        mDeviceRequests = new ArrayList<>();
+        mDevices = new ArrayList<>();
+    }
+
+    public List<Device> getData(){
+        return mDevices == null ? new ArrayList<Device>() : mDevices;
     }
 
     public void addItem() {
-        mDeviceRequests.add(new DeviceRequest());
-        notifyItemInserted(mDeviceRequests.size() - 1);
+        mDevices.add(new Device());
+        notifyItemInserted(mDevices.size() - 1);
     }
 
     @Override
-    public void onUpdatePage(List<DeviceRequest> data) {
+    public void onUpdatePage(List<Device> data) {
         if (data == null) {
             return;
         }
-        mDeviceRequests.addAll(data);
+        mDevices.addAll(data);
         notifyDataSetChanged();
     }
 
@@ -56,12 +61,12 @@ public class AssignmentAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bindData(mDeviceRequests.get(position));
+        holder.bindData(mDevices.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mDeviceRequests == null ? 0 : mDeviceRequests.size();
+        return mDevices == null ? 0 : mDevices.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -74,46 +79,46 @@ public class AssignmentAdapter
             mViewModel = viewModel;
         }
 
-        void bindData(DeviceRequest deviceRequest) {
-            if (deviceRequest == null) {
+        void bindData(Device device) {
+            if (device == null) {
                 return;
             }
 
-            ViewHolderModel model = new ViewHolderModel(deviceRequest, mViewModel, this);
+            ViewHolderModel model = new ViewHolderModel(device, mViewModel, this);
             mBinding.setViewHolderModel(model);
             mBinding.executePendingBindings();
         }
 
         @Override
         public void onClick(View view) {
-            if (getAdapterPosition() >= 0 && getAdapterPosition() < mDeviceRequests.size()) {
-                mDeviceRequests.remove(getAdapterPosition());
+            if (getAdapterPosition() >= 0 && getAdapterPosition() < mDevices.size()) {
+                mDevices.remove(getAdapterPosition());
                 notifyItemRemoved(getAdapterPosition());
-                notifyItemRangeChanged(getAdapterPosition(), mDeviceRequests.size());
+                notifyItemRangeChanged(getAdapterPosition(), mDevices.size());
             }
         }
     }
 
     public class ViewHolderModel extends BaseObservable {
-        private DeviceRequest mDeviceRequest;
+        private Device mDevice;
         private AssignmentViewModel mViewModel;
         private View.OnClickListener mOnDeleteClick;
 
-        public ViewHolderModel(DeviceRequest deviceRequest, AssignmentViewModel viewModel,
+        public ViewHolderModel(Device device, AssignmentViewModel viewModel,
                 View.OnClickListener onDelteClick) {
-            mDeviceRequest = deviceRequest;
+            mDevice = device;
             mViewModel = viewModel;
             mOnDeleteClick = onDelteClick;
         }
 
         @Bindable
-        public DeviceRequest getDeviceRequest() {
-            return mDeviceRequest;
+        public Device getDeviceRequest() {
+            return mDevice;
         }
 
-        public void setDeviceRequest(DeviceRequest deviceRequest) {
-            mDeviceRequest = deviceRequest;
-            notifyPropertyChanged(BR.deviceRequest);
+        public void setDeviceRequest(Device device) {
+            mDevice = device;
+            notifyPropertyChanged(BR.device);
         }
 
         @Bindable

@@ -81,8 +81,12 @@ public class Device extends BaseObservable implements Parcelable {
     private boolean mIsSelected;
     @SerializedName("user")
     private UserBorrow mUser;
+    @Expose
     @SerializedName("device_category_group_id")
     private String mDeviceCategoryGroupId;
+    @Expose
+    @SerializedName("device_id")
+    private String mDeviceId;
 
     public Device() {
     }
@@ -293,6 +297,14 @@ public class Device extends BaseObservable implements Parcelable {
 
     public void setDeviceCategoryGroupId(String deviceCategoryGroupId) {
         mDeviceCategoryGroupId = deviceCategoryGroupId;
+    }
+
+    public String getDeviceId() {
+        return mDeviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        mDeviceId = deviceId;
     }
 
     @Bindable
