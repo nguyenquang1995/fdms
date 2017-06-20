@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
@@ -82,6 +83,7 @@ public class CreateDeviceViewModel extends BaseObservable
     private Calendar mCalendar = Calendar.getInstance();
     private boolean mIsQrCode = true;
     private Bitmap mDeviceCode;
+    private int mProgressBarVisibility = View.GONE;
 
     public CreateDeviceViewModel(CreateDeviceActivity activity, Device device,
             DeviceStatusType type) {
@@ -91,6 +93,7 @@ public class CreateDeviceViewModel extends BaseObservable
             mDevice = new Device();
             mStatus = new Status(DEFAULT_STATUS_ID, DEFAULT_STATUS_NAME);
             mBranch = new Status(DEFAULT_BRANCH_ID, DEFAULT_BRANCH_NAME);
+            mDevice.setDeviceStatusId(DEFAULT_STATUS_ID);
         } else {
             mDevice = device;
             mCategory = new Category(device.getDeviceCategoryId(), device.getDeviceCategoryName());
@@ -211,12 +214,12 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void showProgressbar() {
-        // TODO: later
+        setProgressBarVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressbar() {
-        // TODO: later
+        setProgressBarVisibility(View.GONE);
     }
 
     @Override
@@ -227,7 +230,7 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onRegisterSuccess() {
-        mContext.startActivity(MainActivity.getInstance(mContext));
+        getActivity().finish();
     }
 
     @Override
@@ -521,5 +524,15 @@ public class CreateDeviceViewModel extends BaseObservable
     public void setDeviceCode(Bitmap deviceCode) {
         mDeviceCode = deviceCode;
         notifyPropertyChanged(BR.deviceCode);
+    }
+
+    @Bindable
+    public int getProgressBarVisibility() {
+        return mProgressBarVisibility;
+    }
+
+    public void setProgressBarVisibility(int progressBarVisibility) {
+        mProgressBarVisibility = progressBarVisibility;
+        notifyPropertyChanged(BR.progressBarVisibility);
     }
 }

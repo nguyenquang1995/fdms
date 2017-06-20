@@ -37,6 +37,8 @@ public class Constant {
         public static final String PRODUCTION_NAME = "production_name";
         public static final String DEVICE_STATUS_ID = "device_status_id";
         public static final String DEVICE_CATEGORY_ID = "device_category_id";
+        public static final String BOUGHT_DATE = "bought_date";
+        public static final String ORIGINAL_PRICE = "original_price";
         public static final String SERIAL_NUMBER = "serial_number";
         public static final String MODEL_NUMBER = "model_number";
         public static final String DEVICE_CODE = "device_code";

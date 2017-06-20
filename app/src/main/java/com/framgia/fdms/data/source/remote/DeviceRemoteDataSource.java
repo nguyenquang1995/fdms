@@ -12,6 +12,7 @@ import com.framgia.fdms.data.source.DeviceDataSource;
 import com.framgia.fdms.data.source.api.service.FDMSApi;
 import com.framgia.fdms.utils.Utils;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +23,14 @@ import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Func1;
 
+import static com.framgia.fdms.utils.Constant.ApiParram.BOUGHT_DATE;
 import static com.framgia.fdms.utils.Constant.ApiParram.CATEGORY_ID;
 import static com.framgia.fdms.utils.Constant.ApiParram.DEVICE_CATEGORY_ID;
 import static com.framgia.fdms.utils.Constant.ApiParram.DEVICE_CODE;
 import static com.framgia.fdms.utils.Constant.ApiParram.DEVICE_NAME;
 import static com.framgia.fdms.utils.Constant.ApiParram.DEVICE_STATUS_ID;
 import static com.framgia.fdms.utils.Constant.ApiParram.MODEL_NUMBER;
+import static com.framgia.fdms.utils.Constant.ApiParram.ORIGINAL_PRICE;
 import static com.framgia.fdms.utils.Constant.ApiParram.PAGE;
 import static com.framgia.fdms.utils.Constant.ApiParram.PER_PAGE;
 import static com.framgia.fdms.utils.Constant.ApiParram.PICTURE;
@@ -74,17 +77,22 @@ public class DeviceRemoteDataSource implements DeviceDataSource.RemoteDataSource
     }
 
     @Override
-    public Observable<Device> registerdevice(Device device) {
+    public Observable<Device> registerdevice(final Device device) {
         Map<String, RequestBody> parrams = new HashMap<>();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 
         RequestBody productionName = createPartFromString(device.getProductionName());
         RequestBody deviceStatusId =
                 createPartFromString(String.valueOf(device.getDeviceStatusId()));
         RequestBody deviceCategoryId =
-                createPartFromString(String.valueOf(device.getDeviceStatusId()));
+                createPartFromString(String.valueOf(device.getDeviceCategoryId()));
         RequestBody serialNumber = createPartFromString(device.getSerialNumber());
         RequestBody modellNumber = createPartFromString(device.getModelNumber());
         RequestBody deviceCode = createPartFromString(device.getDeviceCode());
+        RequestBody boughtDate =
+                createPartFromString(String.valueOf(format.format(device.getBoughtDate())));
+        RequestBody originalPrice = createPartFromString(device.getOriginalPrice());
 
         parrams.put(PRODUCTION_NAME, productionName);
         parrams.put(DEVICE_STATUS_ID, deviceStatusId);
@@ -92,6 +100,8 @@ public class DeviceRemoteDataSource implements DeviceDataSource.RemoteDataSource
         parrams.put(SERIAL_NUMBER, serialNumber);
         parrams.put(MODEL_NUMBER, modellNumber);
         parrams.put(DEVICE_CODE, deviceCode);
+        parrams.put(BOUGHT_DATE, boughtDate);
+        parrams.put(ORIGINAL_PRICE, originalPrice);
 
         MultipartBody.Part filePart = null;
 
@@ -109,7 +119,13 @@ public class DeviceRemoteDataSource implements DeviceDataSource.RemoteDataSource
                 .flatMap(new Func1<Respone<Device>, Observable<Device>>() {
                     @Override
                     public Observable<Device> call(Respone<Device> deviceRespone) {
-                        return Utils.getResponse(deviceRespone);
+                        if (deviceRespone == null) {
+                            return Observable.error(new NullPointerException());
+                        } else if (deviceRespone.isError()) {
+                            return Observable.error(new Throwable(deviceRespone.getMessage()));
+                        } else {
+                            return Observable.just(deviceRespone.getData());
+                        }
                     }
                 });
     }
@@ -236,10 +252,14 @@ public class DeviceRemoteDataSource implements DeviceDataSource.RemoteDataSource
 
     @Override
     public Observable<Device> getDeviceCode(int deviceCategoryId, int branchId) {
-        // TODO: later
-        Device device = new Device();
-        device.setDeviceCode("HN_05_501_0003");
-        return Observable.just(device);
+        return mFDMSApi.getDeviceCode(deviceCategoryId, branchId)
+                .flatMap(new Func1<Respone<Device>, Observable<Device>>() {
+
+                    @Override
+                    public Observable<Device> call(Respone<Device> deviceRespone) {
+                        return Utils.getResponse(deviceRespone);
+                    }
+                });
     }
 
     public Map<String, String> getDeviceParams(String deviceName, int categoryId, int statusId,

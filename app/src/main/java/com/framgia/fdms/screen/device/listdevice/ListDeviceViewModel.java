@@ -65,6 +65,7 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
+                    mAdapter.clear();
                     loadData();
                 }
             };
