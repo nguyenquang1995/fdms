@@ -250,10 +250,6 @@ final class CreateDevicePresenter implements CreateDeviceContract.Presenter {
     @Override
     public boolean validateDataEditDevice(Device device) {
         boolean isValid = true;
-        if (TextUtils.isEmpty(device.getDeviceStatusName())) {
-            mViewModel.onInputStatusError();
-            isValid = false;
-        }
         if (TextUtils.isEmpty(device.getProductionName())) {
             mViewModel.onInputProductionNameError();
             isValid = false;

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableField;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
+import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.screen.devicecreation.CreateDeviceActivity;
 import com.framgia.fdms.screen.devicecreation.DeviceStatusType;
@@ -22,9 +24,11 @@ public class DeviceInfomationViewModel extends BaseObservable
     private Device mDevice = new Device();
     private Context mContext;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
+    private FragmentActivity mActivity;
 
-    public DeviceInfomationViewModel(Context context) {
+    public DeviceInfomationViewModel(Context context, FragmentActivity activity) {
         mContext = context;
+        mActivity = activity;
     }
 
     @Override
@@ -54,8 +58,9 @@ public class DeviceInfomationViewModel extends BaseObservable
     }
 
     @Override
-    public void onError(String msg) {
-        Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+    public void onError() {
+        Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.error_device_detail,
+                Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

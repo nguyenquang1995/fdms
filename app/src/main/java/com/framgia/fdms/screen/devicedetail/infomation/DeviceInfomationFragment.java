@@ -38,7 +38,7 @@ public class DeviceInfomationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewModel = new DeviceInfomationViewModel(getContext());
+        mViewModel = new DeviceInfomationViewModel(getContext(),getActivity());
 
         DeviceInfomationContract.Presenter presenter = new DeviceInfomationPresenter(mViewModel,
                 new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance())),

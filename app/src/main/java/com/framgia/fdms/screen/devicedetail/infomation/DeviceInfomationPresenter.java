@@ -59,7 +59,7 @@ final class DeviceInfomationPresenter implements DeviceInfomationContract.Presen
                     @Override
                     public void call(Throwable throwable) {
                         mViewModel.hideProgressbar();
-                        mViewModel.onError(throwable.getMessage());
+                        mViewModel.onError();
                     }
                 }, new Action0() {
                     @Override

@@ -5,12 +5,10 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.android.databinding.library.baseAdapters.BR;
-import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.screen.devicedetail.history.DeviceDetailHistoryFragment;
 import com.framgia.fdms.screen.devicedetail.infomation.DeviceInfomationFragment;
@@ -77,8 +75,6 @@ public class DeviceDetailViewModel extends BaseObservable
 
     @Override
     public void onGetDeviceError() {
-        Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.error_device_detail,
-                Snackbar.LENGTH_SHORT).show();
     }
 
     public ObservableField<Integer> getProgressBarVisibility() {
