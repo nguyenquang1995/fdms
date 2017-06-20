@@ -60,6 +60,12 @@ final class CreateDevicePresenter implements CreateDeviceContract.Presenter {
         Subscription subscription = mDeviceRepository.registerdevice(device)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        mViewModel.showProgressbar();
+                    }
+                })
                 .subscribe(new Action1<Device>() {
                     @Override
                     public void call(Device device) {
@@ -68,7 +74,13 @@ final class CreateDevicePresenter implements CreateDeviceContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mViewModel.onRegisterError();
+                        mViewModel.hideProgressbar();
+                        mViewModel.onLoadError(throwable.getMessage());
+                    }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        mViewModel.hideProgressbar();
                     }
                 });
         mCompositeSubscription.add(subscription);
