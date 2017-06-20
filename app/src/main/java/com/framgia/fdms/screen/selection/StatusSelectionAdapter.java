@@ -10,9 +10,6 @@ import com.framgia.fdms.databinding.ItemStatusSelectionBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.framgia.fdms.utils.Constant.ACTION_CLEAR;
-import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
-
 /**
  * Created by Hoang Van Nha on 5/24/2017.
  * <></>
@@ -34,7 +31,6 @@ public class StatusSelectionAdapter
             List<Category> categories, StatusSelectionType type) {
         mViewModel = viewModel;
         mCategories = categories;
-        mCategories.add(FIRST_INDEX, new Category(OUT_OF_INDEX, ACTION_CLEAR));
         mCategoriesTemp.addAll(categories);
         mStatusType = type;
     }
@@ -43,7 +39,6 @@ public class StatusSelectionAdapter
             List<Status> statuses) {
         mViewModel = viewModel;
         mStatuses = statuses;
-        mStatuses.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
         mStatusesTemp.addAll(statuses);
     }
 

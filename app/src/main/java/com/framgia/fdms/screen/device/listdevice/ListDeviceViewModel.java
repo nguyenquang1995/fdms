@@ -29,6 +29,8 @@ import java.util.List;
 
 import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MANAGE_DEVICE;
 import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MY_DEVICE;
+import static com.framgia.fdms.screen.selection.StatusSelectionAdapter.FIRST_INDEX;
+import static com.framgia.fdms.utils.Constant.ACTION_CLEAR;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_CATEGORY;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_STATUE;
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
@@ -133,6 +135,7 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
     @Override
     public void onChooseCategory() {
         if (mCategories == null) return;
+        mCategories.add(FIRST_INDEX, new Category(OUT_OF_INDEX, ACTION_CLEAR));
         mFragment.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, mCategories, null,
                         StatusSelectionType.CATEGORY), REQUEST_SELECTION);
@@ -141,6 +144,7 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
     @Override
     public void onChooseStatus() {
         if (mStatuses == null) return;
+        mStatuses.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
         mFragment.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, null, mStatuses,
                         StatusSelectionType.STATUS), REQUEST_SELECTION);

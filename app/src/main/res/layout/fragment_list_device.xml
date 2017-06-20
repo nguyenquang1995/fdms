@@ -94,8 +94,7 @@
                     android:id="@+id/progress_loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
                     android:visibility="@{viewModel.progressBarVisibility}"
                     />
 
@@ -103,8 +102,7 @@
                     android:id="@+id/progress_loading_bottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
                     android:visibility="@{viewModel.isLoadingMore ? View.VISIBLE : View.GONE}"
                     />
             </LinearLayout>
