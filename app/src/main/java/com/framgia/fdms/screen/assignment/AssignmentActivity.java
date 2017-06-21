@@ -11,6 +11,9 @@ import com.framgia.fdms.data.source.RequestRepository;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
 import com.framgia.fdms.data.source.remote.RequestRemoteDataSource;
 import com.framgia.fdms.databinding.ActivityAssignmentBinding;
+import com.framgia.fdms.utils.Utils;
+
+import static com.framgia.fdms.utils.Utils.hideSoftKeyboard;
 
 /**
  * Assignment Screen.
@@ -60,6 +63,7 @@ public class AssignmentActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) onBackPressed();
+        hideSoftKeyboard(this);
         return super.onOptionsItemSelected(item);
     }
 }

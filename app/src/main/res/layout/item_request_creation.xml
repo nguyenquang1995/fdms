@@ -66,6 +66,8 @@
                             android:textColorHint="@color/color_brown"
                             android:textSize="@dimen/sp_12"
                             app:hintTextAppearance="@color/color_brown"
+                            android:inputType="text"
+                            android:imeOptions="actionDone"
                             />
 
                     </LinearLayout>

@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.framgia.fdms.BR;
 import com.framgia.fdms.data.model.Request;
+import com.framgia.fdms.utils.Utils;
+
+import static com.framgia.fdms.utils.Utils.hideSoftKeyboard;
 
 /**
  * Exposes the data to be used in the Assignment screen.
@@ -45,6 +48,7 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
 
     @Override
     public void onAddItemClick() {
+        hideSoftKeyboard(mActivity);
         mAdapter.addItem();
     }
 

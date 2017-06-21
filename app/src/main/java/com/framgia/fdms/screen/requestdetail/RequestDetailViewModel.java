@@ -1,5 +1,6 @@
 package com.framgia.fdms.screen.requestdetail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.BaseObservable;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
@@ -41,6 +44,7 @@ import static com.framgia.fdms.utils.Constant.RequestAction.WAITING_APPROVE;
 import static com.framgia.fdms.utils.Constant.RequestAction.WAITING_DONE;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_CATEGORY;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_CREATE_ASSIGNMENT;
+import static com.framgia.fdms.utils.Utils.hideSoftKeyboard;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 
 /**
@@ -163,6 +167,8 @@ public class RequestDetailViewModel extends BaseObservable
     public void onSubmitEditClick() {
         // TODO: 31/05/2017  call api update request
         mActionMenu.showMenu(true);
+        mIsEdit.set(false);
+        hideSoftKeyboard(mActivity);
     }
 
     @Override
@@ -174,6 +180,7 @@ public class RequestDetailViewModel extends BaseObservable
             mAdapter.clear();
             mAdapter.onUpdatePage(mRequestTemp.getDevices());
         }
+        hideSoftKeyboard(mActivity);
     }
 
     @Override

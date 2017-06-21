@@ -1,9 +1,11 @@
 package com.framgia.fdms.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.inputmethod.InputMethodManager;
 import com.framgia.fdms.data.model.Respone;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -81,5 +83,14 @@ public class Utils {
         if (date == null) return "";
         SimpleDateFormat formatter = new SimpleDateFormat("dd - MM - yyyy", Locale.getDefault());
         return formatter.format(date);
+    }
+
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

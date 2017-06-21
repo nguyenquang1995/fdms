@@ -90,6 +90,8 @@
                             android:enabled="@{viewModel.isEdit}"
                             android:text="@={viewModel.request.title}"
                             style="@style/EditTextStyleRequestDetail"
+                            android:inputType="text"
+                            android:imeOptions="actionDone"
                             />
                     </LinearLayout>
                     <View style="@style/ViewRequestDetail"/>
@@ -116,6 +118,8 @@
                             android:maxLines="10"
                             android:text="@={viewModel.request.description}"
                             style="@style/EditTextStyleRequestDetail"
+                            android:inputType="text"
+                            android:imeOptions="actionDone"
                             />
                     </LinearLayout>
                     <View style="@style/ViewRequestDetail"/>
