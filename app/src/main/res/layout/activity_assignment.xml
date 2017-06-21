@@ -88,6 +88,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/title_description"
                         android:text="@={viewModel.request.description}"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
                         />
                 </android.support.design.widget.TextInputLayout>
 

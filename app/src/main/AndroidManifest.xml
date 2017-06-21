@@ -63,15 +63,14 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".screen.returndevice.ReturnDeviceActivity"/>
         <activity android:name=".screen.selection.StatusSelectionActivity"/>
-        <activity android:name=".screen.requestdetail.RequestDetailActivity"/>
+        <activity
+            android:name=".screen.requestdetail.RequestDetailActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".screen.notification.NotificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
-        <activity
-            android:name=".screen.assignment.AssignmentActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+        <activity android:name=".screen.assignment.AssignmentActivity"/>
         <activity
             android:name=".screen.profile.chooseexport.ChooseExportActivity"
             android:screenOrientation="portrait"
