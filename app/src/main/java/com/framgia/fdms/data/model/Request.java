@@ -198,7 +198,7 @@ public class Request extends BaseObservable implements Serializable, Cloneable{
                 getCreater(), nameDevice, getRequestFor());
     }
 
-    public static class DeviceRequest extends BaseObservable implements Serializable {
+    public static class DeviceRequest extends BaseObservable implements Serializable, Cloneable {
         @Expose
         @SerializedName("id")
         private int mId;
@@ -212,6 +212,11 @@ public class Request extends BaseObservable implements Serializable, Cloneable{
         @SerializedName("category_name")
         private String mCategoryName;
         private Category mCategory;
+
+        @Override
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
 
         @Bindable
         public Category getCategory() {
