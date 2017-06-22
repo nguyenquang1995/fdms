@@ -10,9 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.User;
-import com.framgia.fdms.data.source.DeviceRepository;
-import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
-import com.framgia.fdms.data.source.remote.DeviceRemoteDataSource;
+import com.framgia.fdms.data.source.DeviceReturnRepository;
 import com.framgia.fdms.databinding.ActivityChooseExportBinding;
 
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_USER;
@@ -44,8 +42,8 @@ public class ChooseExportActivity extends AppCompatActivity {
                 DataBindingUtil.setContentView(this, R.layout.activity_choose_export);
         getDataFromIntent();
         mViewModel = new ChooseExportViewModel(this, mUser);
-        ChooseExportContract.Presenter presenter = new ChooseExportPresenter(mViewModel,
-                new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance())));
+        ChooseExportContract.Presenter presenter =
+                new ChooseExportPresenter(mViewModel, new DeviceReturnRepository());
         mViewModel.setPresenter(presenter);
         binding.setViewModel(mViewModel);
         mViewModel.initToolbar(binding.toolbar);
