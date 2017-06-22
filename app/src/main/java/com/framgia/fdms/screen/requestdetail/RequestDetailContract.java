@@ -38,6 +38,8 @@ public interface RequestDetailContract {
         void onGetReponeSuccess(Respone<Request> requestRespone);
 
         void setCurrentUser(User user);
+
+        void onUploadRequestError(String message);
     }
 
     interface Presenter extends BasePresenter {

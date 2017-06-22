@@ -122,7 +122,7 @@ public class RequestDetailPresenter implements RequestDetailContract.Presenter {
                     @Override
                     public void call(Throwable throwable) {
                         mViewModel.hideProgressbar();
-                        mViewModel.onLoadError(throwable.getMessage());
+                        mViewModel.onUploadRequestError(throwable.getMessage());
                     }
                 }, new Action0() {
                     @Override

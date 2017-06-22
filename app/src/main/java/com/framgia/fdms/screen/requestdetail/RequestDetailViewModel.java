@@ -8,6 +8,7 @@ import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -165,7 +166,7 @@ public class RequestDetailViewModel extends BaseObservable
 
     @Override
     public void onSubmitEditClick() {
-        // TODO: 31/05/2017  call api update request
+        mPresenter.updateRequest(mRequest);
         mActionMenu.showMenu(true);
         mIsEdit.set(false);
         hideSoftKeyboard(mActivity);
@@ -260,6 +261,13 @@ public class RequestDetailViewModel extends BaseObservable
                 }
             });
         }
+    }
+
+    @Override
+    public void onUploadRequestError(String message) {
+        Snackbar.make(mActivity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .show();
+        onCancelEditClick();
     }
 
     public ObservableField<Category> getCategory() {

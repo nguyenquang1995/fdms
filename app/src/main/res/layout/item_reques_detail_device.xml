@@ -55,7 +55,7 @@
                             android:layout_width="@dimen/dp_20"
                             android:layout_height="@dimen/dp_20"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_name_24dp"
+                            android:src="@drawable/ic_description_24dp"
                             />
 
                         <LinearLayout
@@ -125,7 +125,7 @@
                             android:layout_width="@dimen/dp_20"
                             android:layout_height="@dimen/dp_20"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_number_24dp"
+                            android:src="@drawable/ic_format_list_numbered_black_24px"
                             />
 
                         <LinearLayout
@@ -219,7 +219,7 @@
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_list_24dp"
+                        android:src="@drawable/ic_description_24dp"
                         android:textSize="@dimen/sp_17"
                         />
                     <TextView
@@ -241,7 +241,7 @@
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_list_24dp"
+                        android:src="@drawable/ic_device_24dp"
                         />
                     <TextView
                         android:text="@string/title_device_request__name"

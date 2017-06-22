@@ -75,6 +75,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         if (mViewModel.onBackPressed()) {
             super.onBackPressed();
         }
+        mViewModel.onCancelEditClick();
     }
 
     @Override
