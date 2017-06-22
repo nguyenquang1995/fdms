@@ -226,7 +226,7 @@
                         android:text="@string/title_description"
                         style="@style/TextViewRequestDetail"
                         />
-                    <EditText
+                    <TextView
                         android:text="@{deviceRequest.description}"
                         style="@style/EditTextStyleRequestDetail"
                         />
@@ -247,7 +247,7 @@
                         android:text="@string/title_device_request__name"
                         style="@style/TextViewRequestDetail"
                         />
-                    <EditText
+                    <TextView
                         android:text="@{deviceRequest.categoryName}"
                         style="@style/EditTextStyleRequestDetail"
                         />
@@ -268,7 +268,7 @@
                         android:text="@string/title_number"
                         style="@style/TextViewRequestDetail"
                         />
-                    <EditText
+                    <TextView
                         android:text="@{String.valueOf(deviceRequest.number)}"
                         style="@style/EditTextStyleRequestDetail"
                         />

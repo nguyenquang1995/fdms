@@ -73,6 +73,7 @@ public class RequestDetailViewModel extends BaseObservable
     private User mUser;
     private FloatingActionMenu mFloatingActionsMenu;
     private Request mRequestTemp;
+    private int mActionMenuVisibility;
 
     public RequestDetailViewModel(AppCompatActivity activity, List<Request.DeviceRequest> request,
             List<Request.RequestAction> actions, String statusRequest, Request actionRequest,
@@ -260,7 +261,11 @@ public class RequestDetailViewModel extends BaseObservable
                             REQUEST_CREATE_ASSIGNMENT);
                 }
             });
+            return;
         }
+
+        setActionMenuVisibility(
+                mListAction != null && mListAction.size() > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -284,6 +289,11 @@ public class RequestDetailViewModel extends BaseObservable
         mActionMenu.hideMenu(true);
         try {
             mRequestTemp = (Request) mRequest.clone();
+            List<Request.DeviceRequest> list = new ArrayList<>();
+            for (Request.DeviceRequest deviceRequest : mRequest.getDevices()) {
+                list.add((Request.DeviceRequest) deviceRequest.clone());
+            }
+            mRequestTemp.setDevices(list);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -321,5 +331,15 @@ public class RequestDetailViewModel extends BaseObservable
     public void setAdapter(RequestDetailAdapter adapter) {
         mAdapter = adapter;
         notifyPropertyChanged(BR.adapter);
+    }
+
+    @Bindable
+    public int getActionMenuVisibility() {
+        return mActionMenuVisibility;
+    }
+
+    public void setActionMenuVisibility(int actionMenuVisibility) {
+        this.mActionMenuVisibility = actionMenuVisibility;
+        notifyPropertyChanged(BR.actionMenuVisibility);
     }
 }
