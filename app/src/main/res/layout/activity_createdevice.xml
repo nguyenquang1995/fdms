@@ -93,12 +93,12 @@
                         >
                         <include
                             layout="@layout/text_input"
+                            bind:error="@{viewModel.statusError}"
                             bind:image="@{@drawable/ic_list_24dp}"
                             bind:onClick="@{() -> viewModel.onChooseStatus()}"
                             bind:text="@{viewModel.status.name}"
                             bind:title="@{@string/title_device_status}"
                             bind:type="@{DeviceStatusType.CREATE}"
-                            bind:error = "@{viewModel.statusError}"
                             />
 
                         <include
@@ -132,11 +132,11 @@
 
                         <include
                             layout="@layout/text_input"
+                            bind:error="@{viewModel.deviceCodeError}"
                             bind:image="@{@drawable/ic_code_24dp}"
                             bind:text="@{viewModel.device.deviceCode}"
                             bind:title="@{@string/title_code}"
                             bind:type="@{viewModel.deviceType}"
-                            bind:error = "@{viewModel.deviceCodeError}"
                             />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -158,6 +158,7 @@
                         >
                         <include
                             layout="@layout/edittext_input"
+                            bind:enabled="@{true}"
                             bind:error="@{viewModel.nameDeviceError}"
                             bind:image="@{@drawable/ic_name_24dp}"
                             bind:text="@={viewModel.device.productionName}"
@@ -165,6 +166,7 @@
                             />
                         <include
                             layout="@layout/edittext_input"
+                            bind:enabled="@{true}"
                             bind:error="@{viewModel.serialNumberError}"
                             bind:image="@{@drawable/ic_seri_number_24dp}"
                             bind:text="@={viewModel.device.serialNumber}"
@@ -173,6 +175,7 @@
 
                         <include
                             layout="@layout/edittext_input"
+                            bind:enabled="@{true}"
                             bind:error="@{viewModel.modelNumberError}"
                             bind:image="@{@drawable/ic_model_number_24dp}"
                             bind:text="@={viewModel.device.modelNumber}"
@@ -218,6 +221,8 @@
                                         android:enabled="@{viewModel.deviceType == DeviceStatusType.CREATE}"
                                         android:inputType="number"
                                         android:text="@={viewModel.device.originalPrice}"
+                                        android:textColor="@color/color_dark_gray"
+                                        android:textSize="@dimen/sp_16"
                                         />
                                 </android.support.design.widget.TextInputLayout>
                             </LinearLayout>
