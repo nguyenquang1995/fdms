@@ -29,7 +29,6 @@ import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_TAB;
  * ListDevice Screen.
  */
 public class ListDeviceFragment extends Fragment {
-
     private ListDeviceContract.ViewModel mViewModel;
 
     public static ListDeviceFragment newInstance(@DeviceViewModel.Tab int tabDevice) {
@@ -43,8 +42,7 @@ public class ListDeviceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel =
-                new ListDeviceViewModel(getActivity(), this, getArguments().getInt(BUNDLE_TAB));
+        mViewModel = new ListDeviceViewModel(this, getArguments().getInt(BUNDLE_TAB));
         ListDeviceContract.Presenter presenter = new ListDevicePresenter(mViewModel,
                 new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance())),
                 new CategoryRepository(

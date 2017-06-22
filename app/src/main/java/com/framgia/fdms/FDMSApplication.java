@@ -1,6 +1,7 @@
 package com.framgia.fdms;
 
 import android.app.Application;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
 
 /**
@@ -8,7 +9,7 @@ import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
  */
 public class FDMSApplication extends Application {
     private static FDMSApplication sInstant;
-
+    public static Device sUpdatedDevice;
     @Override
     public void onCreate() {
         super.onCreate();

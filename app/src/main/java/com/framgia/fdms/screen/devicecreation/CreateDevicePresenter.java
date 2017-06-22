@@ -87,15 +87,16 @@ final class CreateDevicePresenter implements CreateDeviceContract.Presenter {
     }
 
     @Override
-    public void updateDevice(Device device) {
-        if (!validateDataEditDevice(device)) return;
-        Subscription subscription = mDeviceRepository.updateDevice(device)
+    public void updateDevice(final Device localDevice) {
+        if (!validateDataEditDevice(localDevice)) return;
+        Subscription subscription = mDeviceRepository.updateDevice(localDevice)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Device>() {
                     @Override
                     public void call(Device device) {
-                        mViewModel.onUpdateSuccess(device);
+                        localDevice.cloneDevice(device);
+                        mViewModel.onUpdateSuccess(localDevice);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -264,14 +265,6 @@ final class CreateDevicePresenter implements CreateDeviceContract.Presenter {
         boolean isValid = true;
         if (TextUtils.isEmpty(device.getProductionName())) {
             mViewModel.onInputProductionNameError();
-            isValid = false;
-        }
-        if (TextUtils.isEmpty(device.getSerialNumber())) {
-            mViewModel.onInputSerialNumberError();
-            isValid = false;
-        }
-        if (TextUtils.isEmpty(device.getModelNumber())) {
-            mViewModel.onInputModellNumberError();
             isValid = false;
         }
         return isValid;

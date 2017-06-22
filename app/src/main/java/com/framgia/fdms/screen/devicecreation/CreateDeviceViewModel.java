@@ -20,7 +20,6 @@ import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.Picture;
 import com.framgia.fdms.data.model.Status;
-import com.framgia.fdms.screen.main.MainActivity;
 import com.framgia.fdms.screen.selection.StatusSelectionActivity;
 import com.framgia.fdms.screen.selection.StatusSelectionType;
 import com.framgia.fdms.utils.Utils;
@@ -36,6 +35,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.makeText;
+import static com.framgia.fdms.FDMSApplication.sUpdatedDevice;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_CATEGORY;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_STATUE;
 import static com.framgia.fdms.utils.Constant.PICK_IMAGE_REQUEST;
@@ -452,7 +452,7 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onUpdateSuccess(Device device) {
-        mDevice = device;
+        sUpdatedDevice.cloneDevice(device);
         Snackbar.make(mActivity.findViewById(android.R.id.content),
                 R.string.msg_update_device_success, Snackbar.LENGTH_LONG).show();
     }
