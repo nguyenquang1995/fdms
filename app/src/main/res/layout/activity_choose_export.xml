@@ -27,12 +27,26 @@
                 app:title="@string/title_export"
                 app:titleTextColor="@color/color_white"
                 />
-            <android.support.v7.widget.RecyclerView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="LinearLayoutManager"
-                app:recyclerAdapter="@{viewModel.adapter}"
-                />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="LinearLayoutManager"
+                    app:recyclerAdapter="@{viewModel.adapter}"
+                    />
+                <ProgressBar
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerInParent="true"
+                    android:visibility="@{viewModel.progressBarVisible}"
+                    />
+
+            </RelativeLayout>
         </LinearLayout>
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"

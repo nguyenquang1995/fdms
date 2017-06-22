@@ -31,6 +31,6 @@ public interface ChooseExportContract {
     }
 
     interface Presenter extends BasePresenter {
-        void getListDevice(String deviceName, int categoryId, int statusId, int page, int perPage);
+        void getListDevice();
     }
 }

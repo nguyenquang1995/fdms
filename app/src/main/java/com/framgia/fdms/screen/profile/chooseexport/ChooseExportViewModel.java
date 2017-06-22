@@ -1,36 +1,42 @@
 package com.framgia.fdms.screen.profile.chooseexport;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.device.listdevice.ListDeviceAdapter;
 import com.framgia.fdms.screen.profile.export.ExportDialogFragment;
-import java.util.ArrayList;
+import com.framgia.fdms.utils.navigator.Navigator;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.framgia.fdms.utils.Constant.TYPE_DIALOG;
 
 /**
  * Created by tuanbg on 6/15/17.
  */
 
-public class ChooseExportViewModel implements ChooseExportContract.ViewModel {
+public class ChooseExportViewModel extends BaseObservable
+        implements ChooseExportContract.ViewModel {
     private ChooseExportContract.Presenter mPresenter;
     private AppCompatActivity mActivity;
     private ListDeviceAdapter mAdapter;
     private User mUser;
-    private List<Device> mDeviceList = new ArrayList<>();
+    private int mProgressBarVisible = GONE;
+    private Navigator mNavigator;
 
     public ChooseExportViewModel(AppCompatActivity activity, User user) {
         mActivity = activity;
-        mAdapter = new ListDeviceAdapter(mActivity, mDeviceList, null);
         mUser = user;
+        mNavigator = new Navigator(activity);
     }
 
     @Override
@@ -40,7 +46,7 @@ public class ChooseExportViewModel implements ChooseExportContract.ViewModel {
 
     @Override
     public void onStop() {
-
+        mPresenter.onStop();
     }
 
     @Override
@@ -50,24 +56,22 @@ public class ChooseExportViewModel implements ChooseExportContract.ViewModel {
 
     @Override
     public void showProgressbar() {
-        // // TODO: 6/15/17 show Progress bar
+        setProgressBarVisible(VISIBLE);
     }
 
     @Override
     public void hideProgressbar() {
-        //// TODO: 6/15/17 Hide progress bar
+        setProgressBarVisible(GONE);
     }
 
     @Override
     public void onError(String message) {
-        Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+        mNavigator.showToast(message);
     }
 
     @Override
     public void onDeviceLoaded(List<Device> devices) {
-        mAdapter.clear();
-        mDeviceList.addAll(devices);
-        mAdapter.onUpdatePage(mDeviceList);
+        setAdapter(new ListDeviceAdapter(mActivity, devices, null));
     }
 
     @Override
@@ -92,6 +96,7 @@ public class ChooseExportViewModel implements ChooseExportContract.ViewModel {
         return false;
     }
 
+    @Bindable
     public ListDeviceAdapter getAdapter() {
         return mAdapter;
     }
@@ -106,5 +111,20 @@ public class ChooseExportViewModel implements ChooseExportContract.ViewModel {
         FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
         ExportDialogFragment newFragment = ExportDialogFragment.newInstance(mUser);
         newFragment.show(ft, TYPE_DIALOG);
+    }
+
+    @Bindable
+    public int getProgressBarVisible() {
+        return mProgressBarVisible;
+    }
+
+    public void setProgressBarVisible(int progressBarVisible) {
+        mProgressBarVisible = progressBarVisible;
+        notifyPropertyChanged(BR.progressBarVisible);
+    }
+
+    public void setAdapter(ListDeviceAdapter adapter) {
+        mAdapter = adapter;
+        notifyPropertyChanged(BR.adapter);
     }
 }
