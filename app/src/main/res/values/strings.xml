@@ -190,4 +190,8 @@
     <string name="error_device_detail">No detail to show</string>
     <string name="title_edit_device">Edit device</string>
     <string name="msg_update_device_success">Device has been updated successfully</string>
+    <string name="error_opps">Opps!</string>
+    <string name="title_no_device">You don\'t have any device!</string>
+    <string name="title_model_number">Model Number</string>
+    <string name="title_assign_date">Assigned date</string>
 </resources>

@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.User;
@@ -56,14 +55,18 @@ public class ChooseExportActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        mViewModel.onCreateOptionsMenu(menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        mViewModel.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.item_using:
+                // TODO: 6/15/17 getList Using
+                return true;
+            case R.id.item_used:
+                // TODO: 6/15/17 getList Used
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

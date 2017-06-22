@@ -8,9 +8,10 @@
     <data class="ItemListDataBinding">
         <import type="com.framgia.fdms.utils.Constant"/>
         <variable
-            name="viewModel"
-            type="com.framgia.fdms.screen.device.listdevice.ListDeviceViewModel"
+            name="listenner"
+            type="com.framgia.fdms.screen.device.listdevice.ItemDeviceClickListenner"
             />
+        />
         <variable
             name="item"
             type="com.framgia.fdms.data.model.Device"
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_3"
         android:elevation="@dimen/dp_3"
-        android:onClick="@{() -> viewModel.onDeviceClick(item)}"
+        android:onClick="@{() -> listenner.onItemDeviceClick(item)}"
         android:padding="@dimen/dp_3"
         car_view:cardCornerRadius="@dimen/dp1"
         car_view:cardElevation="@dimen/dp1"

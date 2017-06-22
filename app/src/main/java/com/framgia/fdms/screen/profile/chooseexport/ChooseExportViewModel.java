@@ -5,13 +5,12 @@ import android.databinding.Bindable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.android.databinding.library.baseAdapters.BR;
-import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.User;
+import com.framgia.fdms.screen.device.listdevice.ItemDeviceClickListenner;
 import com.framgia.fdms.screen.device.listdevice.ListDeviceAdapter;
+import com.framgia.fdms.screen.devicedetail.DeviceDetailActivity;
 import com.framgia.fdms.screen.profile.export.ExportDialogFragment;
 import com.framgia.fdms.utils.navigator.Navigator;
 import java.util.List;
@@ -25,13 +24,15 @@ import static com.framgia.fdms.utils.Constant.TYPE_DIALOG;
  */
 
 public class ChooseExportViewModel extends BaseObservable
-        implements ChooseExportContract.ViewModel {
+        implements ChooseExportContract.ViewModel, ItemDeviceClickListenner {
     private ChooseExportContract.Presenter mPresenter;
     private AppCompatActivity mActivity;
     private ListDeviceAdapter mAdapter;
     private User mUser;
-    private int mProgressBarVisible = GONE;
+    private int mProgressBarVisible = VISIBLE;
+    private int mEmptyViewVisible = GONE;
     private Navigator mNavigator;
+    private List<Device> mDevices;
 
     public ChooseExportViewModel(AppCompatActivity activity, User user) {
         mActivity = activity;
@@ -71,29 +72,9 @@ public class ChooseExportViewModel extends BaseObservable
 
     @Override
     public void onDeviceLoaded(List<Device> devices) {
-        setAdapter(new ListDeviceAdapter(mActivity, devices, null));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        mActivity.getMenuInflater().inflate(R.menu.menu_export, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mActivity.onBackPressed();
-                break;
-            case R.id.item_using:
-                // TODO: 6/15/17 getList Using
-                return true;
-            case R.id.item_used:
-                // TODO: 6/15/17 getList Used
-                return true;
-        }
-        return false;
+        mDevices = devices;
+        setAdapter(new ListDeviceAdapter(mActivity, mDevices, this));
+        setEmptyViewVisible(mDevices != null && mDevices.size() != 0 ? GONE : VISIBLE);
     }
 
     @Bindable
@@ -107,9 +88,15 @@ public class ChooseExportViewModel extends BaseObservable
         mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onDeviceClick(Device device) {
+        mNavigator.startActivity(
+                DeviceDetailActivity.getInstance(mNavigator.getContext(), device.getId()));
+    }
+
     public void exportData() {
         FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-        ExportDialogFragment newFragment = ExportDialogFragment.newInstance(mUser);
+        ExportDialogFragment newFragment = ExportDialogFragment.newInstance(mUser, mDevices);
         newFragment.show(ft, TYPE_DIALOG);
     }
 
@@ -126,5 +113,21 @@ public class ChooseExportViewModel extends BaseObservable
     public void setAdapter(ListDeviceAdapter adapter) {
         mAdapter = adapter;
         notifyPropertyChanged(BR.adapter);
+    }
+
+    @Bindable
+    public int getEmptyViewVisible() {
+        return mEmptyViewVisible;
+    }
+
+    public void setEmptyViewVisible(int emptyViewVisible) {
+        mEmptyViewVisible = emptyViewVisible;
+        notifyPropertyChanged(BR.emptyViewVisible);
+    }
+
+    @Override
+    public void onItemDeviceClick(Device device) {
+        mNavigator.startActivity(
+                DeviceDetailActivity.getInstance(mNavigator.getContext(), device.getId()));
     }
 }

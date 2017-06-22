@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
     >
     <data>
         <variable
             name="viewModel"
             type="com.framgia.fdms.screen.profile.chooseexport.ChooseExportViewModel"
             />
+        <import type="android.view.View"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,6 +41,14 @@
                     app:layoutManager="LinearLayoutManager"
                     app:recyclerAdapter="@{viewModel.adapter}"
                     />
+
+                <include
+                    layout="@layout/empty_state"
+                    bind:image="@{@drawable/ic_history_24dp}"
+                    bind:text="@{@string/title_no_device}"
+                    bind:visibleState="@{viewModel.emptyViewVisible}"
+                    />
+
                 <ProgressBar
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
@@ -56,6 +66,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:onClick="@{() -> viewModel.exportData()}"
             android:src="@drawable/ic_import_export_white_24px"
+            android:visibility="@{viewModel.emptyViewVisible == View.VISIBLE? View.GONE : View.VISIBLE}"
             app:fab_colorNormal="@color/color_red_aceent_700"
             app:fab_label="@string/title_export"
             />

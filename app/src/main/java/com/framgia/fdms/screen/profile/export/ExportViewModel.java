@@ -1,11 +1,15 @@
 package com.framgia.fdms.screen.profile.export;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Device;
+import com.framgia.fdms.utils.navigator.Navigator;
 import java.io.File;
+import java.util.List;
 
 import static com.framgia.fdms.utils.Constant.TYPE_PDF;
 import static com.framgia.fdms.utils.permission.PermissionUtil.checkWritePermission;
@@ -17,9 +21,13 @@ import static com.framgia.fdms.utils.permission.PermissionUtil.checkWritePermiss
 public class ExportViewModel implements ExportContract.ViewModel {
     private ExportContract.Presenter mPresenter;
     private DialogFragment mFragment;
+    private List<Device> mDevices;
+    private Navigator mNavigator;
 
-    public ExportViewModel(DialogFragment fragment) {
+    public ExportViewModel(DialogFragment fragment, List<Device> devices) {
         mFragment = fragment;
+        mDevices = devices;
+        mNavigator = new Navigator(fragment);
     }
 
     @Override
@@ -38,11 +46,21 @@ public class ExportViewModel implements ExportContract.ViewModel {
     }
 
     @Override
-    public void exportPdf() {
+    public void onExportPdfClick() {
         if (checkWritePermission((AppCompatActivity) mFragment.getActivity())) {
-            mPresenter.exportTask();
+            mPresenter.exportDeviceByPdf(mDevices);
             mFragment.dismiss();
         }
+    }
+
+    @Override
+    public void onExportWordClick() {
+        // TODO: 22/06/2017 export word
+    }
+
+    @Override
+    public void onCancelClick() {
+        mFragment.dismiss();
     }
 
     @Override
@@ -61,4 +79,29 @@ public class ExportViewModel implements ExportContract.ViewModel {
         mFragment.startActivity(intent);
     }
 
+    @Override
+    public String getString(int strResource) {
+        return mFragment.getString(strResource);
+    }
+
+    @Override
+    public Drawable getDrawable(int drawableResource) {
+        return mFragment.getResources().getDrawable(drawableResource);
+    }
+
+    @Override
+    public void showMessage(String mess) {
+        mNavigator.showToast(mess);
+    }
+
+    @Override
+    public void showMessage(int strResource) {
+        mNavigator.showToast(strResource);
+    }
+
+    @Override
+    public void onExportPdfSuccess(String filePath) {
+        mNavigator.showToast(filePath);
+        openFilePDF(filePath);
+    }
 }
