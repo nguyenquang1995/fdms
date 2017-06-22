@@ -91,7 +91,7 @@ public class ChooseExportViewModel extends BaseObservable
     @Override
     public void onDeviceClick(Device device) {
         mNavigator.startActivity(
-                DeviceDetailActivity.getInstance(mNavigator.getContext(), device.getId()));
+                DeviceDetailActivity.getInstance(mNavigator.getContext(),device));
     }
 
     public void exportData() {
@@ -128,6 +128,6 @@ public class ChooseExportViewModel extends BaseObservable
     @Override
     public void onItemDeviceClick(Device device) {
         mNavigator.startActivity(
-                DeviceDetailActivity.getInstance(mNavigator.getContext(), device.getId()));
+                DeviceDetailActivity.getInstance(mNavigator.getContext(),device));
     }
 }

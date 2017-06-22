@@ -23,6 +23,6 @@ interface DeviceDetailContract {
      * Presenter.
      */
     interface Presenter extends BasePresenter {
-        void getDevice(int deviceId);
+        void getDevice(Device device);
     }
 }

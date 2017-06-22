@@ -6,7 +6,6 @@ import android.databinding.Bindable;
 import android.databinding.ObservableField;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
@@ -21,14 +20,16 @@ public class DeviceInfomationViewModel extends BaseObservable
         implements DeviceInfomationContract.ViewModel {
 
     private DeviceInfomationContract.Presenter mPresenter;
-    private Device mDevice = new Device();
+    private Device mDevice;
     private Context mContext;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
     private FragmentActivity mActivity;
 
-    public DeviceInfomationViewModel(Context context, FragmentActivity activity) {
+    public DeviceInfomationViewModel(Context context, FragmentActivity activity, Device device) {
         mContext = context;
         mActivity = activity;
+        mDevice = device;
+        showInformation();
     }
 
     @Override
@@ -63,16 +64,6 @@ public class DeviceInfomationViewModel extends BaseObservable
                 Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void showProgressbar() {
-        mProgressBarVisibility.set(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressbar() {
-        mProgressBarVisibility.set(View.GONE);
-    }
-
     public ObservableField<Integer> getProgressBarVisibility() {
         return mProgressBarVisibility;
     }
@@ -83,7 +74,12 @@ public class DeviceInfomationViewModel extends BaseObservable
     }
 
     public void setDevice(Device device) {
-        mDevice = device;
+        mDevice.cloneDevice(device);
         notifyPropertyChanged(BR.device);
+    }
+
+    private void showInformation() {
+        if (mDevice == null) onError();
+        onGetDeviceSuccess(mDevice);
     }
 }

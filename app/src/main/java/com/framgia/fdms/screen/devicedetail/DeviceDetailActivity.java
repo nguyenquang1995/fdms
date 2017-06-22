@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.DeviceRepository;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
 import com.framgia.fdms.data.source.remote.DeviceRemoteDataSource;
 import com.framgia.fdms.databinding.ActivityDeviceDetailBinding;
+
+import static com.framgia.fdms.FDMSApplication.sUpdatedDevice;
 
 /**
  * Devicedetail Screen.
@@ -18,24 +21,20 @@ import com.framgia.fdms.databinding.ActivityDeviceDetailBinding;
 public class DeviceDetailActivity extends AppCompatActivity {
 
     private DeviceDetailContract.ViewModel mViewModel;
-    private static final String EXTRA_DEVICE_ID = "EXTRA_DEVICE_ID";
-
-    public static Intent getInstance(Context context, int id) {
-        return new Intent(context, DeviceDetailActivity.class).putExtra(EXTRA_DEVICE_ID, id)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    public static Intent getInstance(Context context, Device device) {
+        sUpdatedDevice = device;
+        return new Intent(context, DeviceDetailActivity.class);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        int deviceId = getIntent().getIntExtra(EXTRA_DEVICE_ID, 0);
-
-        mViewModel = new DeviceDetailViewModel(this, deviceId);
+        Device device = sUpdatedDevice;
+        mViewModel = new DeviceDetailViewModel(this, device);
 
         DeviceDetailContract.Presenter presenter = new DeviceDetailPresenter(mViewModel,
                 new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance())),
-                deviceId);
+                device);
         mViewModel.setPresenter(presenter);
 
         ActivityDeviceDetailBinding binding =

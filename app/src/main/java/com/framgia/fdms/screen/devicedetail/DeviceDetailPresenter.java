@@ -8,8 +8,6 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.itextpdf.text.html.HtmlTags.S;
-
 /**
  * Listens to user actions from the UI ({@link DeviceDetailActivity}), retrieves the data and
  * updates
@@ -20,19 +18,20 @@ final class DeviceDetailPresenter implements DeviceDetailContract.Presenter {
     private final DeviceDetailContract.ViewModel mViewModel;
     private CompositeSubscription mSubscription;
     private DeviceRepository mRepository;
-    private int mDevicecId;
+    private Device mDevice;
 
     public DeviceDetailPresenter(DeviceDetailContract.ViewModel viewModel,
-            DeviceRepository repository, int deviceId) {
+            DeviceRepository repository, Device device) {
         mViewModel = viewModel;
         mSubscription = new CompositeSubscription();
         mRepository = repository;
-        mDevicecId = deviceId;
+        mDevice = device;
+        getDevice(mDevice);
     }
 
     @Override
     public void onStart() {
-        getDevice(mDevicecId);
+
     }
 
     @Override
@@ -41,13 +40,14 @@ final class DeviceDetailPresenter implements DeviceDetailContract.Presenter {
     }
 
     @Override
-    public void getDevice(int deviceId) {
-        Subscription subscription = mRepository.getDevice(deviceId)
+    public void getDevice(final Device localDevice) {
+        Subscription subscription = mRepository.getDevice(localDevice.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(new Action1<Device>() {
                     @Override
                     public void call(Device device) {
-                        mViewModel.onGetDeviceSuccess(device);
+                        localDevice.cloneDevice(device);
+                        mViewModel.onGetDeviceSuccess(localDevice);
                     }
                 }, new Action1<Throwable>() {
                     @Override
