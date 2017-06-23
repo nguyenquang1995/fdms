@@ -63,6 +63,8 @@ interface CreateDeviceContract {
         void onGetDeviceCodeSuccess(String deviceCode);
 
         void onPrintClick();
+
+        void setProgressBar(int visibility);
     }
 
     /**

@@ -152,7 +152,6 @@
     <string name="title_remember_me">Remember Me</string>
     <string formatted="false" name="msg_not_device_in_device_brorows">This device is on the list of staff %s who is on the staff %s</string>
     <string name="title_no_history">No history to display</string>
-
     <string name="msg_request_read_camera">Please grant permission open camera permission  to scan qr code</string>
     <string name="msg_denied_read_camera">You were denied camera permission</string>
     <string name="title_request_assignment">Request</string>
@@ -219,7 +218,6 @@
     <string name="title_deliver">Nguoi ban giao</string>
     <string name="title_receiver">Nguoi nhan ban giao</string>
     <string name="title_sign_name">\n(Ky va ghi ro hon ten)</string>
-
     <string name="title_vendor">Vendor</string>
     <string name="title_maker">Maker</string>
     <string name="title_skip">SKIP</string>
