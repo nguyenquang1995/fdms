@@ -91,6 +91,28 @@ public class Device extends BaseObservable implements Parcelable {
     public Device() {
     }
 
+    public void cloneDevice(Device device) {
+        setId(device.getId());
+        setDeviceCode(device.getDeviceCode());
+        setProductionName(device.getProductionName());
+        setDeviceStatusId(device.getDeviceStatusId());
+        setDeviceCategoryId(device.getDeviceCategoryId());
+        setPicture(device.getPicture());
+        setPrintedCode(device.getPrintedCode());
+        setOriginalPrice(device.getOriginalPrice());
+        setBoughtDate(device.getBoughtDate());
+        setBarcode(device.isBarcode());
+        setDeviceStatusName(device.getDeviceStatusName());
+        setDeviceCategoryName(device.getDeviceCategoryName());
+        setSerialNumber(device.getSerialNumber());
+        setModelNumber(device.getModelNumber());
+        setStatus(device.getStatus());
+        setSummary(device.getSummary());
+        setUser(device.getUser());
+        setDeviceCategoryGroupId(device.getDeviceCategoryGroupId());
+        setDeviceId(device.getDeviceId());
+    }
+
     public Device(String deviceCode, String productionName, String deviceCategoryName) {
         mDeviceCode = deviceCode;
         mProductionName = productionName;

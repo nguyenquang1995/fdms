@@ -60,7 +60,7 @@ public class ListDeviceAdapter
         notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private ItemListDataBinding mBinding;
         private ListDeviceViewModel mViewModel;
 
@@ -74,7 +74,6 @@ public class ListDeviceAdapter
             if (device == null) {
                 return;
             }
-
             mBinding.setViewModel(mViewModel);
             mBinding.setItem(device);
             mBinding.executePendingBindings();

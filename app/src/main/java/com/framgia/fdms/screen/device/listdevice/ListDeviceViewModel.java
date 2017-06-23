@@ -1,6 +1,5 @@
 package com.framgia.fdms.screen.device.listdevice;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.BaseObservable;
@@ -8,14 +7,13 @@ import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
+import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
@@ -27,6 +25,7 @@ import com.framgia.fdms.screen.selection.StatusSelectionType;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MANAGE_DEVICE;
 import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MY_DEVICE;
 import static com.framgia.fdms.screen.selection.StatusSelectionAdapter.FIRST_INDEX;
@@ -41,19 +40,18 @@ import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_SELECTION;
  */
 
 public class ListDeviceViewModel extends BaseObservable implements ListDeviceContract.ViewModel {
-    private final Fragment mFragment;
+    private ListDeviceFragment mFragment;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
     private ObservableBoolean mIsLoadingMore = new ObservableBoolean(false);
     private ListDeviceAdapter mAdapter;
     private ListDeviceContract.Presenter mPresenter;
     private Context mContext;
-    private FragmentActivity mActivity;
     private List<Category> mCategories;
     private List<Status> mStatuses;
     private Category mCategory;
     private Status mStatus;
     private String mKeyWord;
-    private boolean mIsBo = false;
+    private boolean mIsBo;
     private int mTab = TAB_MY_DEVICE;
     private int mEmptyViewVisible = View.GONE; // show empty state ui when not data
 
@@ -72,10 +70,9 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
                 }
             };
 
-    public ListDeviceViewModel(FragmentActivity activity, Fragment fragment, int tabDevice) {
+    public ListDeviceViewModel(ListDeviceFragment fragment, int tabDevice) {
         mFragment = fragment;
-        mActivity = activity;
-        mContext = activity.getApplicationContext();
+        mContext = fragment.getContext();
         mAdapter = new ListDeviceAdapter(mContext, new ArrayList<Device>(), this);
         setCategory(new Category(OUT_OF_INDEX, mContext.getString(R.string.title_btn_category)));
         setStatus(new Status(OUT_OF_INDEX, mContext.getString(R.string.title_request_status)));
@@ -98,30 +95,31 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != REQUEST_SELECTION
-                || data == null
-                || data.getExtras() == null
-                || resultCode != Activity.RESULT_OK) {
-            return;
+        if (resultCode != RESULT_OK) return;
+        switch (requestCode) {
+            case REQUEST_SELECTION:
+                Bundle bundle = data.getExtras();
+                Category category = bundle.getParcelable(BUNDLE_CATEGORY);
+                Status status = bundle.getParcelable(BUNDLE_STATUE);
+                if (category != null) {
+                    if (category.getName().equals(mContext.getString(R.string.action_clear))) {
+                        category.setName(mContext.getString(R.string.title_btn_category));
+                    }
+                    setCategory(category);
+                    mAdapter.clear();
+                }
+                if (status != null) {
+                    if (status.getName().equals(mContext.getString(R.string.action_clear))) {
+                        status.setName(mContext.getString(R.string.title_request_status));
+                    }
+                    setStatus(status);
+                    mAdapter.clear();
+                }
+                mPresenter.getData(mKeyWord, mCategory, mStatus);
+                break;
+            default:
+                break;
         }
-        Bundle bundle = data.getExtras();
-        Category category = bundle.getParcelable(BUNDLE_CATEGORY);
-        Status status = bundle.getParcelable(BUNDLE_STATUE);
-        if (category != null) {
-            if (category.getName().equals(mContext.getString(R.string.action_clear))) {
-                category.setName(mContext.getString(R.string.title_btn_category));
-            }
-            setCategory(category);
-            mAdapter.clear();
-        }
-        if (status != null) {
-            if (status.getName().equals(mContext.getString(R.string.action_clear))) {
-                status.setName(mContext.getString(R.string.title_request_status));
-            }
-            setStatus(status);
-            mAdapter.clear();
-        }
-        mPresenter.getData(mKeyWord, mCategory, mStatus);
     }
 
     @Override
@@ -187,7 +185,9 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
 
     @Override
     public void onDeviceClick(Device device) {
-        mContext.startActivity(DeviceDetailActivity.getInstance(mContext, device.getId()));
+        FDMSApplication.sUpdatedDevice = device;
+        mFragment.startActivityForResult(DeviceDetailActivity.getInstance(mContext),
+                REQUEST_DETAIL_DEVICE);
     }
 
     @Override
