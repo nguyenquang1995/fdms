@@ -31,90 +31,90 @@ import retrofit2.http.QueryMap;
 import rx.Observable;
 
 public interface FDMSApi {
-    @POST("api/v1/sessions")
+    @POST("api/sessions")
     Observable<Respone<User>> login(@Query("user[email]") String userName,
             @Query("user[password]") String passWord);
 
-    @GET("api/v1/devices")
+    @GET("api/devices")
     Observable<Respone<List<Device>>> getListDevices(@QueryMap Map<String, String> parrams);
 
-    @GET("api/v1/device_categories")
+    @GET("api/device_categories")
     Observable<Respone<List<Category>>> getListCategory();
 
-    @GET("api/v1/device_status")
+    @GET("api/device_statuses")
     Observable<Respone<List<Status>>> getListStatus();
 
-    @GET("api/v1/device_code")
+    @GET("api/device_codes")
     Observable<Respone<Device>> getDeviceByQrCode(@Query("printed_code") String qrCode);
 
     @Multipart
-    @POST("api/v1/devices")
+    @POST("api/devices")
     Observable<Respone<Device>> uploadDevice(@PartMap Map<String, RequestBody> parrams,
             @Part MultipartBody.Part picture);
 
     @Multipart
-    @PATCH("api/v1/devices/{id}")
+    @PATCH("api/devices/{id}")
     Observable<Respone<Device>> updateDevice(@Path("id") int id,
             @PartMap Map<String, RequestBody> params, @Part MultipartBody.Part picture);
 
-    @GET("/api/v1/request_dashboard")
+    @GET("/api/request_dashboards")
     Observable<Respone<List<Dashboard>>> getDashboardRequest();
 
-    @GET("api/v1/device_dashboard")
+    @GET("api/device_dashboards")
     Observable<Respone<List<Dashboard>>> getDashboardDevice();
 
-    @GET("api/v1/requests")
+    @GET("api/requests")
     Observable<Respone<List<Request>>> getRequests(@QueryMap Map<String, Integer> params);
 
-    @GET("api/v1/request_status")
+    @GET("api/request_statuses")
     Observable<Respone<List<Status>>> getListStatusRequest();
 
-    @GET("api/v1/user_group")
+    @GET("api/user_groups")
     Observable<Respone<List<Status>>> getListRelative();
 
-    @GET("api/v1/user_assign")
+    @GET("api/user_assigns")
     Observable<Respone<List<Status>>> getListAssign();
 
-    @POST("api/v1/requests")
+    @POST("api/requests")
     Observable<Respone<Request>> registerRequest(@QueryMap Map<String, String> params);
 
-    @GET("api/v1/device_code")
+    @GET("api/device_codes")
     Observable<Respone<Device>> getDevice(@Query("device_id") int deviceId);
 
-    @GET("/api/v1/request_dashboard")
+    @GET("/api/request_dashboards")
     Observable<Respone<List<Request>>> getTopRequest(@Query("top_requests") int topRequest);
 
-    @GET("api/v1/device_dashboard")
+    @GET("api/device_dashboards")
     Observable<Respone<List<Device>>> getTopDevice(@Query("top_devices") int topDevice);
 
-    @PATCH("/api/v1/requests/{id}")
+    @PATCH("/api/requests/{id}")
     @FormUrlEncoded
     Observable<Respone<Request>> updateActionRequest(@Path("id") int requestId,
             @Field("request[request_status_id]") int actionId);
 
-    @GET("api/v1/device_history/{id}")
+    @GET("api/device_historys/{id}")
     Observable<Respone<List<DeviceHistoryDetail>>> getDeviceDetailHistory(@Path("id") int deviceId);
 
-    @GET("api/v1/device_using/{id}")
+    @GET("api/device_usings/{id}")
     Observable<Respone<List<DeviceUsingHistory>>> getDeviceUsingHistory(@Path("id") int deviceId);
 
-    @GET("api/v1/branch")
+    @GET("api/branches")
     Observable<Respone<List<Status>>> getListBranch();
 
-    @GET("api/v1/device_code/show")
+    @GET("api/device_codes/show")
     Observable<Respone<Device>> getDeviceCode(@Query("device_category_id") int deviceCategoryId,
             @Query("branch") int branchId);
 
-    @GET("api/v1/user_brorrow")
+    @GET("api/user_borrows")
     Observable<Respone<List<Device>>> getDevicesBorrow();
 
-    @PATCH("/api/v1/requests/{id}")
+    @PATCH("/api/requests/{id}")
     Observable<Respone<Request>> updateRequest(@Path("id") int requestId,
             @QueryMap Map<String, String> params);
 
-    @POST("api/v1/assignments")
+    @POST("api/assignments")
     Observable<Respone<Request>> registerAssignment(@QueryMap Map<String, String> params);
 
-    @GET("api/v1/requests/{id}")
+    @GET("api/requests/{id}")
     Observable<Respone<Request>> getRequest(@Path("id") int requetsId);
 }
