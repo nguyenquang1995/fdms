@@ -19,8 +19,6 @@ interface ListDeviceContract {
     interface ViewModel extends BaseViewModel<Presenter> {
         void onDeviceLoaded(List<Device> devices);
 
-        void onDeviceClick(Device device);
-
         void showProgressbar();
 
         void onError(String msg);

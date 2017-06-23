@@ -39,7 +39,7 @@ import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_SELECTION;
  * Exposes the data to be used in the ListDevice screen.
  */
 
-public class ListDeviceViewModel extends BaseObservable implements ListDeviceContract.ViewModel {
+public class ListDeviceViewModel extends BaseObservable implements ListDeviceContract.ViewModel, ItemDeviceClickListenner {
     private ListDeviceFragment mFragment;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
     private ObservableBoolean mIsLoadingMore = new ObservableBoolean(false);
@@ -181,12 +181,6 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
         mIsLoadingMore.set(false);
         mAdapter.onUpdatePage(devices);
         setRefresh(false);
-    }
-
-    @Override
-    public void onDeviceClick(Device device) {
-        FDMSApplication.sUpdatedDevice = device;
-        mFragment.startActivity(DeviceDetailActivity.getInstance(mContext, device.getId()));
     }
 
     @Override
@@ -346,5 +340,10 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
     public void setEmptyViewVisible(int emptyViewVisible) {
         mEmptyViewVisible = emptyViewVisible;
         notifyPropertyChanged(BR.emptyViewVisible);
+    }
+
+    @Override
+    public void onItemDeviceClick(Device device) {
+        mContext.startActivity(DeviceDetailActivity.getInstance(mContext, device.getId()));
     }
 }

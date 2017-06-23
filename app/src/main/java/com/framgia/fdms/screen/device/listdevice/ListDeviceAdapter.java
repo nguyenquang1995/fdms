@@ -19,13 +19,13 @@ import java.util.List;
 public class ListDeviceAdapter
         extends BaseRecyclerViewAdapter<Device, ListDeviceAdapter.ViewHolder> {
     private List<Device> mDevices;
-    private ListDeviceViewModel mViewModel;
+    private ItemDeviceClickListenner mListenner;
 
     public ListDeviceAdapter(@NonNull Context context, @NonNull List<Device> devices,
-            @NonNull ListDeviceViewModel viewModel) {
+            @NonNull ItemDeviceClickListenner listenner) {
         super(context);
         mDevices = devices;
-        mViewModel = viewModel;
+        mListenner = listenner;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ListDeviceAdapter
         ItemListDataBinding binding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.item_listdevice, parent, false);
-        return new ViewHolder(binding, mViewModel);
+        return new ViewHolder(binding, mListenner);
     }
 
     @Override
@@ -62,19 +62,19 @@ public class ListDeviceAdapter
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ItemListDataBinding mBinding;
-        private ListDeviceViewModel mViewModel;
+        private ItemDeviceClickListenner mListenner;
 
-        public ViewHolder(ItemListDataBinding binding, ListDeviceViewModel viewModel) {
+        public ViewHolder(ItemListDataBinding binding, ItemDeviceClickListenner listenner) {
             super(binding.getRoot());
             mBinding = binding;
-            mViewModel = viewModel;
+            mListenner = listenner;
         }
 
         void bindData(Device device) {
             if (device == null) {
                 return;
             }
-            mBinding.setViewModel(mViewModel);
+            mBinding.setListenner(mListenner);
             mBinding.setItem(device);
             mBinding.executePendingBindings();
         }

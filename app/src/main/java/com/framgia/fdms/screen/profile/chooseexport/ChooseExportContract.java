@@ -23,11 +23,9 @@ public interface ChooseExportContract {
 
         void onDeviceLoaded(List<Device> devices);
 
-        boolean onCreateOptionsMenu(Menu menu);
-
-        boolean onOptionsItemSelected(MenuItem item);
-
         void initToolbar(Toolbar toolbar);
+
+        void onDeviceClick(Device device);
     }
 
     interface Presenter extends BasePresenter {

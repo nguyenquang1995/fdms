@@ -1,7 +1,10 @@
 package com.framgia.fdms.screen.profile.export;
 
+import android.graphics.drawable.Drawable;
 import com.framgia.fdms.BasePresenter;
 import com.framgia.fdms.BaseViewModel;
+import com.framgia.fdms.data.model.Device;
+import java.util.List;
 
 /**
  * Created by tuanbg on 6/14/17.
@@ -9,16 +12,30 @@ import com.framgia.fdms.BaseViewModel;
 
 public interface ExportContract {
     interface ViewModel extends BaseViewModel<Presenter> {
-        void exportPdf();
+        void onExportPdfClick();
+
+        void onExportWordClick();
+
+        void onCancelClick();
 
         void onDestroy();
 
         void openFilePDF(String filePath);
+
+        String getString(int strResource);
+
+        Drawable getDrawable(int drawableResource);
+
+        void showMessage(String mess);
+
+        void showMessage(int strResource);
+
+        void onExportPdfSuccess(String filePath);
     }
 
     interface Presenter extends BasePresenter {
 
-        void exportTask();
+        void exportDeviceByPdf(List<Device> list);
 
         void onDestroy();
     }

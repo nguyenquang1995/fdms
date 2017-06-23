@@ -107,11 +107,4 @@ public class Constant {
         public static final int WAITING_DONE = 4;
         public static final int DONE = 5;
     }
-
-    public class KeyExport {
-        public static final String TITLE_DEVICE_NAME = "Device Name";
-        public static final String TITLE_MODEL_NUMBER = "Model Number";
-        public static final String TITLE_SERIES_NUMBER = "Series Number";
-        public static final String TITLE_ASSIGNED = "Assigned date";
-    }
 }
