@@ -32,20 +32,20 @@ public class DeviceDetailViewModel extends BaseObservable
     private AppCompatActivity mActivity;
     private DeviceInfomationFragment mInfomationFragment;
     private ObservableInt mFloatingVisible = new ObservableInt(View.VISIBLE);
-    private Device mDevice = new Device();
+    private Device mDevice;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
 
-    public DeviceDetailViewModel(AppCompatActivity activity, int deviceId) {
+    public DeviceDetailViewModel(AppCompatActivity activity, Device device) {
         mActivity = activity;
         mContext = mActivity.getApplicationContext();
-        mInfomationFragment = DeviceInfomationFragment.newInstance(deviceId);
+        mDevice = device;
+        mInfomationFragment = DeviceInfomationFragment.newInstance(mDevice);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(mInfomationFragment);
-        fragments.add(DeviceDetailHistoryFragment.newInstance(deviceId));
-        fragments.add(DeviceUsingHistoryFragment.newInstance(deviceId));
-
+        fragments.add(DeviceDetailHistoryFragment.newInstance(mDevice.getId()));
+        fragments.add(DeviceUsingHistoryFragment.newInstance(mDevice.getId()));
         mAdapter = new DeviceDetailPagerAdapter(mContext, mActivity.getSupportFragmentManager(),
-                fragments, deviceId);
+                fragments, mDevice.getId());
     }
 
     @Override

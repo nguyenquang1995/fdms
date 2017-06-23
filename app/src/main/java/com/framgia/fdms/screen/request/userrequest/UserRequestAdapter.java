@@ -50,6 +50,7 @@ public class UserRequestAdapter
             if (request.getId() == mRequests.get(i).getId()) {
                 mRequests.set(i, request);
                 notifyItemChanged(i);
+                break;
             }
         }
     }

@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 import com.android.databinding.library.baseAdapters.BR;
-import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
@@ -39,7 +38,8 @@ import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_SELECTION;
  * Exposes the data to be used in the ListDevice screen.
  */
 
-public class ListDeviceViewModel extends BaseObservable implements ListDeviceContract.ViewModel, ItemDeviceClickListenner {
+public class ListDeviceViewModel extends BaseObservable
+        implements ListDeviceContract.ViewModel, ItemDeviceClickListenner {
     private ListDeviceFragment mFragment;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
     private ObservableBoolean mIsLoadingMore = new ObservableBoolean(false);
@@ -344,6 +344,6 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
 
     @Override
     public void onItemDeviceClick(Device device) {
-        mContext.startActivity(DeviceDetailActivity.getInstance(mContext, device.getId()));
+        mContext.startActivity(DeviceDetailActivity.getInstance(mContext, device));
     }
 }

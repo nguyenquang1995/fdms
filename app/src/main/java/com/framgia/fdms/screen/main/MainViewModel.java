@@ -92,7 +92,7 @@ public class MainViewModel extends BaseObservable
 
     @Override
     public void onGetDecodeSuccess(Device device) {
-        mActivity.startActivity(DeviceDetailActivity.getInstance(mActivity, device.getId()));
+        mActivity.startActivity(DeviceDetailActivity.getInstance(mActivity,device));
     }
 
     private void startScannerActivity() {

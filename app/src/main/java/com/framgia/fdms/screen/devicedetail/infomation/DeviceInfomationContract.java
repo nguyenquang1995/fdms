@@ -17,16 +17,11 @@ interface DeviceInfomationContract {
         void onError();
 
         void onEditDevice();
-
-        void showProgressbar();
-
-        void hideProgressbar();
     }
 
     /**
      * Presenter.
      */
     interface Presenter extends BasePresenter {
-        void getDevice(int deviceId);
     }
 }
