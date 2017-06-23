@@ -186,8 +186,7 @@ public class ListDeviceViewModel extends BaseObservable implements ListDeviceCon
     @Override
     public void onDeviceClick(Device device) {
         FDMSApplication.sUpdatedDevice = device;
-        mFragment.startActivityForResult(DeviceDetailActivity.getInstance(mContext),
-                REQUEST_DETAIL_DEVICE);
+        mFragment.startActivity(DeviceDetailActivity.getInstance(mContext, device.getId()));
     }
 
     @Override

@@ -6,6 +6,7 @@
     >
 
     <data class="ItemListDataBinding">
+        <import type="com.framgia.fdms.utils.Constant"/>
         <variable
             name="viewModel"
             type="com.framgia.fdms.screen.device.listdevice.ListDeviceViewModel"

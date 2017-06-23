@@ -60,4 +60,5 @@ public class ExportViewModel implements ExportContract.ViewModel {
         Intent intent = Intent.createChooser(target, mFragment.getString(R.string.title_open_with));
         mFragment.startActivity(intent);
     }
+
 }
