@@ -14,7 +14,7 @@ import java.util.Locale;
 import rx.Observable;
 
 import static com.framgia.fdms.utils.Constant.PERCENT;
-import static com.framgia.fdms.utils.Constant.TITLE_UNKNOWN;
+import static com.framgia.fdms.utils.Constant.TITLE_NOW;
 
 /**
  * Created by MyPC on 05/05/2017.
@@ -42,7 +42,7 @@ public class Utils {
     }
 
     public static String getStringDate(Date date) {
-        if (date == null) return TITLE_UNKNOWN;
+        if (date == null) return TITLE_NOW;
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         return formatter.format(date);
     }
@@ -85,13 +85,10 @@ public class Utils {
         return formatter.format(date);
     }
 
-
     public static void hideSoftKeyboard(Activity activity) {
         if (activity == null) return;
         InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getCurrentFocus().getWindowToken(), 0);
+                (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }
