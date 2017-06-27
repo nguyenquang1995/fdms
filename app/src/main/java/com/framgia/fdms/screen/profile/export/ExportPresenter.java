@@ -4,6 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.ParagraphAlignment;
+import com.aspose.words.SaveFormat;
+import com.aspose.words.Shape;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.User;
@@ -42,7 +46,9 @@ import static com.framgia.fdms.utils.Constant.FOLDER_NAME_FAMS;
 
 public class ExportPresenter implements ExportContract.Presenter {
     private static final int NUMBER_COLUMN_TABLE = 4;
+    private static final int FONT_SIZE = 5;
     private static final String FILE_NAME_SAVED_PDF = ".pdf";
+    private static final String FILE_NAME_SAVED_DOCX = ".docx";
     private static final int VALUE_IMAGE = 100;
     private static final float sTextSize = 20.7f;
     private Image mImage;
@@ -50,6 +56,7 @@ public class ExportPresenter implements ExportContract.Presenter {
     private User mUser;
     private CompositeSubscription mCompositeSubscription;
     private ExportContract.ViewModel mViewModel;
+    private DocumentBuilder mBuilder;
 
     public ExportPresenter(User user, ExportContract.ViewModel viewModel) {
         mUser = user;
@@ -149,6 +156,93 @@ public class ExportPresenter implements ExportContract.Presenter {
         return dateFormat.format(cal.getTime());
     }
 
+    public void insertDocImage() throws Exception {
+        if (mBuilder == null) return;
+        Drawable d = mViewModel.getDrawable(R.drawable.ic_logo_framgia);
+        BitmapDrawable bitDw = ((BitmapDrawable) d);
+        Bitmap bmp = bitDw.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, VALUE_IMAGE, stream);
+        Shape shape = mBuilder.insertImage(bmp);
+        shape.setHeight(VALUE_IMAGE / 2);
+        shape.setWidth(VALUE_IMAGE / 2);
+    }
+
+    public void insertDocHeaderReport() {
+        if (mBuilder == null) return;
+        mBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        mBuilder.getFont().setSize(FONT_SIZE);
+
+        mBuilder.writeln(mViewModel.getString(R.string.title_devices_assignment_report));
+        mBuilder.writeln();
+        mBuilder.getParagraphFormat().clearFormatting();
+        mBuilder.writeln(mViewModel.getString(R.string.title_full_name)
+                + mUser.getFirstName()
+                + " "
+                + mUser.getLastName());
+        mBuilder.writeln(mViewModel.getString(R.string.title_branch));
+        mBuilder.writeln(
+                mViewModel.getString(R.string.title_employcode) + mUser.getEmployeeCode());
+    }
+
+    public void insertDocTable(List<Device> devices) {
+        if (mBuilder == null) return;
+        mBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        mBuilder.getCellFormat().setWidth(VALUE_IMAGE / 2);
+        mBuilder.insertCell();
+        mBuilder.write(mViewModel.getString(R.string.title_device_name));
+        mBuilder.insertCell();
+        mBuilder.write(mViewModel.getString(R.string.title_model_number));
+        mBuilder.insertCell();
+        mBuilder.write(mViewModel.getString(R.string.title_serial_number));
+        mBuilder.insertCell();
+        mBuilder.write(mViewModel.getString(R.string.title_assign_date));
+        mBuilder.endRow();
+        mBuilder.getParagraphFormat().clearFormatting();
+
+        for (Device device : devices) {
+            mBuilder.insertCell();
+            mBuilder.write(device.getProductionName());
+
+            mBuilder.insertCell();
+            mBuilder.write(device.getModelNumber());
+
+            mBuilder.insertCell();
+            mBuilder.write(device.getSerialNumber());
+
+            mBuilder.insertCell();
+            mBuilder.write(Utils.getStringDate(device.getBoughtDate()));
+            mBuilder.endRow();
+        }
+        mBuilder.endTable();
+    }
+
+    private Object createDoc(List<Device> list) {
+        if (mUser != null) {
+            String fullName = mUser.getId() + "_" + mUser.getFirstName() + mUser.getLastName();
+            File exportDir = new File(Environment.getExternalStorageDirectory(), FOLDER_NAME_FAMS);
+            if (!exportDir.exists()) exportDir.mkdirs();
+            File file = new File(exportDir, fullName + "_" + getCurentTime() + FILE_NAME_SAVED_DOCX);
+            OutputStream output;
+            try {
+                output = new FileOutputStream(file);
+                com.aspose.words.Document document = new com.aspose.words.Document();
+                mBuilder = new DocumentBuilder(document);
+                insertDocImage();
+                mBuilder.writeln();
+                insertDocHeaderReport();
+                mBuilder.writeln();
+                insertDocTable(list);
+                document.save(output, SaveFormat.DOCX);
+                output.close();
+                return file.getPath();
+            } catch (Exception e) {
+                return new NullPointerException(e.getCause().getMessage());
+            }
+        }
+        return new NullPointerException(mViewModel.getString(R.string.title_user_not_found));
+    }
+
     @Override
     public void exportDeviceByPdf(List<Device> list) {
         Observable.just(createPdf(list))
@@ -160,6 +254,31 @@ public class ExportPresenter implements ExportContract.Presenter {
                         if (o instanceof String) {
                             String filePath = (String) o;
                             mViewModel.onExportPdfSuccess(filePath);
+                        } else {
+                            if (o instanceof NullPointerException) {
+                                mViewModel.showMessage(R.string.message_export_error);
+                            }
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mViewModel.showMessage(R.string.message_export_error);
+                    }
+                });
+    }
+
+    @Override
+    public void exportDeviceByDoc(List<Device> list) {
+        Observable.just(createDoc(list))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                        if (o instanceof String) {
+                            String filePath = (String) o;
+                            mViewModel.onExportDocSuccess(filePath);
                         } else {
                             if (o instanceof NullPointerException) {
                                 mViewModel.showMessage(R.string.message_export_error);

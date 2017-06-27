@@ -23,6 +23,7 @@ public class Constant {
     public static final String TYPE_DIALOG = "TYPE_DIALOG";
     public static final String FOLDER_NAME_FAMS = "Report FAMS";
     public static final String TYPE_PDF = "application/pdf";
+    public static final String TYPE_WORD = "application/msword";
     public static final String TITLE_NOW = "NOW";
 
     private Constant() {
