@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.List;
 
 import static com.framgia.fdms.utils.Constant.TYPE_PDF;
+import static com.framgia.fdms.utils.Constant.TYPE_WORD;
 import static com.framgia.fdms.utils.permission.PermissionUtil.checkWritePermission;
 
 /**
@@ -55,7 +56,10 @@ public class ExportViewModel implements ExportContract.ViewModel {
 
     @Override
     public void onExportWordClick() {
-        // TODO: 22/06/2017 export word
+        if (checkWritePermission((AppCompatActivity) mFragment.getActivity())) {
+            mPresenter.exportDeviceByDoc(mDevices);
+            mFragment.dismiss();
+        }
     }
 
     @Override
@@ -103,5 +107,22 @@ public class ExportViewModel implements ExportContract.ViewModel {
     public void onExportPdfSuccess(String filePath) {
         mNavigator.showToast(filePath);
         openFilePDF(filePath);
+    }
+
+    @Override
+    public void onExportDocSuccess(String filePath) {
+        mNavigator.showToast(filePath);
+        openFileDoc(filePath);
+    }
+
+    @Override
+    public void openFileDoc(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) return;
+        Intent target = new Intent(Intent.ACTION_VIEW);
+        target.setDataAndType(Uri.fromFile(file), TYPE_WORD);
+        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        Intent intent = Intent.createChooser(target, mFragment.getString(R.string.title_open_with));
+        mFragment.startActivity(intent);
     }
 }

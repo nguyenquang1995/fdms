@@ -31,11 +31,17 @@ public interface ExportContract {
         void showMessage(int strResource);
 
         void onExportPdfSuccess(String filePath);
+
+        void onExportDocSuccess(String filePath);
+
+        void openFileDoc(String filePath);
     }
 
     interface Presenter extends BasePresenter {
 
         void exportDeviceByPdf(List<Device> list);
+
+        void exportDeviceByDoc(List<Device> list);
 
         void onDestroy();
     }
