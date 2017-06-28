@@ -194,7 +194,6 @@
     <string name="title_no_device">You don\'t have any device!</string>
     <string name="title_model_number">Model Number</string>
     <string name="title_assign_date">Assigned date</string>
-
     <string-array name="text_table_header">
         <item>BIEN BAN GIAO THIET BI</item>
         <item>\u0020Ma So: BM-BOD-07-03\n Lan ban hanh: 01 \n Ngay Phat Hanh: 13/02/2015</item>
