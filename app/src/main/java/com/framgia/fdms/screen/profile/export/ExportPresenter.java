@@ -57,6 +57,20 @@ public class ExportPresenter implements ExportContract.Presenter {
     private static final int INDENT_LEFT = 10;
     private static final int HEADER_FONT_SIZE = 16;
     private static final int NORMAL_FONT_SIZE = 13;
+    private static final float[] COLUMN_WIDTH_TABLE_HEADER = { 2, 3, 3 };
+    private static final float[] COLUMN_WIDTH_TABLE_INFO = { 2, 1 };
+    private static final float[] COLUMN_WIDTH_TABLE_DEVICE = { 1, 3, 3, 3 };
+    private static final int COLUMN_TABLE_SIGNATURE = 2;
+    private static final int COL_SPAN = 2;
+    private static final float THINKNESS = 0.7f;
+    private static final float Y_POSITION = -2f;
+    private static final int TOTAL_LINE_SIGN = 6;
+    private static final float PADDING_CELL = 5f;
+    private static final int INDEX_REPORT = 0;
+    private static final int INDEX_COMPANY = 2;
+    private static final int INDEX_ISO = 3;
+    private static final int INDEX_DELIVER = 0;
+    private static final int INDEX_DATE = 5;
     private Image mImage;
     private Paragraph mParagraph;
     private User mUser;
@@ -126,54 +140,76 @@ public class ExportPresenter implements ExportContract.Presenter {
     }
 
     private void getTableHeader() {
-        float[] columnWidths = { 2, 3, 3 };
-        mTableHeader = new PdfPTable(columnWidths);
+        mTableHeader = new PdfPTable(COLUMN_WIDTH_TABLE_HEADER);
         mTableHeader.setWidthPercentage(WIDTH_PERCENTAGE);
         mTableHeader.addCell(mImage);
-        PdfPCell cell =
-                new PdfPCell(new Paragraph(mViewModel.getString(R.string.title_report_devices)));
-        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        mTableHeader.addCell(cell);
-        mTableHeader.addCell(mViewModel.getString(R.string.title_code_release_date));
-        PdfPCell cell1 =
-                new PdfPCell(new Paragraph(mViewModel.getString(R.string.title_framgia_company)));
-        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        cell1.setColspan(2);
-        mTableHeader.addCell(cell1);
-        mTableHeader.addCell(mViewModel.getString(R.string.title_iso_iec));
+        String[] texts = mViewModel.getStringArray(R.array.text_table_header);
+        for (int i = 0; i < texts.length; i++) {
+            PdfPCell cell = new PdfPCell(new Paragraph(texts[i]));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setPadding(PADDING_CELL);
+            switch (i) {
+                case INDEX_REPORT:
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    break;
+                case INDEX_COMPANY:
+                    cell.setColspan(COL_SPAN);
+                    break;
+                case INDEX_ISO:
+                    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    break;
+            }
+            mTableHeader.addCell(cell);
+        }
     }
 
     private void getTableInfo() {
-        float[] columnWidths = { 2, 1 };
-        mTableInfo = new PdfPTable(columnWidths);
+        mTableInfo = new PdfPTable(COLUMN_WIDTH_TABLE_INFO);
         mTableInfo.setWidthPercentage(WIDTH_PERCENTAGE);
-        mTableInfo.addCell(mViewModel.getString(R.string.title_name_deliver)
-                + ": "
-                + mUser.getFirstName()
-                + " "
-                + mUser.getLastName());
-        mTableInfo.addCell(mViewModel.getString(R.string.title_room) + ": ");
-        mTableInfo.addCell(mViewModel.getString(R.string.title_name_receiver) + ": ");
-        mTableInfo.addCell(mViewModel.getString(R.string.title_room) + ": ");
-        mTableInfo.addCell(mViewModel.getString(R.string.title_note) + ": ");
-        mTableInfo.addCell(mViewModel.getString(R.string.title_date) + ": ");
+        String[] texts = mViewModel.getStringArray(R.array.text_table_info);
+        for (int i = 0; i < texts.length; i++) {
+            Paragraph paragraph = new Paragraph(texts[i] + ": ");
+            PdfPCell cell = new PdfPCell();
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setPadding(PADDING_CELL);
+            switch (i) {
+                case INDEX_DELIVER:
+                    paragraph.add(mUser.getFirstName() + " " + mUser.getLastName());
+                    break;
+                case INDEX_DATE:
+                    paragraph.add(String.valueOf(getCurentTime()));
+                    break;
+            }
+            cell.addElement(paragraph);
+            mTableInfo.addCell(cell);
+        }
     }
 
     private void getTableDevices(List<Device> devices) {
         if (devices.size() <= 0 || devices == null) return;
-        float[] columnWidths = { 1, 3, 3, 3 };
-        mTableDevices = new PdfPTable(columnWidths);
+        mTableDevices = new PdfPTable(COLUMN_WIDTH_TABLE_DEVICE);
         mTableDevices.setWidthPercentage(WIDTH_PERCENTAGE);
-        mTableDevices.addCell(mViewModel.getString(R.string.title_number_order));
-        mTableDevices.addCell(mViewModel.getString(R.string.title_report_device_name));
-        mTableDevices.addCell(mViewModel.getString(R.string.title_report_code));
-        mTableDevices.addCell(mViewModel.getString(R.string.title_note));
+        String[] texts = mViewModel.getStringArray(R.array.text_table_device);
+        for (String text : texts) {
+            PdfPCell cell = new PdfPCell(new Paragraph(text));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPadding(PADDING_CELL);
+            mTableDevices.addCell(cell);
+        }
         for (int i = 0; i < devices.size(); i++) {
             int index = i + 1;
-            mTableDevices.addCell(index + "");
-            mTableDevices.addCell(devices.get(i).getProductionName());
-            mTableDevices.addCell(devices.get(i).getDeviceCode() + "");
+            PdfPCell cell = new PdfPCell(new Paragraph(index + ""));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPadding(PADDING_CELL);
+            mTableDevices.addCell(cell);
+            cell.setPhrase(new Paragraph(devices.get(i).getProductionName()));
+            mTableDevices.addCell(cell);
+            cell.setPhrase(new Paragraph(new Paragraph(devices.get(i).getDeviceCode() + "")));
+            mTableDevices.addCell(cell);
             mTableDevices.addCell("");
         }
     }
@@ -182,7 +218,7 @@ public class ExportPresenter implements ExportContract.Presenter {
         mHeader = new Paragraph();
         mHeader.setIndentationLeft(INDENT_LEFT);
         mHeader.add(new Chunk(mViewModel.getString(R.string.title_delivery_device),
-                new Font(TIMES_ROMAN, NORMAL_FONT_SIZE, BOLD)).setUnderline(0.7f, -2));
+                new Font(TIMES_ROMAN, NORMAL_FONT_SIZE, BOLD)).setUnderline(THINKNESS, Y_POSITION));
     }
 
     private void getPledge() {
@@ -193,12 +229,15 @@ public class ExportPresenter implements ExportContract.Presenter {
     }
 
     private void getTableSignature() {
-        mTableSignature = new PdfPTable(2);
+        mTableSignature = new PdfPTable(COLUMN_TABLE_SIGNATURE);
         mTableSignature.setWidthPercentage(WIDTH_PERCENTAGE);
         Paragraph paraReceiver = new Paragraph();
         paraReceiver.add(new Chunk(mViewModel.getString(R.string.title_receiver),
                 new Font(TIMES_ROMAN, NORMAL_FONT_SIZE, BOLD)));
         paraReceiver.add(new Chunk(mViewModel.getString(R.string.title_sign_name)));
+        for (int i = 0; i < TOTAL_LINE_SIGN; i++) {
+            paraReceiver.add(new Chunk(Chunk.NEWLINE));
+        }
         PdfPCell receiver = new PdfPCell(paraReceiver);
         receiver.setHorizontalAlignment(Element.ALIGN_CENTER);
         mTableSignature.addCell(receiver);

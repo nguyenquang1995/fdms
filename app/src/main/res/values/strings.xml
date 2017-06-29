@@ -195,21 +195,29 @@
     <string name="title_model_number">Model Number</string>
     <string name="title_assign_date">Assigned date</string>
 
-    <string name="title_report_devices">BIEN BAN GIAO THIET BI</string>
-    <string name="title_code_release_date">\u0020Ma So: BM-BOD-07-03\n Lan ban hanh: 01 \n Ngay Phat Hanh: 13/02/2015</string>
-    <string name="title_framgia_company">CONG TY TNHH FRAMGIA VIET NAM</string>
-    <string name="title_iso_iec">ISO/IEC 27001:2015</string>
-    <string name="title_name_deliver">Ten nguoi ban giao</string>
-    <string name="title_room">Phong</string>
-    <string name="title_name_receiver">Ten nguoi nhan ban giao</string>
-    <string name="title_note">Ghi chu</string>
-    <string name="title_date">Ngay</string>
+    <string-array name="text_table_header">
+        <item>BIEN BAN GIAO THIET BI</item>
+        <item>\u0020Ma So: BM-BOD-07-03\n Lan ban hanh: 01 \n Ngay Phat Hanh: 13/02/2015</item>
+        <item>CONG TY TNHH FRAMGIA VIET NAM</item>
+        <item>ISO/IEC 27001:2015</item>
+    </string-array>
+    <string-array name="text_table_info">
+        <item>Ten nguoi ban giao</item>
+        <item>Phong</item>
+        <item>Ten nguoi nhan ban giao</item>
+        <item>Phong</item>
+        <item>Ghi chu</item>
+        <item>Ngay</item>
+    </string-array>
+    <string-array name="text_table_device">
+        <item>STT</item>
+        <item>Ten thiet bi</item>
+        <item>Ma so</item>
+        <item>Ghi chu</item>
+    </string-array>
     <string name="title_delivery_device">Phan ban giao thiet bi moi</string>
-    <string name="title_number_order">STT</string>
-    <string name="title_report_device_name">Ten thiet bi</string>
-    <string name="title_report_code">Ma so</string>
     <string name="title_report_pledge">Nguoi nhan ban giao tai san phai chiu trach nhiem kiem tra theo dung yeu cau tren. Neu xay ra bat cu  hong hoc hoac mat mat do loi cua nguoi su dung thi nguoi su dung hoan toan chiu trach nhiem truoc cong ty.</string>
     <string name="title_deliver">Nguoi ban giao</string>
     <string name="title_receiver">Nguoi nhan ban giao</string>
-    <string name="title_sign_name">\n(Ky va ghi ro hon ten)\n\n\n\n\n\n</string>
+    <string name="title_sign_name">\n(Ky va ghi ro hon ten)</string>
 </resources>
