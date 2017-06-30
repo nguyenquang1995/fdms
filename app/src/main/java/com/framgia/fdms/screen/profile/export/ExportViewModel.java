@@ -89,6 +89,11 @@ public class ExportViewModel implements ExportContract.ViewModel {
     }
 
     @Override
+    public String[] getStringArray(int strArrResource) {
+        return mFragment.getResources().getStringArray(strArrResource);
+    }
+
+    @Override
     public Drawable getDrawable(int drawableResource) {
         return mFragment.getResources().getDrawable(drawableResource);
     }

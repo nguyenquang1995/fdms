@@ -24,6 +24,8 @@ public interface ExportContract {
 
         String getString(int strResource);
 
+        String[] getStringArray(int strArrResource);
+
         Drawable getDrawable(int drawableResource);
 
         void showMessage(String mess);
