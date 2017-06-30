@@ -220,4 +220,7 @@
     <string name="title_deliver">Nguoi ban giao</string>
     <string name="title_receiver">Nguoi nhan ban giao</string>
     <string name="title_sign_name">\n(Ky va ghi ro hon ten)</string>
+
+    <string name="title_vendor">Vendor</string>
+    <string name="title_maker">Maker</string>
 </resources>

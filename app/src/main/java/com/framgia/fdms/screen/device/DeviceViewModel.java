@@ -17,8 +17,10 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MAKER;
 import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MANAGE_DEVICE;
 import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MY_DEVICE;
+import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_VENDOR;
 
 /**
  * Exposes the data to be used in the Device screen.
@@ -129,9 +131,11 @@ public class DeviceViewModel extends BaseObservable
         notifyPropertyChanged(BR.adapter);
     }
 
-    @IntDef({ TAB_MY_DEVICE, TAB_MANAGE_DEVICE })
+    @IntDef({ TAB_MY_DEVICE, TAB_MANAGE_DEVICE, TAB_VENDOR, TAB_MAKER})
     public @interface Tab {
         int TAB_MY_DEVICE = 0;
         int TAB_MANAGE_DEVICE = 1;
+        int TAB_VENDOR = 2;
+        int TAB_MAKER = 3;
     }
 }
