@@ -19,9 +19,12 @@ import java.util.List;
 public class ListVendorAdapter
         extends BaseRecyclerViewAdapter<Vendor, ListVendorAdapter.ViewHolder> {
     private List<Vendor> mVendors;
+    private VendorContract.ViewModel mViewModel;
 
-    protected ListVendorAdapter(@NonNull Context context, @NonNull List<Vendor> vendors) {
+    protected ListVendorAdapter(@NonNull Context context,
+            @NonNull VendorContract.ViewModel viewModel, @NonNull List<Vendor> vendors) {
         super(context);
+        mViewModel = viewModel;
         mVendors = vendors;
     }
 
@@ -39,6 +42,7 @@ public class ListVendorAdapter
         ItemVendorBinding binding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.item_vendor, parent, false);
+        binding.setViewModel((VendorViewModel) mViewModel);
         return new ViewHolder(binding);
     }
 
