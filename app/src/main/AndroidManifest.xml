@@ -75,6 +75,10 @@
             android:name=".screen.profile.chooseexport.ChooseExportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".screen.tutorial.TutorialActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
