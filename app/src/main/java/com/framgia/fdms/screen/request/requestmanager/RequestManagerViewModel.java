@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.framgia.fdms.screen.selection.StatusSelectionAdapter.FIRST_INDEX;
+import static com.framgia.fdms.utils.Constant.ACTION_CLEAR;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_RESPONE;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_STATUE;
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
@@ -197,6 +199,7 @@ public class RequestManagerViewModel extends BaseFragmentModel
             return;
         }
         mStatuses = list;
+        mStatuses.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
     }
 
     public void updateRelative(List<Status> relatives) {
@@ -204,6 +207,7 @@ public class RequestManagerViewModel extends BaseFragmentModel
             return;
         }
         mRelatives = relatives;
+        mRelatives.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
     }
 
     @Bindable
