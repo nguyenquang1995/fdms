@@ -13,6 +13,7 @@ import com.framgia.fdms.screen.device.listdevice.ListDeviceFragment;
 import com.framgia.fdms.screen.devicecreation.CreateDeviceActivity;
 import com.framgia.fdms.screen.devicecreation.DeviceStatusType;
 import com.framgia.fdms.screen.returndevice.ReturnDeviceActivity;
+import com.framgia.fdms.screen.vendor.VendorFragment;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,10 @@ public class DeviceViewModel extends BaseObservable
         setBo(user.isBo());
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ListDeviceFragment.newInstance(TAB_MY_DEVICE));
-        if (mIsBo) fragments.add(ListDeviceFragment.newInstance(TAB_MANAGE_DEVICE));
+        if (mIsBo) {
+            fragments.add(ListDeviceFragment.newInstance(TAB_MANAGE_DEVICE));
+            fragments.add(VendorFragment.newInstance());
+        }
         mAdapter = new ViewPagerAdapter(mFragment.getChildFragmentManager(), fragments);
         setAdapter(mAdapter);
     }
