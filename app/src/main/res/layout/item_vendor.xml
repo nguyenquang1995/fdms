@@ -1,46 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/dp_16"
-    >
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.framgia.fdms.screen.vendor.VendorViewModel"
+            />
+        <variable
+            name="vendor"
+            type="com.framgia.fdms.data.model.Vendor"
+            />
+    </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_16"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:paddingRight="@dimen/dp_10"
+                android:text='@{vendor.name}'
+                android:textSize="@dimen/sp_16"
+                />
+            <ImageView
+                android:layout_width="@dimen/dp_40"
+                android:padding="@dimen/dp_10"
+                android:layout_height="@dimen/dp_40"
+                android:onClick="@{() -> viewModel.onEditVendorClick(vendor)}"
+                android:src="@drawable/ic_marker"
+                />
+            <ImageView
+                android:padding="@dimen/dp_10"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:onClick="@{() -> viewModel.onDeleteVendorClick(vendor)}"
+                android:src="@drawable/ic_x_button"
+                />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_marginLeft="@dimen/dp_10"
             android:maxLines="2"
-            android:paddingRight="@dimen/dp_10"
-            android:textSize="@dimen/sp_16"
-            />
-        <ImageView
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:background="@color/color_orange"
-            android:padding="@dimen/dp_10"
-            android:src="@drawable/ic_edit_white_24dp"
-            />
-        <ImageView
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:background="@color/color_red"
-            android:padding="@dimen/dp_10"
-            android:src="@drawable/ic_cancel"
+            android:text='@{vendor.description}'
+            android:textSize="@dimen/sp_14"
             />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:maxLines="2"
-        android:textSize="@dimen/sp_14"
-        />
-</LinearLayout>
+</layout>
