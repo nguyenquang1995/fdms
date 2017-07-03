@@ -133,7 +133,6 @@ public class ListDeviceViewModel extends BaseObservable
     @Override
     public void onChooseCategory() {
         if (mCategories == null) return;
-        mCategories.add(FIRST_INDEX, new Category(OUT_OF_INDEX, ACTION_CLEAR));
         mFragment.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, mCategories, null,
                         StatusSelectionType.CATEGORY), REQUEST_SELECTION);
@@ -142,7 +141,6 @@ public class ListDeviceViewModel extends BaseObservable
     @Override
     public void onChooseStatus() {
         if (mStatuses == null) return;
-        mStatuses.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
         mFragment.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, null, mStatuses,
                         StatusSelectionType.STATUS), REQUEST_SELECTION);
@@ -227,6 +225,7 @@ public class ListDeviceViewModel extends BaseObservable
         }
         // update list mCategories
         mCategories = list;
+        mCategories.add(FIRST_INDEX, new Category(OUT_OF_INDEX, ACTION_CLEAR));
     }
 
     public void updateStatus(List<Status> list) {
@@ -235,6 +234,7 @@ public class ListDeviceViewModel extends BaseObservable
         }
         // update list statuses
         mStatuses = list;
+        mStatuses.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
     }
 
     public ObservableField<Integer> getProgressBarVisibility() {
