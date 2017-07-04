@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Introduction;
 import com.framgia.fdms.databinding.FragmentIntroductionBinding;
 
 /**
@@ -16,15 +17,25 @@ import com.framgia.fdms.databinding.FragmentIntroductionBinding;
 public class IntroductionFragment extends Fragment {
 
     private IntroductionContract.ViewModel mViewModel;
+    private static final String BUNDLE_INTRO = "BUNDLE_INTRO";
 
     public static IntroductionFragment newInstance() {
         return new IntroductionFragment();
     }
 
+    public static IntroductionFragment newInstance(Introduction introduction) {
+        IntroductionFragment fragment = new IntroductionFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_INTRO, introduction);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new IntroductionViewModel();
+        mViewModel = new IntroductionViewModel(
+                (Introduction) getArguments().getSerializable(BUNDLE_INTRO));
 
         IntroductionContract.Presenter presenter = new IntroductionPresenter(mViewModel);
         mViewModel.setPresenter(presenter);

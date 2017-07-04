@@ -1,11 +1,15 @@
 package com.framgia.fdms.screen.tutorial;
 
+import android.content.res.Resources;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import com.framgia.fdms.BR;
+import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Introduction;
 import com.framgia.fdms.screen.ViewPagerScroll;
 import com.framgia.fdms.screen.authenication.login.LoginActivity;
 import com.framgia.fdms.screen.tutorial.introduction.IntroductionFragment;
@@ -28,11 +32,22 @@ public class TutorialViewModel extends BaseObservable
     public TutorialViewModel(AppCompatActivity activity) {
         mActivity = activity;
 
+        Resources res = mActivity.getResources();
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(IntroductionFragment.newInstance());
-        fragments.add(IntroductionFragment.newInstance());
-        fragments.add(IntroductionFragment.newInstance());
-        fragments.add(IntroductionFragment.newInstance());
+        fragments.add(IntroductionFragment.newInstance(
+                new Introduction.Builder().setTitle(res.getString(R.string.title_intro_title))
+                        .setHeader(res.getString(R.string.title_intro_header))
+                        .setContent(res.getString(R.string.title_intro_contet))
+                        .setImage(ContextCompat.getDrawable(mActivity, R.drawable.ic_device_200dp))
+                        .setColor(ContextCompat.getColor(mActivity, R.color.color_blue_170))
+                        .create()));
+        fragments.add(IntroductionFragment.newInstance(
+                new Introduction.Builder().setTitle(res.getString(R.string.title_intro_title))
+                        .setHeader(res.getString(R.string.title_intro_header))
+                        .setContent(res.getString(R.string.title_intro_contet))
+                        .setImage(ContextCompat.getDrawable(mActivity, R.drawable.ic_device_200dp))
+                        .setColor(ContextCompat.getColor(mActivity, R.color.color_blue_170))
+                        .create()));
         mAdapter = new TutorialPagerAdapter(activity.getSupportFragmentManager(), fragments);
         setAdapter(mAdapter);
         setSize(fragments.size() - 1);
@@ -56,6 +71,7 @@ public class TutorialViewModel extends BaseObservable
 
     public void onSkipClick() {
         mActivity.startActivity(LoginActivity.getInstance(mActivity));
+        mActivity.finish();
     }
 
     @Override
