@@ -17,7 +17,7 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewModel = new TutorialViewModel();
+        mViewModel = new TutorialViewModel(this);
 
         TutorialContract.Presenter presenter = new TutorialPresenter(mViewModel);
         mViewModel.setPresenter(presenter);

@@ -226,4 +226,5 @@
     <string name="title_intro_title">THIS IS TITLE</string>
     <string name="title_intro_header">This is header</string>
     <string name="title_intro_contet">This is contet</string>
+    <string name="title_intro_finish">Finish</string>
 </resources>
