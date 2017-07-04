@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.framgia.fdms.R;
@@ -113,9 +114,9 @@ public final class BindingUtils {
         recyclerView.addOnScrollListener(listener);
     }
 
-    @BindingAdapter(value = { "bind:adapter", "model" }, requireAll = false)
+    @BindingAdapter(value = { "bind:adapter", "model", "linearDot" }, requireAll = false)
     public static void setupViewPager(final ViewPager viewPager, FragmentPagerAdapter adapter,
-            final ViewPagerScroll viewModel) {
+            final ViewPagerScroll viewModel, final LinearLayout layout) {
         viewPager.setAdapter(adapter);
         if (viewModel == null) return;
         if (adapter != null) viewPager.setOffscreenPageLimit(adapter.getCount());
@@ -128,6 +129,16 @@ public final class BindingUtils {
             @Override
             public void onPageSelected(int position) {
                 viewModel.onCurrentPosition(position);
+                if (layout != null) {
+                    for (int i = 0; i < layout.getChildCount(); i++) {
+                        View view = layout.getChildAt(i);
+                        if (view == null) {
+                            continue;
+                        }
+                        view.setBackgroundResource(position == i ? R.drawable.ic_circle_white
+                                : R.drawable.ic_circle_border_white);
+                    }
+                }
             }
 
             @Override
@@ -446,5 +457,24 @@ public final class BindingUtils {
                 || viewModel.getStatusRequest().equals(Constant.DeviceStatus.APPROVED) ? View.GONE
                 : View.VISIBLE;
         view.setVisibility(visibility);
+    }
+
+    @BindingAdapter("totalDot")
+    public static void setDot(LinearLayout layout, int total) {
+        Resources resources = layout.getContext().getResources();
+        for (int i = 0; i <= total; i++) {
+            ImageView imageView = new ImageView(layout.getContext());
+            LinearLayout.LayoutParams lp =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins((int) resources.getDimension(R.dimen.dp_0),
+                    (int) resources.getDimension(R.dimen.dp_0),
+                    (int) resources.getDimension(R.dimen.dp_10),
+                    (int) resources.getDimension(R.dimen.dp_0));
+            imageView.setLayoutParams(lp);
+            layout.addView(imageView);
+            layout.getChildAt(i).setBackgroundResource(R.drawable.ic_circle_border_white);
+        }
+        layout.getChildAt(0).setBackgroundResource(R.drawable.ic_circle_white);
     }
 }
