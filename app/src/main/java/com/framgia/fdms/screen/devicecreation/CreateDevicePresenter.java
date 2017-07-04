@@ -1,6 +1,7 @@
 package com.framgia.fdms.screen.devicecreation;
 
 import android.text.TextUtils;
+import android.view.View;
 import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.Status;
@@ -89,6 +90,7 @@ final class CreateDevicePresenter implements CreateDeviceContract.Presenter {
     @Override
     public void updateDevice(final Device localDevice) {
         if (!validateDataEditDevice(localDevice)) return;
+        mViewModel.setProgressBar(View.VISIBLE);
         Subscription subscription = mDeviceRepository.updateDevice(localDevice)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

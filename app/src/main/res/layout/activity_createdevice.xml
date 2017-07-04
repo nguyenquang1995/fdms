@@ -356,6 +356,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/rotate_progressbar"
             android:visibility="@{viewModel.progressBarVisibility}"
             />
     </android.support.design.widget.CoordinatorLayout>

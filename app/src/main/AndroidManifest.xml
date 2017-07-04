@@ -25,7 +25,6 @@
             android:name=".screen.authenication.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.NoActionBar">
-
         </activity>
         <activity
             android:name=".screen.authenication.register.RegisterActivity"

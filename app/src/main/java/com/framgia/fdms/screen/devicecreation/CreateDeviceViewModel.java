@@ -32,10 +32,12 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 import static android.widget.Toast.makeText;
 import static com.framgia.fdms.FDMSApplication.sUpdatedDevice;
+import static com.framgia.fdms.screen.devicecreation.DeviceStatusType.CREATE;
+import static com.framgia.fdms.screen.devicecreation.DeviceStatusType.EDIT;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_CATEGORY;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_STATUE;
 import static com.framgia.fdms.utils.Constant.PICK_IMAGE_REQUEST;
@@ -59,9 +61,9 @@ public class CreateDeviceViewModel extends BaseObservable
     private static final int DEFAULT_HEIGHT_BARCODE = 100;
     private static final int SCALE_BITMAP = 7;
 
-    private DeviceStatusType mDeviceType = DeviceStatusType.CREATE;
+    private DeviceStatusType mDeviceType = CREATE;
     private Context mContext;
-    private AppCompatActivity mActivity;
+    private CreateDeviceActivity mActivity;
     private CreateDeviceContract.Presenter mPresenter;
     private String mDeviceCodeError;
     private String mNameDeviceError;
@@ -76,14 +78,13 @@ public class CreateDeviceViewModel extends BaseObservable
     private List<Status> mStatuses = new ArrayList<>();
     private List<Category> mCategories = new ArrayList<>();
     private List<Status> mBranches = new ArrayList<>();
-
     private Category mCategory;
     private Status mStatus;
     private Status mBranch;
     private Calendar mCalendar = Calendar.getInstance();
     private boolean mIsQrCode = true;
     private Bitmap mDeviceCode;
-    private int mProgressBarVisibility = View.GONE;
+    private int mProgressBarVisibility = GONE;
 
     public CreateDeviceViewModel(CreateDeviceActivity activity, Device device,
             DeviceStatusType type) {
@@ -119,7 +120,9 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void onPickDateTimeClick() {
-        if (mDeviceType == DeviceStatusType.EDIT) return;
+        if (mDeviceType == EDIT) {
+            return;
+        }
         if (mCalendar == null) mCalendar = Calendar.getInstance();
         DatePickerDialog datePicker =
                 DatePickerDialog.newInstance(this, mCalendar.get(Calendar.YEAR),
@@ -138,7 +141,10 @@ public class CreateDeviceViewModel extends BaseObservable
     }
 
     public void onChooseCategory() {
-        if (mCategories == null || mDeviceType == DeviceStatusType.EDIT) return;
+        if (mCategories == null || mDeviceType == EDIT) {
+            return;
+        }
+
         mActivity.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, mCategories, mStatuses,
                         StatusSelectionType.CATEGORY), REQUEST_CATEGORY);
@@ -162,7 +168,9 @@ public class CreateDeviceViewModel extends BaseObservable
     }
 
     public void onChooseBranch() {
-        if (mBranches == null || mDeviceType == DeviceStatusType.EDIT) return;
+        if (mBranches == null || mDeviceType == EDIT) {
+            return;
+        }
         mActivity.startActivityForResult(
                 StatusSelectionActivity.getInstance(mContext, mCategories, mBranches,
                         StatusSelectionType.STATUS), REQUEST_BRANCH);
@@ -219,7 +227,7 @@ public class CreateDeviceViewModel extends BaseObservable
 
     @Override
     public void hideProgressbar() {
-        setProgressBarVisibility(View.GONE);
+        setProgressBarVisibility(GONE);
     }
 
     @Override
@@ -302,6 +310,11 @@ public class CreateDeviceViewModel extends BaseObservable
         PrintHelper photoPrinter = new PrintHelper(getActivity());
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
         photoPrinter.printBitmap(mDevice.getDeviceCode(), dstBitmap);
+    }
+
+    @Override
+    public void setProgressBar(int visibility) {
+        setProgressBarVisibility(visibility);
     }
 
     @Override
@@ -453,12 +466,15 @@ public class CreateDeviceViewModel extends BaseObservable
     @Override
     public void onUpdateSuccess(Device device) {
         sUpdatedDevice.cloneDevice(device);
+        mDevice = device;
+        setProgressBarVisibility(GONE);
         Snackbar.make(mActivity.findViewById(android.R.id.content),
                 R.string.msg_update_device_success, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onUpdateError() {
+        setProgressBarVisibility(GONE);
         Snackbar.make(mActivity.findViewById(android.R.id.content),
                 R.string.msg_update_device_error, Snackbar.LENGTH_LONG).show();
     }

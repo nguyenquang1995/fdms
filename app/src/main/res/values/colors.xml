@@ -31,7 +31,6 @@
     <color name="color_teal_700">#1ABB9C</color>
     <color name="color_orange_800">#f9a825</color>
     <color name="color_teal_500">#009688</color>
-
     <color name="color_seashell">#F1F1F1</color>
     <color name="color_blued">#1976D2</color>
     <color name="color_black_transprarent">#B2000000</color>
@@ -41,4 +40,7 @@
     <color name="color_light_blue_800">#0277BD</color>
     <color name="color_blue_207">#94d1cf</color>
     <color name="color_blue_170">#4bafaa</color>
+    <color name="color_red_400">#EF5350</color>
+    <color name="color_red_200">#EF9A9A</color>
+    <color name="color_red_900">#B71C1C</color>
 </resources>
