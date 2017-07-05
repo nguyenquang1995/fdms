@@ -3,25 +3,29 @@ package com.framgia.fdms.screen.vendor;
 import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Vendor;
 import com.framgia.fdms.utils.Constant;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Exposes the data to be used in the Vendor screen.
  */
-
-public class VendorViewModel extends BaseObservable implements VendorContract.ViewModel {
-
+public class VendorViewModel extends BaseObservable
+    implements VendorContract.ViewModel, Parcelable {
     private VendorContract.Presenter mPresenter;
     private ListVendorAdapter mAdapter;
     private List<Vendor> mVendors = new ArrayList<>();
     private AppCompatActivity mActivity;
+    private VendorDialog mVendorDialog;
 
     public VendorViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
@@ -50,14 +54,13 @@ public class VendorViewModel extends BaseObservable implements VendorContract.Vi
 
     @Override
     public void onEditVendorClick(Vendor vendor) {
-        VendorDialog vendorDialog = VendorDialog.newInstant(vendor);
-        vendorDialog.show(mActivity.getSupportFragmentManager(),
-                Constant.BundleConstant.BUNDLE_DEVICE);
+        mVendorDialog = VendorDialog.newInstant(this, vendor);
+        mVendorDialog.show(mActivity.getSupportFragmentManager(),
+            Constant.BundleConstant.BUNDLE_DEVICE);
     }
 
     @Override
     public void onDeleteVendorClick(Vendor vendor) {
-
     }
 
     @Override
@@ -70,7 +73,7 @@ public class VendorViewModel extends BaseObservable implements VendorContract.Vi
     @Override
     public void onLoadVendorFailed() {
         Toast.makeText(FDMSApplication.getInstant(), R.string.msg_load_data_fails,
-                Toast.LENGTH_SHORT).show();
+            Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -80,6 +83,53 @@ public class VendorViewModel extends BaseObservable implements VendorContract.Vi
 
     @Override
     public void onEditCancelClick(Vendor vendor) {
-        // TODO: next task
+        mVendorDialog.dismiss();
     }
+
+    protected VendorViewModel(Parcel in) {
+        mPresenter = (VendorContract.Presenter) in.readValue(
+            VendorContract.Presenter.class.getClassLoader());
+        mAdapter = (ListVendorAdapter) in.readValue(ListVendorAdapter.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            mVendors = new ArrayList<Vendor>();
+            in.readList(mVendors, Vendor.class.getClassLoader());
+        } else {
+            mVendors = null;
+        }
+        mActivity = (AppCompatActivity) in.readValue(AppCompatActivity.class.getClassLoader());
+        mVendorDialog = (VendorDialog) in.readValue(VendorDialog.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(mPresenter);
+        dest.writeValue(mAdapter);
+        if (mVendors == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mVendors);
+        }
+        dest.writeValue(mActivity);
+        dest.writeValue(mVendorDialog);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<VendorViewModel> CREATOR =
+        new Parcelable.Creator<VendorViewModel>() {
+            @Override
+            public VendorViewModel createFromParcel(Parcel in) {
+                return new VendorViewModel(in);
+            }
+
+            @Override
+            public VendorViewModel[] newArray(int size) {
+                return new VendorViewModel[size];
+            }
+        };
 }
