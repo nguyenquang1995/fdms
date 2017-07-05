@@ -1,6 +1,6 @@
 package com.framgia.fdms.data.source;
 
-import com.framgia.fdms.data.model.Vendor;
+import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.data.source.remote.VendorRemoteDataSource;
 import java.util.List;
 import rx.Observable;
@@ -28,7 +28,7 @@ public class VendorRepository {
         return sInstances;
     }
 
-    public Observable<List<Vendor>> getListVendor() {
+    public Observable<List<Producer>> getListVendor() {
         return mVendorRemoteDataSource.getListVendor();
     }
 }

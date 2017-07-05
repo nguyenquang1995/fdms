@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import com.framgia.fdms.R;
-import com.framgia.fdms.data.model.Vendor;
+import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.databinding.DialogEditVendorBinding;
 import com.framgia.fdms.utils.Constant;
 
@@ -18,7 +18,7 @@ import com.framgia.fdms.utils.Constant;
 
 public class VendorDialog extends DialogFragment {
 
-    public static VendorDialog newInstant(VendorViewModel vendorViewModel, Vendor vendor) {
+    public static VendorDialog newInstant(VendorViewModel vendorViewModel, Producer vendor) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constant.BundleConstant.BUNDLE_DEVICE, vendor);
         bundle.putParcelable(Constant.BundleConstant.BUNDLE_CONTENT, vendorViewModel);
@@ -31,7 +31,7 @@ public class VendorDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle bundle = getArguments();
-        Vendor vendor = bundle.getParcelable(Constant.BundleConstant.BUNDLE_DEVICE);
+        Producer vendor = bundle.getParcelable(Constant.BundleConstant.BUNDLE_DEVICE);
         VendorViewModel vendorViewModel =
                 bundle.getParcelable(Constant.BundleConstant.BUNDLE_CONTENT);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

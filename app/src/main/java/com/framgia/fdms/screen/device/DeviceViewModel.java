@@ -12,6 +12,7 @@ import com.framgia.fdms.screen.ViewPagerScroll;
 import com.framgia.fdms.screen.device.listdevice.ListDeviceFragment;
 import com.framgia.fdms.screen.devicecreation.CreateDeviceActivity;
 import com.framgia.fdms.screen.devicecreation.DeviceStatusType;
+import com.framgia.fdms.screen.marker.MarkerFragment;
 import com.framgia.fdms.screen.returndevice.ReturnDeviceActivity;
 import com.framgia.fdms.screen.vendor.VendorFragment;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -70,6 +71,7 @@ public class DeviceViewModel extends BaseObservable
         if (mIsBo) {
             fragments.add(ListDeviceFragment.newInstance(TAB_MANAGE_DEVICE));
             fragments.add(VendorFragment.newInstance());
+            fragments.add(MarkerFragment.newInstance(TAB_MAKER));
         }
         mAdapter = new ViewPagerAdapter(mFragment.getChildFragmentManager(), fragments);
         setAdapter(mAdapter);
@@ -135,7 +137,7 @@ public class DeviceViewModel extends BaseObservable
         notifyPropertyChanged(BR.adapter);
     }
 
-    @IntDef({ TAB_MY_DEVICE, TAB_MANAGE_DEVICE, TAB_VENDOR, TAB_MAKER})
+    @IntDef({ TAB_MY_DEVICE, TAB_MANAGE_DEVICE, TAB_VENDOR, TAB_MAKER })
     public @interface Tab {
         int TAB_MY_DEVICE = 0;
         int TAB_MANAGE_DEVICE = 1;
