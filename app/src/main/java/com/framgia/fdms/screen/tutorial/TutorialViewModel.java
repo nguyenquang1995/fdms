@@ -69,6 +69,7 @@ public class TutorialViewModel extends BaseObservable
         }
     }
 
+    @Override
     public void onSkipClick() {
         mActivity.startActivity(LoginActivity.getInstance(mActivity));
         mActivity.finish();

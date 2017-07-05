@@ -11,6 +11,7 @@ interface TutorialContract {
      * View.
      */
     interface ViewModel extends BaseViewModel<Presenter> {
+        void onSkipClick();
     }
 
     /**
