@@ -24,7 +24,7 @@ public class VendorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new VendorViewModel();
+        mViewModel = new VendorViewModel(getActivity());
 
         VendorContract.Presenter presenter = new VendorPresenter(mViewModel);
         mViewModel.setPresenter(presenter);
