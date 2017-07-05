@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/title_full_name"
-                android:text='@{vendor.name}'
+                android:text='@={vendor.name}'
                 />
 
         </android.support.design.widget.TextInputLayout>
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/title_description"
-                android:text='@{vendor.description}'
+                android:text='@={vendor.description}'
                 />
         </android.support.design.widget.TextInputLayout>
         <LinearLayout

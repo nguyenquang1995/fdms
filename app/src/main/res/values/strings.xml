@@ -225,4 +225,6 @@
     <string name="title_intro_header">This is header</string>
     <string name="title_intro_contet">This is contet</string>
     <string name="title_intro_finish">Finish</string>
+    <string name="title_undo">Undo</string>
+    <string name="title_vendor_delete">Vendor deleted</string>
 </resources>
