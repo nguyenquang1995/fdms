@@ -11,7 +11,7 @@
             />
         <variable
             name="vendor"
-            type="com.framgia.fdms.data.model.Vendor"
+            type="com.framgia.fdms.data.model.Producer"
             />
     </data>
     <android.support.v7.widget.CardView

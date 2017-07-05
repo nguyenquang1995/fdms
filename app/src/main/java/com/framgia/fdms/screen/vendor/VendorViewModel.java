@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
-import com.framgia.fdms.data.model.Vendor;
+import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.utils.Constant;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class VendorViewModel extends BaseObservable
     implements VendorContract.ViewModel, Parcelable {
     private VendorContract.Presenter mPresenter;
     private ListVendorAdapter mAdapter;
-    private List<Vendor> mVendors = new ArrayList<>();
+    private List<Producer> mVendors = new ArrayList<>();
     private AppCompatActivity mActivity;
     private VendorDialog mVendorDialog;
 
@@ -53,18 +53,18 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onEditVendorClick(Vendor vendor) {
+    public void onEditVendorClick(Producer vendor) {
         mVendorDialog = VendorDialog.newInstant(this, vendor);
         mVendorDialog.show(mActivity.getSupportFragmentManager(),
             Constant.BundleConstant.BUNDLE_DEVICE);
     }
 
     @Override
-    public void onDeleteVendorClick(Vendor vendor) {
+    public void onDeleteVendorClick(Producer vendor) {
     }
 
     @Override
-    public void onLoadVendorSuccess(List<Vendor> vendors) {
+    public void onLoadVendorSuccess(List<Producer> vendors) {
         mVendors.clear();
         mVendors.addAll(vendors);
         mAdapter.notifyDataSetChanged();
@@ -77,12 +77,12 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onEditSubmitClick(Vendor vendor) {
+    public void onEditSubmitClick(Producer vendor) {
         // TODO: next task
     }
 
     @Override
-    public void onEditCancelClick(Vendor vendor) {
+    public void onEditCancelClick(Producer vendor) {
         mVendorDialog.dismiss();
     }
 
@@ -91,8 +91,8 @@ public class VendorViewModel extends BaseObservable
             VendorContract.Presenter.class.getClassLoader());
         mAdapter = (ListVendorAdapter) in.readValue(ListVendorAdapter.class.getClassLoader());
         if (in.readByte() == 0x01) {
-            mVendors = new ArrayList<Vendor>();
-            in.readList(mVendors, Vendor.class.getClassLoader());
+            mVendors = new ArrayList<Producer>();
+            in.readList(mVendors, Producer.class.getClassLoader());
         } else {
             mVendors = null;
         }

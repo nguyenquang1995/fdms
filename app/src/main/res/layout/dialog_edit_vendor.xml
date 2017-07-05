@@ -4,7 +4,7 @@
     <data>
         <variable
             name="vendor"
-            type="com.framgia.fdms.data.model.Vendor"
+            type="com.framgia.fdms.data.model.Producer"
             />
         <variable
             name="viewModel"
@@ -20,11 +20,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:layout_marginLeft="@dimen/dp_2"
             android:text="@string/action_edit"
             android:textColor="@color/color_black"
             android:textSize="@dimen/sp_20"
-            android:layout_marginBottom="@dimen/dp_15"
-            android:layout_marginLeft="@dimen/dp_2"
             />
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

@@ -10,14 +10,14 @@ import com.android.databinding.library.baseAdapters.BR;
  * Created by framgia on 03/07/2017.
  */
 
-public class Vendor extends BaseObservable implements Parcelable {
+public class Producer extends BaseObservable implements Parcelable {
     private String mName;
     private String mDescription;
 
-    public Vendor() {
+    public Producer() {
     }
 
-    public Vendor(String name, String description) {
+    public Producer(String name, String description) {
         mName = name;
         mDescription = description;
     }
@@ -42,7 +42,7 @@ public class Vendor extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.description);
     }
 
-    protected Vendor(Parcel in) {
+    protected Producer(Parcel in) {
         mName = in.readString();
         mDescription = in.readString();
     }
@@ -59,15 +59,15 @@ public class Vendor extends BaseObservable implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Vendor> CREATOR = new Parcelable.Creator<Vendor>() {
+    public static final Parcelable.Creator<Producer> CREATOR = new Parcelable.Creator<Producer>() {
         @Override
-        public Vendor createFromParcel(Parcel in) {
-            return new Vendor(in);
+        public Producer createFromParcel(Parcel in) {
+            return new Producer(in);
         }
 
         @Override
-        public Vendor[] newArray(int size) {
-            return new Vendor[size];
+        public Producer[] newArray(int size) {
+            return new Producer[size];
         }
     };
 }

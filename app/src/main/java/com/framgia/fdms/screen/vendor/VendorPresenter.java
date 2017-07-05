@@ -1,6 +1,6 @@
 package com.framgia.fdms.screen.vendor;
 
-import com.framgia.fdms.data.model.Vendor;
+import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.data.source.VendorRepository;
 import java.util.List;
 import rx.Subscriber;
@@ -39,7 +39,7 @@ final class VendorPresenter implements VendorContract.Presenter {
         Subscription subscription = mRepository.getListVendor()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Vendor>>() {
+                .subscribe(new Subscriber<List<Producer>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -50,7 +50,7 @@ final class VendorPresenter implements VendorContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(List<Vendor> vendors) {
+                    public void onNext(List<Producer> vendors) {
                         mViewModel.onLoadVendorSuccess(vendors);
                     }
                 });

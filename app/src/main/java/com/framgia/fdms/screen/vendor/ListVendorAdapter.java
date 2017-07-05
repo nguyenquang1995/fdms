@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.framgia.fdms.BaseRecyclerViewAdapter;
 import com.framgia.fdms.R;
-import com.framgia.fdms.data.model.Vendor;
+import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.databinding.ItemVendorBinding;
 import java.util.List;
 
@@ -17,19 +17,19 @@ import java.util.List;
  */
 
 public class ListVendorAdapter
-        extends BaseRecyclerViewAdapter<Vendor, ListVendorAdapter.ViewHolder> {
-    private List<Vendor> mVendors;
+        extends BaseRecyclerViewAdapter<Producer, ListVendorAdapter.ViewHolder> {
+    private List<Producer> mVendors;
     private VendorContract.ViewModel mViewModel;
 
     protected ListVendorAdapter(@NonNull Context context,
-            @NonNull VendorContract.ViewModel viewModel, @NonNull List<Vendor> vendors) {
+            @NonNull VendorContract.ViewModel viewModel, @NonNull List<Producer> vendors) {
         super(context);
         mViewModel = viewModel;
         mVendors = vendors;
     }
 
     @Override
-    public void onUpdatePage(List<Vendor> datas) {
+    public void onUpdatePage(List<Producer> datas) {
         if (datas == null) {
             return;
         }
@@ -65,7 +65,7 @@ public class ListVendorAdapter
             mBinding = binding;
         }
 
-        void bindData(Vendor device) {
+        void bindData(Producer device) {
             if (device == null) {
                 return;
             }
