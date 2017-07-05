@@ -228,4 +228,5 @@
     <string name="title_undo">Undo</string>
     <string name="title_vendor_delete">Vendor deleted</string>
     <string name="error_load_makers">Sorry, Not load makers successfully !!!</string>
+    <string name="title_searching">Search...</string>
 </resources>

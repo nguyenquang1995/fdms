@@ -19,11 +19,14 @@
         android:orientation="vertical"
         >
 
-        <android.support.v7.widget.SearchView
+        <com.arlib.floatingsearchview.FloatingSearchView
+            android:id="@+id/floating_search_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_search"
-            />
+            android:layout_height="@dimen/dp_50"
+            app:floatingSearch_leftActionMode="showHamburger"
+            app:floatingSearch_menu="@menu/menu_search"
+            app:floatingSearch_searchHint="@string/title_searching"
+            app:floatingSearch_showSearchKey="true"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
