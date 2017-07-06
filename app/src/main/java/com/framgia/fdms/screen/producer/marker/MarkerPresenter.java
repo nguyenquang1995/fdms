@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.marker;
+package com.framgia.fdms.screen.producer.marker;
 
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.data.source.MakerRepository;

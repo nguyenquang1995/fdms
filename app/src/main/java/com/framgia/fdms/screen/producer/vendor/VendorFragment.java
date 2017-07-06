@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.vendor;
+package com.framgia.fdms.screen.producer.vendor;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

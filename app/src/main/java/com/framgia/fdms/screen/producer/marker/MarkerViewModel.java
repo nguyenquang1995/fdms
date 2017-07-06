@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.marker;
+package com.framgia.fdms.screen.producer.marker;
 
 import android.app.Activity;
 import android.databinding.BaseObservable;

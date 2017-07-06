@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.marker;
+package com.framgia.fdms.screen.producer.marker;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.vendor;
+package com.framgia.fdms.screen.producer.vendor;
 
 import android.app.Activity;
 import android.databinding.BaseObservable;
@@ -14,6 +14,7 @@ import com.framgia.fdms.BR;
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
+import com.framgia.fdms.screen.producer.ProducerDialog;
 import com.framgia.fdms.utils.Constant;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class VendorViewModel extends BaseObservable
     private ListVendorAdapter mAdapter;
     private List<Producer> mVendors = new ArrayList<>();
     private AppCompatActivity mActivity;
-    private VendorDialog mVendorDialog;
+    private ProducerDialog mVendorDialog;
     private int mPositionScroll = OUT_OF_INDEX;
 
     public VendorViewModel(Activity activity) {
@@ -70,7 +71,7 @@ public class VendorViewModel extends BaseObservable
 
     @Override
     public void onEditVendorClick(Producer vendor) {
-        mVendorDialog = VendorDialog.newInstant(this, vendor);
+        mVendorDialog = ProducerDialog.newInstant(this, vendor);
         mVendorDialog.show(mActivity.getSupportFragmentManager(),
             Constant.BundleConstant.BUNDLE_DEVICE);
     }
@@ -135,7 +136,7 @@ public class VendorViewModel extends BaseObservable
             mVendors = null;
         }
         mActivity = (AppCompatActivity) in.readValue(AppCompatActivity.class.getClassLoader());
-        mVendorDialog = (VendorDialog) in.readValue(VendorDialog.class.getClassLoader());
+        mVendorDialog = (ProducerDialog) in.readValue(ProducerDialog.class.getClassLoader());
     }
 
     @Override

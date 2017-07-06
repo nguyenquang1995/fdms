@@ -1,35 +1,27 @@
-package com.framgia.fdms.screen.vendor;
+package com.framgia.fdms.screen.producer.marker;
 
 import com.framgia.fdms.BasePresenter;
 import com.framgia.fdms.BaseViewModel;
 import com.framgia.fdms.data.model.Producer;
+
 import java.util.List;
 
 /**
  * This specifies the contract between the view and the presenter.
  */
-interface VendorContract {
+interface MarkerContract {
     /**
      * View.
      */
     interface ViewModel extends BaseViewModel<Presenter> {
-        void onEditVendorClick(Producer vendor);
-
-        void onDeleteVendorClick(Producer vendor);
-
-        void onLoadVendorSuccess(List<Producer> vendors);
-
-        void onLoadVendorFailed();
-
-        void onEditSubmitClick(Producer vendor);
-
-        void onEditCancelClick(Producer vendor);
+        void onLoadMakerFail();
+        void onLoadMakerSucessfully(List<Producer> producers);
     }
 
     /**
      * Presenter.
      */
     interface Presenter extends BasePresenter {
-        void getVendors();
+        void getMakers(int page, int perPage);
     }
 }

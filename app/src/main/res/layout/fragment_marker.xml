@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.framgia.fdms.screen.marker.MarkerViewModel"
+            type="com.framgia.fdms.screen.producer.marker.MarkerViewModel"
             />
 
     </data>

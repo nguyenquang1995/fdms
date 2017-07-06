@@ -8,7 +8,7 @@
             />
         <variable
             name="viewModel"
-            type="com.framgia.fdms.screen.vendor.VendorViewModel"
+            type="com.framgia.fdms.screen.producer.vendor.VendorViewModel"
             />
     </data>
     <LinearLayout
