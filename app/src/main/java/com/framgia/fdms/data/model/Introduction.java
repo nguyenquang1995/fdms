@@ -3,19 +3,39 @@ package com.framgia.fdms.data.model;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.framgia.fdms.BR;
-import java.io.Serializable;
 
 /**
  * Created by MyPC on 04/07/2017.
  */
+public class Introduction extends BaseObservable implements Parcelable {
+    public static final Parcelable.Creator<Introduction> CREATOR =
+        new Parcelable.Creator<Introduction>() {
+            @Override
+            public Introduction createFromParcel(Parcel in) {
+                return new Introduction(in);
+            }
 
-public class Introduction extends BaseObservable implements Serializable {
+            @Override
+            public Introduction[] newArray(int size) {
+                return new Introduction[size];
+            }
+        };
     private String mTitle;
     private String mHeader;
     private String mContent;
     private Drawable mImage;
     private int mColor;
+
+    protected Introduction(Parcel in) {
+        mTitle = in.readString();
+        mHeader = in.readString();
+        mContent = in.readString();
+        mColor = in.readInt();
+    }
 
     public Introduction(String title, String header, String content, Drawable image, int color) {
         mTitle = title;
@@ -75,6 +95,19 @@ public class Introduction extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.color);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mTitle);
+        parcel.writeString(mHeader);
+        parcel.writeString(mContent);
+        parcel.writeInt(mColor);
+    }
+
     public static class Builder {
         private String mNestedTitle;
         private String mNestedHeader;
@@ -109,7 +142,7 @@ public class Introduction extends BaseObservable implements Serializable {
 
         public Introduction create() {
             return new Introduction(mNestedTitle, mNestedHeader, mNestedContent, mNestedImage,
-                    mNestedColor);
+                mNestedColor);
         }
     }
 }

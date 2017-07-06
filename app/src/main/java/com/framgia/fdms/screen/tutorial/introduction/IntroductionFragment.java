@@ -26,7 +26,7 @@ public class IntroductionFragment extends Fragment {
     public static IntroductionFragment newInstance(Introduction introduction) {
         IntroductionFragment fragment = new IntroductionFragment();
         Bundle args = new Bundle();
-        args.putSerializable(BUNDLE_INTRO, introduction);
+        args.putParcelable(BUNDLE_INTRO, introduction);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +35,7 @@ public class IntroductionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new IntroductionViewModel(
-                (Introduction) getArguments().getSerializable(BUNDLE_INTRO));
+                (Introduction) getArguments().getParcelable(BUNDLE_INTRO));
 
         IntroductionContract.Presenter presenter = new IntroductionPresenter(mViewModel);
         mViewModel.setPresenter(presenter);

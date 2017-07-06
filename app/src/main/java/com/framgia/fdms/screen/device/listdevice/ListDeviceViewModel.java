@@ -18,9 +18,13 @@ import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.Status;
 import com.framgia.fdms.data.model.User;
+import com.framgia.fdms.screen.devicecreation.CreateDeviceActivity;
+import com.framgia.fdms.screen.devicecreation.DeviceStatusType;
 import com.framgia.fdms.screen.devicedetail.DeviceDetailActivity;
+import com.framgia.fdms.screen.returndevice.ReturnDeviceActivity;
 import com.framgia.fdms.screen.selection.StatusSelectionActivity;
 import com.framgia.fdms.screen.selection.StatusSelectionType;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,6 +221,19 @@ public class ListDeviceViewModel extends BaseObservable
         mAdapter.clear();
         mKeyWord = keyWord;
         mPresenter.getData(mKeyWord, mCategory, mStatus);
+    }
+
+    @Override
+    public void onStartReturnDevice(FloatingActionsMenu floatingActionsMenu) {
+        floatingActionsMenu.collapse();
+        mFragment.startActivity(ReturnDeviceActivity.newIntent(mFragment.getContext()));
+    }
+
+    @Override
+    public void onRegisterDeviceClick(FloatingActionsMenu floatingActionsMenu) {
+        floatingActionsMenu.collapse();
+        mFragment.startActivity(
+                CreateDeviceActivity.getInstance(mFragment.getContext(), DeviceStatusType.CREATE));
     }
 
     public void updateCategory(List<Category> list) {
