@@ -4,12 +4,12 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.android.databinding.library.baseAdapters.BR;
+
+import com.framgia.fdms.BR;
 
 /**
  * Created by framgia on 03/07/2017.
  */
-
 public class Producer extends BaseObservable implements Parcelable {
     private String mName;
     private String mDescription;
@@ -24,7 +24,7 @@ public class Producer extends BaseObservable implements Parcelable {
 
     @Bindable
     public String getName() {
-        return mName;
+        return mName == null ? "" : mName;
     }
 
     public void setName(String name) {
@@ -34,7 +34,7 @@ public class Producer extends BaseObservable implements Parcelable {
 
     @Bindable
     public String getDescription() {
-        return mDescription;
+        return mDescription == null ? "" : mDescription;
     }
 
     public void setDescription(String description) {

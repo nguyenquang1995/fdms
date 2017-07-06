@@ -19,12 +19,16 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -488,6 +492,32 @@ public final class BindingUtils {
                     button.show();
                 }
                 super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+    }
+
+    @BindingAdapter("messageError")
+    public static void showError(final TextInputLayout textInputLayout, final String message) {
+        EditText editText = textInputLayout.getEditText();
+        if (TextUtils.isEmpty(editText.getText())) {
+            textInputLayout.setError(message);
+        }
+        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(editable.toString())) {
+                    textInputLayout.setError(message);
+                    return;
+                }
+                textInputLayout.setError("");
             }
         });
     }
