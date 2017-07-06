@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.vendor;
+package com.framgia.fdms.screen.producer.vendor;
 
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.data.source.VendorRepository;

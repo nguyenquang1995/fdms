@@ -11,8 +11,8 @@ import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.ViewPagerScroll;
 import com.framgia.fdms.screen.device.listdevice.ListDeviceFragment;
-import com.framgia.fdms.screen.marker.MarkerFragment;
-import com.framgia.fdms.screen.vendor.VendorFragment;
+import com.framgia.fdms.screen.producer.marker.MarkerFragment;
+import com.framgia.fdms.screen.producer.vendor.VendorFragment;
 
 import java.util.ArrayList;
 import java.util.List;

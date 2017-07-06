@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.vendor;
+package com.framgia.fdms.screen.producer;
 
 import android.app.Dialog;
 import android.databinding.DataBindingUtil;
@@ -10,19 +10,20 @@ import android.view.LayoutInflater;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.databinding.DialogEditVendorBinding;
+import com.framgia.fdms.screen.producer.vendor.VendorViewModel;
 import com.framgia.fdms.utils.Constant;
 
 /**
  * Created by framgia on 04/07/2017.
  */
 
-public class VendorDialog extends DialogFragment {
+public class ProducerDialog extends DialogFragment {
 
-    public static VendorDialog newInstant(VendorViewModel vendorViewModel, Producer vendor) {
+    public static ProducerDialog newInstant(VendorViewModel vendorViewModel, Producer vendor) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constant.BundleConstant.BUNDLE_DEVICE, vendor);
         bundle.putParcelable(Constant.BundleConstant.BUNDLE_CONTENT, vendorViewModel);
-        VendorDialog vendorDialog = new VendorDialog();
+        ProducerDialog vendorDialog = new ProducerDialog();
         vendorDialog.setArguments(bundle);
         return vendorDialog;
     }
