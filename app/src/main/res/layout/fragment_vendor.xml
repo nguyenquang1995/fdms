@@ -2,14 +2,14 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+>
 
     <data>
 
         <variable
             name="viewModel"
             type="com.framgia.fdms.screen.vendor.VendorViewModel"
-            />
+        />
 
     </data>
 
@@ -17,17 +17,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        >
+    >
         <android.support.v7.widget.SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_search"
-            />
+        />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
             app:recyclerAdapter="@{viewModel.adapter}"
-            />
+            app:scrollPosition="@{viewModel.positionScroll}"
+        />
     </LinearLayout>
 </layout>

@@ -5,9 +5,12 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 
+import com.framgia.fdms.BR;
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
@@ -15,6 +18,8 @@ import com.framgia.fdms.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
 
 /**
  * Exposes the data to be used in the Vendor screen.
@@ -26,6 +31,7 @@ public class VendorViewModel extends BaseObservable
     private List<Producer> mVendors = new ArrayList<>();
     private AppCompatActivity mActivity;
     private VendorDialog mVendorDialog;
+    private int mPositionScroll = OUT_OF_INDEX;
 
     public VendorViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
@@ -52,6 +58,16 @@ public class VendorViewModel extends BaseObservable
         return mAdapter;
     }
 
+    @Bindable
+    public int getPositionScroll() {
+        return mPositionScroll;
+    }
+
+    public void setPositionScroll(int positionScroll) {
+        mPositionScroll = positionScroll;
+        notifyPropertyChanged(BR.positionScroll);
+    }
+
     @Override
     public void onEditVendorClick(Producer vendor) {
         mVendorDialog = VendorDialog.newInstant(this, vendor);
@@ -60,7 +76,29 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onDeleteVendorClick(Producer vendor) {
+    public void onDeleteVendorClick(final Producer vendor) {
+        final int indexRemove = mVendors.indexOf(vendor);
+        mVendors.remove(vendor);
+        mAdapter.notifyItemRemoved(indexRemove);
+        Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.title_vendor_delete,
+            Snackbar.LENGTH_LONG)
+            .setAction(R.string.title_undo, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mVendors.add(indexRemove, vendor);
+                    mAdapter.notifyItemInserted(indexRemove);
+                    setPositionScroll(indexRemove);
+                }
+            })
+            .addCallback(new Snackbar.Callback() {
+                @Override
+                public void onDismissed(Snackbar transientBottomBar, int event) {
+                    super.onDismissed(transientBottomBar, event);
+                    setPositionScroll(OUT_OF_INDEX);
+                    // TODO: next task
+                }
+            })
+            .show();
     }
 
     @Override
@@ -78,7 +116,7 @@ public class VendorViewModel extends BaseObservable
 
     @Override
     public void onEditSubmitClick(Producer vendor) {
-        // TODO: next task
+        mVendorDialog.dismiss();
     }
 
     @Override
