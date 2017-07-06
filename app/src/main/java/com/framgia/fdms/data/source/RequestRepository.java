@@ -14,14 +14,14 @@ import rx.Observable;
 
 public class RequestRepository implements RequestRepositoryContract {
     private RequestDataSource.RemoteDataSource mRemoteDataSource;
-    private static RequestRepository requestRepository;
+    private static RequestRepository sRequestRepository;
 
     public static RequestRepository getInstant(
             RequestDataSource.RemoteDataSource remoteDataSource) {
-        if (requestRepository == null) {
-            requestRepository = new RequestRepository(remoteDataSource);
+        if (sRequestRepository == null) {
+            sRequestRepository = new RequestRepository(remoteDataSource);
         }
-        return requestRepository;
+        return sRequestRepository;
     }
 
     public RequestRepository(RequestDataSource.RemoteDataSource remoteDataSource) {
