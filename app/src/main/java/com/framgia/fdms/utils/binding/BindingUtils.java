@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Category;
@@ -37,12 +38,12 @@ import com.framgia.fdms.screen.device.listdevice.ListDeviceViewModel;
 import com.framgia.fdms.screen.devicedetail.DeviceDetailViewModel;
 import com.framgia.fdms.screen.requestcreation.RequestCreationViewModel;
 import com.framgia.fdms.screen.requestdetail.RequestDetailViewModel;
-import com.framgia.fdms.utils.Constant;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -57,6 +58,7 @@ import static com.framgia.fdms.utils.Constant.DeviceStatus.CANCELLED;
 import static com.framgia.fdms.utils.Constant.DeviceStatus.DONE;
 import static com.framgia.fdms.utils.Constant.DeviceStatus.WAITING_APPROVE;
 import static com.framgia.fdms.utils.Constant.DeviceStatus.WAITING_DONE;
+import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
 
 /**
  * Created by Age on 4/3/2017.
@@ -73,20 +75,20 @@ public final class BindingUtils {
         // No-op
     }
 
-    @BindingAdapter({ "recyclerAdapter" })
+    @BindingAdapter({"recyclerAdapter"})
     public static void setAdapterForRecyclerView(RecyclerView recyclerView,
-            RecyclerView.Adapter adapter) {
+                                                 RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
     }
 
-    @BindingAdapter(value = { "app:imageUrl", "app:error" }, requireAll = false)
+    @BindingAdapter(value = {"app:imageUrl", "app:error"}, requireAll = false)
     public static void loadImage(ImageView view, String imageUrl, Drawable error) {
         if (error == null) {
             Glide.with(view.getContext())
-                    .load(imageUrl)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_no_image)
-                    .into(view);
+                .load(imageUrl)
+                .centerCrop()
+                .placeholder(R.drawable.ic_no_image)
+                .into(view);
         } else {
             Glide.with(view.getContext()).load(imageUrl).centerCrop().placeholder(error).into(view);
         }
@@ -97,33 +99,33 @@ public final class BindingUtils {
         layout.setError(text);
     }
 
-    @BindingAdapter({ "spinnerAdapter" })
+    @BindingAdapter({"spinnerAdapter"})
     public static void setAdapterForSpinner(AppCompatSpinner spinner,
-            ArrayAdapter<String> adapter) {
+                                            ArrayAdapter<String> adapter) {
         spinner.setAdapter(adapter);
     }
 
-    @BindingAdapter({ "bind:font" })
+    @BindingAdapter({"bind:font"})
     public static void setFont(TextView textView, String fontName) {
         textView.setTypeface(Typeface.createFromAsset(textView.getContext().getAssets(), fontName));
     }
 
-    @BindingAdapter({ "scrollListenner" })
+    @BindingAdapter({"scrollListenner"})
     public static void setScrollListenner(RecyclerView recyclerView,
-            RecyclerView.OnScrollListener listener) {
+                                          RecyclerView.OnScrollListener listener) {
         recyclerView.addOnScrollListener(listener);
     }
 
-    @BindingAdapter(value = { "bind:adapter", "model", "linearDot" }, requireAll = false)
+    @BindingAdapter(value = {"bind:adapter", "model", "linearDot"}, requireAll = false)
     public static void setupViewPager(final ViewPager viewPager, FragmentPagerAdapter adapter,
-            final ViewPagerScroll viewModel, final LinearLayout layout) {
+                                      final ViewPagerScroll viewModel, final LinearLayout layout) {
         viewPager.setAdapter(adapter);
         if (viewModel == null) return;
         if (adapter != null) viewPager.setOffscreenPageLimit(adapter.getCount());
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
+                                       int positionOffsetPixels) {
             }
 
             @Override
@@ -136,7 +138,7 @@ public final class BindingUtils {
                             continue;
                         }
                         view.setBackgroundResource(position == i ? R.drawable.ic_circle_white
-                                : R.drawable.ic_circle_border_white);
+                            : R.drawable.ic_circle_border_white);
                     }
                 }
             }
@@ -178,52 +180,45 @@ public final class BindingUtils {
 
     private static void changeImageColor(ImageView image, int colorRes) {
         image.getDrawable()
-                .setColorFilter(image.getContext().getResources().getColor(colorRes),
-                        PorterDuff.Mode.SRC_IN);
+            .setColorFilter(image.getContext().getResources().getColor(colorRes),
+                PorterDuff.Mode.SRC_IN);
     }
 
-    @BindingAdapter({ "bind:activity" })
+    @BindingAdapter({"bind:activity"})
     public static void setupViewPager(Toolbar view, AppCompatActivity activity) {
         activity.setSupportActionBar(view);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @BindingAdapter({ "pieData", "totalValue", "description" })
+    @BindingAdapter({"pieData", "totalValue", "description"})
     public static void setData(PieChart pieChart, PieData pieData, int total, String description) {
         Resources resources = pieChart.getContext().getResources();
-
         if (pieData.getDataSetCount() > 0) {
             pieChart.setUsePercentValues(true);
             pieChart.setDrawEntryLabels(false);
             pieChart.getDescription().setEnabled(false);
             pieChart.setDragDecelerationFrictionCoef(DECELERATION_FRICTION_COEF);
-
             pieChart.setDrawHoleEnabled(true);
             pieChart.setHoleColor(Color.WHITE);
             pieChart.setTransparentCircleColor(Color.WHITE);
             pieChart.setTransparentCircleAlpha(CIRCLE_ALPHA);
-
             pieChart.setDrawCenterText(true);
             pieChart.setRotationAngle(ROTATION_ANGLE);
-
             pieChart.setRotationEnabled(true);
             pieChart.setHighlightPerTapEnabled(true);
             pieChart.setCenterText(resources.getString(R.string.title_total) + total);
             pieChart.setCenterTextColor(Color.BLUE);
             pieChart.setCenterTextSize(TEXT_CENTER_SIZE);
             pieChart.animateY(ANIMATE_DURATION, Easing.EasingOption.EaseInOutQuad);
-
             pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
             pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
             pieChart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
             pieChart.getLegend().setDrawInside(false);
-
             pieChart.setEntryLabelColor(Color.WHITE);
             pieChart.setEntryLabelTextSize(TEXT_LABLE_SIZE);
             pieData.setValueFormatter(new PercentFormatter());
             pieData.setValueTextSize(TEXT_LABLE_SIZE);
             pieData.setValueTextColor(Color.WHITE);
-
             pieChart.setData(pieData);
             pieChart.invalidate();
         }
@@ -233,7 +228,7 @@ public final class BindingUtils {
     * set Toolbar Activity device return
     * */
 
-    @BindingAdapter({ "view", "titleToolbar" })
+    @BindingAdapter({"view", "titleToolbar"})
     public static void bindToolbar(Toolbar view, AppCompatActivity activity, String resTitle) {
         if (activity == null) return;
         activity.setSupportActionBar(view);
@@ -243,13 +238,13 @@ public final class BindingUtils {
         activity.setTitle(resTitle);
     }
 
-    @BindingAdapter({ "model" })
+    @BindingAdapter({"model"})
     public static void setupViewPagerDashBorad(final ViewPager viewPager,
-            final DashboardViewModel viewModel) {
+                                               final DashboardViewModel viewModel) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
+                                       int positionOffsetPixels) {
             }
 
             @Override
@@ -266,7 +261,6 @@ public final class BindingUtils {
     @BindingAdapter("tabDashBoard")
     public static void onChangeImage(TextView image, int tab) {
         image.setBackgroundResource(R.drawable.bg_circle_grey);
-
         switch (tab) {
             case TAB_DEVIVE_DASH_BOARD:
                 if (image.getId() == R.id.image_device_dashboard) {
@@ -295,7 +289,7 @@ public final class BindingUtils {
             return;
         }
         String niceDateStr = String.valueOf(DateUtils.getRelativeTimeSpanString(dateTime.getTime(),
-                Calendar.getInstance().getTimeInMillis(), DateUtils.MINUTE_IN_MILLIS));
+            Calendar.getInstance().getTimeInMillis(), DateUtils.MINUTE_IN_MILLIS));
         view.setText(niceDateStr);
     }
 
@@ -322,7 +316,7 @@ public final class BindingUtils {
         }
     }
 
-    @BindingAdapter({ "model" })
+    @BindingAdapter({"model"})
     public static void onSearch(final SearchView view, final ListDeviceViewModel viewModel) {
         view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -337,7 +331,6 @@ public final class BindingUtils {
                 return true;
             }
         });
-
         view.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -347,7 +340,7 @@ public final class BindingUtils {
         });
     }
 
-    @BindingAdapter({ "resourceId" })
+    @BindingAdapter({"resourceId"})
     public static void setImage(ImageView view, int resource) {
         view.setImageResource(resource);
     }
@@ -359,10 +352,10 @@ public final class BindingUtils {
     }
 
     @BindingAdapter(value = {
-            "deviceCategoryId", "deviceCategoryIdAttrChanged"
+        "deviceCategoryId", "deviceCategoryIdAttrChanged"
     }, requireAll = false)
     public static void setCategoryId(AppCompatSpinner view, int newSelectedValue,
-            final InverseBindingListener bindingListener) {
+                                     final InverseBindingListener bindingListener) {
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -377,9 +370,9 @@ public final class BindingUtils {
         view.setOnItemSelectedListener(listener);
     }
 
-    @BindingAdapter({ "position", "viewModel" })
+    @BindingAdapter({"position", "viewModel"})
     public static void setAdapterSpinner(AppCompatSpinner spinner, final int position,
-            final RequestCreationViewModel viewModel) {
+                                         final RequestCreationViewModel viewModel) {
         spinner.setAdapter(viewModel.getAdapterCategory());
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -409,8 +402,7 @@ public final class BindingUtils {
         view.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
-
+                                       int positionOffsetPixels) {
             }
 
             @Override
@@ -420,7 +412,6 @@ public final class BindingUtils {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -441,7 +432,7 @@ public final class BindingUtils {
 
     @BindingAdapter("swipeRefreshListener")
     public static void setOnRefreshUserRequest(SwipeRefreshLayout view,
-            SwipeRefreshLayout.OnRefreshListener listener) {
+                                               SwipeRefreshLayout.OnRefreshListener listener) {
         view.setOnRefreshListener(listener);
     }
 
@@ -452,10 +443,10 @@ public final class BindingUtils {
 
     @BindingAdapter("setVisibility")
     public static void setVisibility(com.github.clans.fab.FloatingActionButton view,
-            RequestDetailViewModel viewModel) {
-        int visibility = viewModel.getStatusRequest().equals(Constant.DeviceStatus.DONE)
-                || viewModel.getStatusRequest().equals(Constant.DeviceStatus.APPROVED) ? View.GONE
-                : View.VISIBLE;
+                                     RequestDetailViewModel viewModel) {
+        int visibility = viewModel.getStatusRequest().equals(DONE)
+            || viewModel.getStatusRequest().equals(APPROVED) ? View.GONE
+            : View.VISIBLE;
         view.setVisibility(visibility);
     }
 
@@ -465,16 +456,23 @@ public final class BindingUtils {
         for (int i = 0; i <= total; i++) {
             ImageView imageView = new ImageView(layout.getContext());
             LinearLayout.LayoutParams lp =
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT);
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins((int) resources.getDimension(R.dimen.dp_0),
-                    (int) resources.getDimension(R.dimen.dp_0),
-                    (int) resources.getDimension(R.dimen.dp_10),
-                    (int) resources.getDimension(R.dimen.dp_0));
+                (int) resources.getDimension(R.dimen.dp_0),
+                (int) resources.getDimension(R.dimen.dp_10),
+                (int) resources.getDimension(R.dimen.dp_0));
             imageView.setLayoutParams(lp);
             layout.addView(imageView);
             layout.getChildAt(i).setBackgroundResource(R.drawable.ic_circle_border_white);
         }
         layout.getChildAt(0).setBackgroundResource(R.drawable.ic_circle_white);
+    }
+
+    @BindingAdapter("scrollPosition")
+    public static void scrollToPosition(RecyclerView recyclerView, int position) {
+        if (position > OUT_OF_INDEX && position < (recyclerView.getChildCount() - 1)) {
+            recyclerView.smoothScrollToPosition(position);
+        }
     }
 }
