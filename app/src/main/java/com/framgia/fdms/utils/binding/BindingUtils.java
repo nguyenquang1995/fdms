@@ -475,4 +475,20 @@ public final class BindingUtils {
             recyclerView.smoothScrollToPosition(position);
         }
     }
+
+    @BindingAdapter("hideButton")
+    public static void hideFloatButton(RecyclerView recyclerView,
+                                       final FloatingActionButton button) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    button.hide();
+                } else {
+                    button.show();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+    }
 }

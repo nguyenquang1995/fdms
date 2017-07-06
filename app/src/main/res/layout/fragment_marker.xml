@@ -13,26 +13,44 @@
 
     </data>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:layout_height="match_parent">
 
-        <com.arlib.floatingsearchview.FloatingSearchView
-            android:id="@+id/floating_search_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
-            app:floatingSearch_leftActionMode="showHamburger"
-            app:floatingSearch_menu="@menu/menu_search"
-            app:floatingSearch_searchHint="@string/title_searching"
-            app:floatingSearch_showSearchKey="true"/>
-
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="LinearLayoutManager"
-            app:recyclerAdapter="@{viewModel.adapter}"
+            android:orientation="vertical">
+
+            <com.arlib.floatingsearchview.FloatingSearchView
+                android:id="@+id/floating_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:floatingSearch_leftActionMode="showHamburger"
+                app:floatingSearch_menu="@menu/menu_search"
+                app:floatingSearch_searchHint="@string/title_searching"
+                app:floatingSearch_showSearchKey="true"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hideButton="@{floatAddButton}"
+                app:layoutManager="LinearLayoutManager"
+                app:recyclerAdapter="@{viewModel.adapter}"
+                />
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/float_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/dp_16"
+            android:src="@drawable/ic_add_white_24dp"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:elevation="@dimen/dp_20"
+            app:fabSize="normal"
             />
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>
