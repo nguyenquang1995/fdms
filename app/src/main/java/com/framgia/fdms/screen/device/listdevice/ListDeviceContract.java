@@ -7,6 +7,7 @@ import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.Status;
 import com.framgia.fdms.data.model.User;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.List;
 
 /**
@@ -44,6 +45,10 @@ interface ListDeviceContract {
         void setupFloatingActionsMenu(User user);
 
         void loadData();
+
+        void onStartReturnDevice(FloatingActionsMenu floatingActionsMenu);
+
+        void onRegisterDeviceClick(FloatingActionsMenu floatingActionsMenu);
     }
 
     /**
