@@ -9,8 +9,6 @@ import rx.Observable;
 /**
  * Created by beepi on 05/07/2017.
  */
-public interface MakerDataSource {
-    interface RemoteDataSource {
-        Observable<List<Producer>> getListMarkers(int page, int perPage);
-    }
+public interface MakerRepositoryContract {
+    Observable<List<Producer>> getMakers(int page, int perpage);
 }

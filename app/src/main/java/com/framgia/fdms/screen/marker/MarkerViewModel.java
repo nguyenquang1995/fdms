@@ -1,14 +1,26 @@
 package com.framgia.fdms.screen.marker;
 
+import android.app.Activity;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.support.design.widget.Snackbar;
+
+import com.android.databinding.library.baseAdapters.BR;
+import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Producer;
+
+import java.util.List;
+
 /**
  * Exposes the data to be used in the MarkerFragment screen.
  */
-
-public class MarkerViewModel implements MarkerContract.ViewModel {
-
+public class MarkerViewModel extends BaseObservable implements MarkerContract.ViewModel {
     private MarkerContract.Presenter mPresenter;
+    private MakerApdater mAdapter;
+    private Activity mActivity;
 
-    public MarkerViewModel() {
+    public MarkerViewModel(Activity activity) {
+        mActivity = activity;
     }
 
     @Override
@@ -24,5 +36,27 @@ public class MarkerViewModel implements MarkerContract.ViewModel {
     @Override
     public void setPresenter(MarkerContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onLoadMakerFail() {
+        Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.error_load_makers,
+            Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoadMakerSucessfully(List<Producer> makers) {
+        mAdapter = new MakerApdater(makers);
+        setAdapter(mAdapter);
+    }
+
+    @Bindable
+    public MakerApdater getAdapter() {
+        return mAdapter;
+    }
+
+    public void setAdapter(MakerApdater adapter) {
+        mAdapter = adapter;
+        notifyPropertyChanged(BR.adapter);
     }
 }
