@@ -92,7 +92,6 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
-                        android:visibility="@{viewModel.bo ? View.VISIBLE : View.GONE}"
                         />
                     <TextView
                         android:layout_width="@dimen/dp_0"
@@ -109,7 +108,6 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
-                        android:visibility="@{viewModel.bo ? View.VISIBLE : View.GONE}"
                         />
 
                 </LinearLayout>
