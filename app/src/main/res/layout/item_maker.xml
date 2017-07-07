@@ -55,14 +55,16 @@
                 <ImageView
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
-                    android:padding="@dimen/dp_7"
+                    android:layout_marginRight="@dimen/dp_3"
+                    android:onClick="@{()-> viewModel.onEditProducerClick(maker)}"
+                    android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_pencil_edit_button"
                     />
 
                 <ImageView
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
-                    android:padding="@dimen/dp_7"
+                    android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_delete"
                     />
             </LinearLayout>

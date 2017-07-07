@@ -1,14 +1,16 @@
 package com.framgia.fdms.screen.producer.marker;
 
-import android.app.Activity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
+import com.framgia.fdms.screen.producer.ProducerDialog;
+import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 
 import java.util.List;
 
@@ -17,11 +19,13 @@ import java.util.List;
  */
 public class MarkerViewModel extends BaseObservable
     implements MarkerContract.ViewModel, FloatingSearchView.OnQueryChangeListener {
-    private MarkerContract.Presenter mPresenter;
+    private ProducerFunctionContract.ProducerPresenter mPresenter;
     private MakerApdater mAdapter;
-    private Activity mActivity;
+    private FragmentActivity mActivity;
+    private ProducerDialog mDialog;
+    private static final String TAG = "MAKER_DIALOG";
 
-    public MarkerViewModel(Activity activity) {
+    public MarkerViewModel(FragmentActivity activity) {
         mActivity = activity;
     }
 
@@ -36,7 +40,7 @@ public class MarkerViewModel extends BaseObservable
     }
 
     @Override
-    public void setPresenter(MarkerContract.Presenter presenter) {
+    public void setPresenter(ProducerFunctionContract.ProducerPresenter presenter) {
         mPresenter = presenter;
     }
 
@@ -48,7 +52,7 @@ public class MarkerViewModel extends BaseObservable
 
     @Override
     public void onLoadMakerSucessfully(List<Producer> makers) {
-        mAdapter = new MakerApdater(makers);
+        mAdapter = new MakerApdater(makers, this);
         setAdapter(mAdapter);
     }
 
@@ -65,5 +69,24 @@ public class MarkerViewModel extends BaseObservable
     @Override
     public void onSearchTextChanged(String oldQuery, String newQuery) {
         //// TODO: 06/07/2017 later
+    }
+
+    @Override
+    public void onEditProducerClick(Producer maker) {
+        mDialog = ProducerDialog.newInstant(maker, mActivity.getResources()
+            .getString(R.string.action_edit));
+        mDialog.show(mActivity.getSupportFragmentManager(), TAG);
+    }
+
+    @Override
+    public void onDeleteProducerClick(Producer maker) {
+    }
+
+    @Override
+    public void onEditSubmitClick(Producer maker) {
+    }
+
+    @Override
+    public void onAddProducerClick() {
     }
 }

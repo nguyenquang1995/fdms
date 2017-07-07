@@ -76,6 +76,7 @@ public class Constant {
         public static final String BUNDLE_TAB = "BUNDLE_TAB";
         public static final String BUNDLE_USER = "USER_BUND";
         public static final String BUNDLE_PRODUCER = "BUNDLE_PRODUCER";
+        public static final String BUNDLE_TITLE = "BUNDLE_TITLE";
     }
 
     public static final class RequestConstant {
