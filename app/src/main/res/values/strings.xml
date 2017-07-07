@@ -230,4 +230,13 @@
     <string name="error_load_makers">Sorry, Not load makers successfully !!!</string>
     <string name="title_searching">Search...</string>
     <string name="top_sheet_behavior" translatable="false">com.framgia.fdms.widget.TopSheetBehavior</string>
+    <string name="title_welcome">Welcome</string>
+    <string name="action_close_show_case">GOT IT</string>
+    <string name="show_case_home_description">This screen contains the diagrams of the request and the device</string>
+    <string name="show_case_request_description">This screen contains device requirements</string>
+    <string name="show_case_device_description">This screen contains your devices</string>
+    <string name="show_case_profile_description">This screen contains your information</string>
+    <string name="show_case_qr_code_description">This is the button that you use to view device information via qrcode</string>
+    <string name="show_case_notification_description">This screen contains your notification</string>
+    <string name="show_case_add_request_description">This is the button that you use to request a borrowed device</string>
 </resources>

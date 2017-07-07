@@ -1,5 +1,6 @@
 package com.framgia.fdms.utils.binding;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
@@ -40,8 +41,10 @@ import com.framgia.fdms.screen.ViewPagerScroll;
 import com.framgia.fdms.screen.dashboard.DashboardViewModel;
 import com.framgia.fdms.screen.device.listdevice.ListDeviceViewModel;
 import com.framgia.fdms.screen.devicedetail.DeviceDetailViewModel;
+import com.framgia.fdms.screen.main.MainViewModel;
 import com.framgia.fdms.screen.requestcreation.RequestCreationViewModel;
 import com.framgia.fdms.screen.requestdetail.RequestDetailViewModel;
+import com.framgia.fdms.widget.FDMSShowcaseSequence;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -50,6 +53,10 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 import static com.framgia.fdms.screen.dashboard.DashboardViewModel.Tab.TAB_DEVIVE_DASH_BOARD;
 import static com.framgia.fdms.screen.dashboard.DashboardViewModel.Tab.TAB_REQUEST_DASH_BOARD;
@@ -520,5 +527,46 @@ public final class BindingUtils {
                 textInputLayout.setError("");
             }
         });
+    }
+
+    @BindingAdapter({"showcaseSequence", "contentShowCase", "dismissText"})
+    public static void setTooltip(final View view, final FDMSShowcaseSequence sequence, String
+        content, String dismissText) {
+        sequence.addSequenceItem(view, content, dismissText);
+    }
+
+    @BindingAdapter("model")
+    public static void setShowcase(final View view, final MainViewModel viewModel) {
+        if (viewModel == null) {
+            return;
+        }
+        Activity activity = viewModel.getActivity();
+        final FDMSShowcaseSequence sequence = viewModel.getSequence();
+        new MaterialShowcaseView.Builder(activity).setTarget(view)
+            .withoutShape()
+            .setMaskColour(R.color.color_black_transprarent)
+            .setDismissText(R.string.title_ok)
+            .setContentText(R.string.title_welcome)
+            .setListener(new IShowcaseListener() {
+                @Override
+                public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
+                }
+
+                @Override
+                public void onShowcaseDismissed(MaterialShowcaseView materialShowcaseView) {
+                    sequence.start();
+                }
+            })
+            .show();
+        sequence.setOnItemDismissedListener(
+            new MaterialShowcaseSequence.OnSequenceItemDismissedListener() {
+                @Override
+                public void onDismiss(MaterialShowcaseView materialShowcaseView, int i) {
+                    sequence.setCount(sequence.getCount() - 1);
+                    if (sequence.getCount() == 0) {
+                        // TODO: 07/07/2017 call onShowCaseDashBoard()
+                    }
+                }
+            });
     }
 }
