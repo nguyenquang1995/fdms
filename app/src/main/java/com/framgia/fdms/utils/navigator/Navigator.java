@@ -16,10 +16,6 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import com.framgia.fdms.R;
 
-/**
- *
- */
-
 public class Navigator {
 
     public static final int NONE = 0;

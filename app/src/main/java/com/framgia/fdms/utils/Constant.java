@@ -25,6 +25,7 @@ public class Constant {
     public static final String TYPE_PDF = "application/pdf";
     public static final String TYPE_WORD = "application/msword";
     public static final String TITLE_NOW = "NOW";
+    public static final String TAG_MAKER_DIALOG = "MAKER_DIALOG";
 
     private Constant() {
         // No-op
@@ -77,6 +78,7 @@ public class Constant {
         public static final String BUNDLE_USER = "USER_BUND";
         public static final String BUNDLE_PRODUCER = "BUNDLE_PRODUCER";
         public static final String BUNDLE_TITLE = "BUNDLE_TITLE";
+        public static final String BUNDLE_ACTION_CALLBACK = "BUNDLE_ACTION_CALLBACK";
     }
 
     public static final class RequestConstant {

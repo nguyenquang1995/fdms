@@ -15,8 +15,10 @@ import java.util.List;
  * Created by beepi on 05/07/2017.
  */
 public class MakerApdater extends RecyclerView.Adapter<MakerApdater.ViewHolder> {
+    private static final int FIRST_INDEX = 0;
     private List<Producer> mMakers;
     private MarkerViewModel mMakerModel;
+
     public MakerApdater(List<Producer> makers, MarkerViewModel viewModel) {
         mMakers = makers;
         mMakerModel = viewModel;
@@ -38,6 +40,11 @@ public class MakerApdater extends RecyclerView.Adapter<MakerApdater.ViewHolder> 
     @Override
     public int getItemCount() {
         return mMakers == null ? 0 : mMakers.size();
+    }
+
+    public void onAddItems(Producer maker) {
+        mMakers.add(FIRST_INDEX, maker);
+        notifyItemInserted(FIRST_INDEX);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

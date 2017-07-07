@@ -2,32 +2,37 @@ package com.framgia.fdms.screen.producer.marker;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+
 import com.android.databinding.library.baseAdapters.BR;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.screen.producer.ProducerDialog;
+import com.framgia.fdms.screen.producer.ProducerDialogContract;
 import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 
 import java.util.List;
 
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
+import static com.framgia.fdms.utils.Constant.TAG_MAKER_DIALOG;
 
 /**
  * Exposes the data to be used in the MarkerFragment screen.
  */
 public class MarkerViewModel extends BaseObservable
-    implements MarkerContract.ViewModel, FloatingSearchView.OnQueryChangeListener {
-    private static final String TAG_MAKER_DIALOG = "MAKER_DIALOG";
+    implements MarkerContract.ViewModel, FloatingSearchView.OnQueryChangeListener,
+    ProducerDialogContract.ActionCallback {
     private ProducerFunctionContract.ProducerPresenter mPresenter;
     private MakerApdater mAdapter;
     private FragmentActivity mActivity;
     private ProducerDialog mDialog;
     private List<Producer> mMakers;
     private int mPositionScroll = OUT_OF_INDEX;
+
     public MarkerViewModel(FragmentActivity activity) {
         mActivity = activity;
     }
@@ -78,13 +83,13 @@ public class MarkerViewModel extends BaseObservable
     @Override
     public void onEditProducerClick(Producer maker) {
         mDialog = ProducerDialog.newInstant(maker, mActivity.getResources()
-            .getString(R.string.action_edit));
+            .getString(R.string.action_edit), this);
         mDialog.show(mActivity.getSupportFragmentManager(), TAG_MAKER_DIALOG);
     }
 
     @Override
     public void onDeleteProducerClick(final Producer maker) {
-        if(mMakers == null || maker == null) {
+        if (mMakers == null || maker == null) {
             return;
         }
         final int indexRemove = mMakers.indexOf(maker);
@@ -112,11 +117,10 @@ public class MarkerViewModel extends BaseObservable
     }
 
     @Override
-    public void onEditSubmitClick(Producer maker) {
-    }
-
-    @Override
     public void onAddProducerClick() {
+        mDialog = ProducerDialog.newInstant(new Producer(), mActivity.getResources()
+            .getString(R.string.title_add_producer), this);
+        mDialog.show(mActivity.getSupportFragmentManager(), TAG_MAKER_DIALOG);
     }
 
     @Bindable
@@ -127,5 +131,28 @@ public class MarkerViewModel extends BaseObservable
     public void setPositionScroll(int positionScroll) {
         mPositionScroll = positionScroll;
         notifyPropertyChanged(BR.positionScroll);
+    }
+
+    @Override
+    public void onAddCallback(Producer maker) {
+        if (mAdapter == null || maker == null) return;
+        mAdapter.onAddItems(maker);
+        setPositionScroll(0);
+    }
+
+    @Override
+    public void onEditCallback(Producer oldProducer, Producer newProducer) {
+        if (oldProducer == null || newProducer == null) return;
+        oldProducer.setDescription(newProducer.getDescription());
+        oldProducer.setName(newProducer.getName());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int i) {
     }
 }
