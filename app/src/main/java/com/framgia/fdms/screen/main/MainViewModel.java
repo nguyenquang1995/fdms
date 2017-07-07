@@ -100,7 +100,7 @@ public class MainViewModel extends BaseObservable
                 // TODO: 07/07/2017  call onShowCase
                 break;
             case TAB_REQUEST_MANAGER:
-                // TODO: 07/07/2017  call onShowCase
+                ((RequestFragment) mPagerAdapter.getItem(TAB_REQUEST_MANAGER)).onShowCase();
                 break;
             case TAB_DEVICE_MANAGER:
                 // TODO: 07/07/2017  call onShowCase
@@ -182,7 +182,7 @@ public class MainViewModel extends BaseObservable
     }
 
     public void onShowCaseDashBoard() {
-        // TODO: 07/07/2017 call onShowCase()
+        ((DashboardFragment) mPagerAdapter.getItem(TAB_DASH_BOARD)).onShowCase();
     }
 
     @IntDef({TAB_DASH_BOARD, TAB_REQUEST_MANAGER, TAB_DEVICE_MANAGER, TAB_PROFILE})

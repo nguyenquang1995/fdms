@@ -7,26 +7,28 @@ import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
+
 import com.framgia.fdms.BR;
+import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment;
 import com.framgia.fdms.screen.notification.NotificationActivity;
+import com.framgia.fdms.widget.FDMSShowcaseSequence;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 import static com.framgia.fdms.screen.dashboard.DashboardViewModel.Tab.TAB_DEVIVE_DASH_BOARD;
 import static com.framgia.fdms.screen.dashboard.DashboardViewModel.Tab.TAB_REQUEST_DASH_BOARD;
-import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment
-        .DEVICE_DASHBOARD;
-import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment
-        .REQUEST_DASHBOARD;
+import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment.DEVICE_DASHBOARD;
+import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment.REQUEST_DASHBOARD;
 
 /**
  * Exposes the data to be used in the Dashboard screen.
  */
-
 public class DashboardViewModel extends BaseObservable implements DashboardContract.ViewModel {
-
     private final int NUMBER_NOTIFICATION = 5;
     private final int MIN_NUMBER_NOTIFICATION = 0;
     private DashboardContract.Presenter mPresenter;
@@ -36,10 +38,15 @@ public class DashboardViewModel extends BaseObservable implements DashboardContr
     private Fragment mFragment;
     private Context mContext;
     private int mNumberNotification = NUMBER_NOTIFICATION;
+    private FDMSShowcaseSequence mSequence;
 
     public DashboardViewModel(Fragment fragment) {
         mFragment = fragment;
         mContext = fragment.getContext();
+        mSequence = new FDMSShowcaseSequence(fragment.getActivity());
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setMaskColor(R.color.color_black_transprarent);
+        mSequence.setConfig(config);
     }
 
     public void onClickChangeTab(ViewPager viewpager, @Tab int tab) {
@@ -95,9 +102,7 @@ public class DashboardViewModel extends BaseObservable implements DashboardContr
     public void setupViewPager(User user) {
         String role = user.getRole();
         if (role == null) return;
-
         setBoRole(user.isBo());
-
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(DashBoardDetailFragment.newInstance(REQUEST_DASHBOARD));
         if (mIsBoRole) fragments.add(DashBoardDetailFragment.newInstance(DEVICE_DASHBOARD));
@@ -116,6 +121,11 @@ public class DashboardViewModel extends BaseObservable implements DashboardContr
         mNumberNotification = MIN_NUMBER_NOTIFICATION;
     }
 
+    @Override
+    public void onShowCase() {
+        mSequence.start();
+    }
+
     @Bindable
     public int getNumberNotification() {
         return mNumberNotification;
@@ -126,8 +136,18 @@ public class DashboardViewModel extends BaseObservable implements DashboardContr
         notifyPropertyChanged(BR.numberNotification);
     }
 
+    @Bindable
+    public FDMSShowcaseSequence getSequence() {
+        return mSequence;
+    }
+
+    public void setSequence(FDMSShowcaseSequence sequence) {
+        mSequence = sequence;
+        notifyPropertyChanged(BR.sequence);
+    }
+
     @IntDef({
-            TAB_DEVIVE_DASH_BOARD, TAB_REQUEST_DASH_BOARD
+        TAB_DEVIVE_DASH_BOARD, TAB_REQUEST_DASH_BOARD
     })
     public @interface Tab {
         int TAB_REQUEST_DASH_BOARD = 0;

@@ -564,7 +564,7 @@ public final class BindingUtils {
                 public void onDismiss(MaterialShowcaseView materialShowcaseView, int i) {
                     sequence.setCount(sequence.getCount() - 1);
                     if (sequence.getCount() == 0) {
-                        // TODO: 07/07/2017 call onShowCaseDashBoard()
+                        viewModel.onShowCaseDashBoard();
                     }
                 }
             });
