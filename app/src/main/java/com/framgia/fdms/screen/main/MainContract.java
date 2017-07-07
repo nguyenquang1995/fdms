@@ -24,6 +24,8 @@ public interface MainContract {
         void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 
         void setShowCase(boolean showCase);
+
+        void setShowCaseRequest(boolean showCaseRequest);
     }
 
     /**

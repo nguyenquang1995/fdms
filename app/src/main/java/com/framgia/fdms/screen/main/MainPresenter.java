@@ -11,6 +11,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.framgia.fdms.data.source.local.sharepref.SharePreferenceKey.IS_SHOW_CASE_MAIN;
+import static com.framgia.fdms.data.source.local.sharepref.SharePreferenceKey.IS_SHOW_CASE_REQUEST;
 
 /**
  * Listens to user actions from the UI ({@link MainActivity}), retrieves the data and updates
@@ -30,6 +31,7 @@ public class MainPresenter implements MainContract.Presenter {
         mDeviceRepository = deviceRepository;
         mSharedPreferences = sharedPreferences;
         mViewModel.setShowCase(mSharedPreferences.get(IS_SHOW_CASE_MAIN, Boolean.class));
+        mViewModel.setShowCaseRequest(mSharedPreferences.get(IS_SHOW_CASE_REQUEST, Boolean.class));
     }
 
     @Override

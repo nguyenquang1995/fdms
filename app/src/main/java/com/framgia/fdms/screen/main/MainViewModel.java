@@ -48,6 +48,7 @@ public class MainViewModel extends BaseObservable
     private AppCompatActivity mActivity;
     private FDMSShowcaseSequence mSequence;
     private boolean mIsShowCase;
+    private boolean mIsShowCaseRequest;
 
     public MainViewModel(AppCompatActivity activity) {
         List<Fragment> fragments = new ArrayList<>();
@@ -100,7 +101,9 @@ public class MainViewModel extends BaseObservable
                 // TODO: 07/07/2017  call onShowCase
                 break;
             case TAB_REQUEST_MANAGER:
-                ((RequestFragment) mPagerAdapter.getItem(TAB_REQUEST_MANAGER)).onShowCase();
+                if (!isShowCaseRequest()) {
+                    ((RequestFragment) mPagerAdapter.getItem(TAB_REQUEST_MANAGER)).onShowCase();
+                }
                 break;
             case TAB_DEVICE_MANAGER:
                 // TODO: 07/07/2017  call onShowCase
@@ -192,6 +195,15 @@ public class MainViewModel extends BaseObservable
     @Override
     public void setShowCase(boolean showCase) {
         mIsShowCase = showCase;
+    }
+
+    public boolean isShowCaseRequest() {
+        return mIsShowCaseRequest;
+    }
+
+    @Override
+    public void setShowCaseRequest(boolean showCaseRequest) {
+        mIsShowCaseRequest = showCaseRequest;
     }
 
     @IntDef({TAB_DASH_BOARD, TAB_REQUEST_MANAGER, TAB_DEVICE_MANAGER, TAB_PROFILE})
