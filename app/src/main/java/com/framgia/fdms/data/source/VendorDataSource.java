@@ -11,5 +11,8 @@ import rx.Observable;
 public class VendorDataSource {
     public interface RemoteDataSource {
         Observable<List<Producer>> getListVendor();
+        Observable<Void> addVendor(Producer producer);
+        Observable<Void> deleteVendor(Producer producer);
+        Observable<Void> editVendor(Producer producer);
     }
 }

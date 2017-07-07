@@ -35,6 +35,7 @@
                 app:layoutManager="LinearLayoutManager"
                 app:recyclerAdapter="@{viewModel.adapter}"
                 app:scrollPosition="@{viewModel.positionScroll}"
+                app:scrollListenner="@{viewModel.scrollListener}"
             />
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_add"

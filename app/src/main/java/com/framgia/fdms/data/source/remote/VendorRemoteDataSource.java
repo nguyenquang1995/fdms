@@ -2,14 +2,15 @@ package com.framgia.fdms.data.source.remote;
 
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.data.source.VendorDataSource;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import rx.Observable;
 
 /**
  * Created by framgia on 03/07/2017.
  */
-
 public final class VendorRemoteDataSource implements VendorDataSource.RemoteDataSource {
     private static VendorRemoteDataSource sInstances;
 
@@ -40,5 +41,20 @@ public final class VendorRemoteDataSource implements VendorDataSource.RemoteData
         list.add(new Producer("PC8", "Cau hinh cao5"));
         list.add(new Producer("PC9", "Cau hinh cao6"));
         return Observable.just(list);
+    }
+
+    @Override
+    public Observable<Void> addVendor(Producer producer) {
+        return Observable.just(null);
+    }
+
+    @Override
+    public Observable<Void> deleteVendor(Producer producer) {
+        return Observable.just(null);
+    }
+
+    @Override
+    public Observable<Void> editVendor(Producer producer) {
+        return Observable.just(null);
     }
 }

@@ -5,9 +5,13 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.framgia.fdms.BR;
 import com.framgia.fdms.FDMSApplication;
@@ -20,6 +24,9 @@ import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.framgia.fdms.screen.producer.vendor.VendorViewModel.Action.ACTION_ADD_VENDOR;
+import static com.framgia.fdms.screen.producer.vendor.VendorViewModel.Action.ACTION_DELETE_VENDOR;
+import static com.framgia.fdms.screen.producer.vendor.VendorViewModel.Action.ACTION_EDIT_VENDOR;
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
 import static com.framgia.fdms.utils.Constant.TAG_MAKER_DIALOG;
 
@@ -34,6 +41,10 @@ public class VendorViewModel extends BaseObservable
     private AppCompatActivity mActivity;
     private ProducerDialog mVendorDialog;
     private int mPositionScroll = OUT_OF_INDEX;
+    private Producer mVendorEdit;
+    private int mTypeAction;
+    private Producer mOldVendor;
+    private boolean mIsLoadMore;
 
     public VendorViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
@@ -72,15 +83,37 @@ public class VendorViewModel extends BaseObservable
 
     @Override
     public void onLoadVendorSuccess(List<Producer> vendors) {
-        mVendors.clear();
         mVendors.addAll(vendors);
         mAdapter.notifyDataSetChanged();
+        mIsLoadMore = false;
     }
 
     @Override
     public void onLoadVendorFailed() {
         Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.msg_load_data_fails,
             Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onActionError() {
+        Toast.makeText(mActivity, mActivity.getString(R.string.error_opps), Toast.LENGTH_SHORT)
+            .show();
+        switch (mTypeAction) {
+            case ACTION_ADD_VENDOR:
+                mVendors.remove(0);
+                mAdapter.notifyItemRemoved(0);
+                break;
+            case ACTION_DELETE_VENDOR:
+                mVendors.add(mPositionScroll, mVendorEdit);
+                mAdapter.notifyItemInserted(mPositionScroll);
+                break;
+            case ACTION_EDIT_VENDOR:
+                mVendorEdit.setName(mOldVendor.getName());
+                mVendorEdit.setDescription(mOldVendor.getDescription());
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -110,7 +143,7 @@ public class VendorViewModel extends BaseObservable
                 public void onDismissed(Snackbar transientBottomBar, int event) {
                     super.onDismissed(transientBottomBar, event);
                     setPositionScroll(OUT_OF_INDEX);
-                    // TODO: next task
+                    ((VendorPresenter) mPresenter).deleteVendor(vendor);
                 }
             })
             .show();
@@ -135,6 +168,37 @@ public class VendorViewModel extends BaseObservable
         if (oldProducer == null || newProducer == null) return;
         oldProducer.setDescription(newProducer.getDescription());
         oldProducer.setName(newProducer.getName());
+    }
+
+    @Bindable
+    public RecyclerView.OnScrollListener getScrollListener() {
+        return mScrollListener;
+    }
+
+    private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (dy <= 0) {
+                return;
+            }
+            LinearLayoutManager layoutManager =
+                (LinearLayoutManager) recyclerView.getLayoutManager();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+            if (!mIsLoadMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                mIsLoadMore = true;
+                ((VendorPresenter) mPresenter).getVendors();
+            }
+        }
+    };
+
+    @IntDef({ACTION_EDIT_VENDOR, ACTION_ADD_VENDOR, ACTION_DELETE_VENDOR})
+    public @interface Action {
+        int ACTION_EDIT_VENDOR = 0;
+        int ACTION_ADD_VENDOR = 1;
+        int ACTION_DELETE_VENDOR = 2;
     }
 
     protected VendorViewModel(Parcel in) {
