@@ -24,6 +24,8 @@ interface VendorContract {
         void onEditSubmitClick(Producer vendor);
 
         void onEditCancelClick(Producer vendor);
+
+        void onAddVendorClick();
     }
 
     /**
