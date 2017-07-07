@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.source.DeviceRepository;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
+import com.framgia.fdms.data.source.local.sharepref.SharePreferenceImp;
 import com.framgia.fdms.data.source.remote.DeviceRemoteDataSource;
 import com.framgia.fdms.databinding.ActivityNewmainBinding;
 
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         DeviceRepository deviceRepository =
             new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance()));
         mViewModel = new MainViewModel(this);
-        MainContract.Presenter presenter = new MainPresenter(mViewModel, deviceRepository);
+        MainContract.Presenter presenter =
+            new MainPresenter(mViewModel, deviceRepository, new SharePreferenceImp(this));
         mViewModel.setPresenter(presenter);
         binding.setViewModel((MainViewModel) mViewModel);
     }

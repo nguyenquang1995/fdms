@@ -29,7 +29,8 @@ public class DashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = new DashboardViewModel(this);
         DashboardContract.Presenter presenter = new DashboardPresenter(mViewModel,
-            new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))));
+            new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))),
+            new SharePreferenceImp(getContext()));
         mViewModel.setPresenter(presenter);
     }
 

@@ -47,7 +47,7 @@ public class MainViewModel extends BaseObservable
     private int mTab = TAB_DASH_BOARD;
     private AppCompatActivity mActivity;
     private FDMSShowcaseSequence mSequence;
-    private ViewPager mViewPager;
+    private boolean mIsShowCase;
 
     public MainViewModel(AppCompatActivity activity) {
         List<Fragment> fragments = new ArrayList<>();
@@ -183,6 +183,15 @@ public class MainViewModel extends BaseObservable
 
     public void onShowCaseDashBoard() {
         ((DashboardFragment) mPagerAdapter.getItem(TAB_DASH_BOARD)).onShowCase();
+    }
+
+    public boolean isShowCase() {
+        return mIsShowCase;
+    }
+
+    @Override
+    public void setShowCase(boolean showCase) {
+        mIsShowCase = showCase;
     }
 
     @IntDef({TAB_DASH_BOARD, TAB_REQUEST_MANAGER, TAB_DEVICE_MANAGER, TAB_PROFILE})
