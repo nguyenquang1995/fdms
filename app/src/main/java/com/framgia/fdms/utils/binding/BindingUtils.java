@@ -537,7 +537,7 @@ public final class BindingUtils {
 
     @BindingAdapter("model")
     public static void setShowcase(final View view, final MainViewModel viewModel) {
-        if (viewModel == null) {
+        if (viewModel == null || viewModel.isShowCase()) {
             return;
         }
         Activity activity = viewModel.getActivity();

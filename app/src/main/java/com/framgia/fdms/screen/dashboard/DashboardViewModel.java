@@ -18,6 +18,8 @@ import com.framgia.fdms.widget.FDMSShowcaseSequence;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static com.framgia.fdms.screen.dashboard.DashboardViewModel.Tab.TAB_DEVIVE_DASH_BOARD;
@@ -124,6 +126,16 @@ public class DashboardViewModel extends BaseObservable implements DashboardContr
     @Override
     public void onShowCase() {
         mSequence.start();
+        mSequence.setOnItemDismissedListener(
+            new MaterialShowcaseSequence.OnSequenceItemDismissedListener() {
+                @Override
+                public void onDismiss(MaterialShowcaseView materialShowcaseView, int i) {
+                    mSequence.setCount(mSequence.getCount() - 1);
+                    if (mSequence.getCount() == 0) {
+                        mPresenter.saveShowCase();
+                    }
+                }
+            });
     }
 
     @Bindable
