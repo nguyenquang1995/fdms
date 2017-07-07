@@ -37,6 +37,7 @@
                 app:hideButton="@{floatAddButton}"
                 app:layoutManager="LinearLayoutManager"
                 app:recyclerAdapter="@{viewModel.adapter}"
+                app:scrollPosition="@{viewModel.positionScroll}"
                 />
 
         </LinearLayout>

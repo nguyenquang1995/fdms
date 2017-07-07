@@ -25,7 +25,6 @@ public class ProducerDialog extends DialogFragment implements ProducerDialogCont
     private ObservableField<String> mMessageError = new ObservableField<>();
     private Producer mProducer, mEditProducer = new Producer();
     private ObservableField<String> mTitle = new ObservableField<>();
-
     public static ProducerDialog newInstant(Producer producer, String title) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_PRODUCER, producer);
