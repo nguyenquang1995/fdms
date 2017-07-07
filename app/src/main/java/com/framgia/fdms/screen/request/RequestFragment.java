@@ -31,7 +31,8 @@ public class RequestFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = new RequestViewModel(this);
         RequestContract.Presenter presenter = new RequestPresenter(mViewModel,
-            new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))));
+            new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))),
+            new SharePreferenceImp(getContext()));
         mViewModel.setPresenter(presenter);
     }
 

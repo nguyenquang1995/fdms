@@ -33,5 +33,7 @@ interface RequestContract {
      */
     interface Presenter extends BasePresenter {
         void getCurrentUser();
+
+        void saveShowCase();
     }
 }
