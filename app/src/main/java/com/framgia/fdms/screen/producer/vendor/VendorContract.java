@@ -1,8 +1,8 @@
 package com.framgia.fdms.screen.producer.vendor;
 
-import com.framgia.fdms.BasePresenter;
-import com.framgia.fdms.BaseViewModel;
 import com.framgia.fdms.data.model.Producer;
+import com.framgia.fdms.screen.producer.ProducerFunctionContract;
+
 import java.util.List;
 
 /**
@@ -12,26 +12,15 @@ interface VendorContract {
     /**
      * View.
      */
-    interface ViewModel extends BaseViewModel<Presenter> {
-        void onEditVendorClick(Producer vendor);
-
-        void onDeleteVendorClick(Producer vendor);
-
+    interface ViewModel extends ProducerFunctionContract.ViewModel<Presenter> {
         void onLoadVendorSuccess(List<Producer> vendors);
-
         void onLoadVendorFailed();
-
-        void onEditSubmitClick(Producer vendor);
-
-        void onEditCancelClick(Producer vendor);
-
-        void onAddVendorClick();
     }
 
     /**
      * Presenter.
      */
-    interface Presenter extends BasePresenter {
+    interface Presenter extends ProducerFunctionContract.ProducerPresenter {
         void getVendors();
     }
 }
