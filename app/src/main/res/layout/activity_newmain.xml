@@ -39,6 +39,7 @@
                 android:layout_height="@dimen/dp_50"
                 android:background="@drawable/bg_layer_list"
                 android:orientation="horizontal"
+                bind:model="@{viewModel}"
                 >
 
                 <LinearLayout
@@ -56,6 +57,9 @@
                         android:padding="@dimen/dp_5"
                         android:src="@drawable/ic_home_black_24dp"
                         bind:tabPostion="@{viewModel.tab}"
+                        bind:showcaseSequence="@{viewModel.sequence}"
+                        bind:contentShowCase="@{@string/show_case_home_description}"
+                        bind:dismissText="@{@string/action_close_show_case}"
                         />
 
                     <TextView
@@ -83,7 +87,10 @@
                         android:layout_weight="1"
                         android:padding="@dimen/dp_7"
                         android:src="@drawable/ic_request_manager"
+                        bind:showcaseSequence="@{viewModel.sequence}"
                         bind:tabPostion="@{viewModel.tab}"
+                        bind:contentShowCase="@{@string/show_case_request_description}"
+                        bind:dismissText="@{@string/action_close_show_case}"
                         />
 
                     <TextView
@@ -119,6 +126,9 @@
                         android:padding="@dimen/dp_7"
                         android:src="@drawable/ic_device_manager"
                         bind:tabPostion="@{viewModel.tab}"
+                        bind:showcaseSequence="@{viewModel.sequence}"
+                        bind:contentShowCase="@{@string/show_case_device_description}"
+                        bind:dismissText="@{@string/action_close_show_case}"
                         />
 
                     <TextView
@@ -147,6 +157,9 @@
                         android:padding="@dimen/dp_7"
                         android:src="@drawable/ic_profile"
                         bind:tabPostion="@{viewModel.tab}"
+                        bind:showcaseSequence="@{viewModel.sequence}"
+                        bind:contentShowCase="@{@string/show_case_profile_description}"
+                        bind:dismissText="@{@string/action_close_show_case}"
                         />
 
                     <TextView
@@ -175,6 +188,9 @@
             android:onClick="@{()->viewModel.onStartScannerQrCode()}"
             android:padding="@dimen/dp_15"
             android:src="@drawable/ic_qr_code"
+            bind:showcaseSequence="@{viewModel.sequence}"
+            bind:contentShowCase="@{@string/show_case_qr_code_description}"
+            bind:dismissText="@{@string/action_close_show_case}"
             />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

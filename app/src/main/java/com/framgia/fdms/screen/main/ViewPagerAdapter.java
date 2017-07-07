@@ -8,6 +8,8 @@ import com.framgia.fdms.screen.device.DeviceFragment;
 import com.framgia.fdms.screen.profile.ProfileFragment;
 import com.framgia.fdms.screen.request.RequestFragment;
 
+import java.util.List;
+
 import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_DASH_BOARD;
 import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_DEVICE_MANAGER;
 import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_PROFILE;
@@ -17,32 +19,19 @@ import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_REQUEST_MANAGER
  * Created by beepi on 25/04/2017.
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
-    private static final int TAB_NUMBER = 4;
-
-    public ViewPagerAdapter(FragmentManager fm) {
+    private List<Fragment> mFragments;
+    public ViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
+        mFragments = fragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case TAB_DASH_BOARD:
-                // todo direct to dashboard screen
-                return DashboardFragment.newInstance();
-            case TAB_REQUEST_MANAGER:
-                return RequestFragment.newInstance();
-            case TAB_DEVICE_MANAGER:
-                return DeviceFragment.newInstance();
-            case TAB_PROFILE:
-                return ProfileFragment.newInstance();
-            default:
-                break;
-        }
-        return null;
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return TAB_NUMBER;
+        return mFragments == null ? 0 : mFragments.size();
     }
 }

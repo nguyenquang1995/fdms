@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.source.DeviceRepository;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
@@ -16,7 +17,6 @@ import com.framgia.fdms.databinding.ActivityNewmainBinding;
  * Newmain Screen.
  */
 public class MainActivity extends AppCompatActivity {
-
     private MainContract.ViewModel mViewModel;
 
     public static Intent getInstance(Context context) {
@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityNewmainBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_newmain);
+            DataBindingUtil.setContentView(this, R.layout.activity_newmain);
         DeviceRepository deviceRepository =
-                new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance()));
-        mViewModel = new MainViewModel(new ViewPagerAdapter(getSupportFragmentManager()), this);
+            new DeviceRepository(new DeviceRemoteDataSource(FDMSServiceClient.getInstance()));
+        mViewModel = new MainViewModel(this);
         MainContract.Presenter presenter = new MainPresenter(mViewModel, deviceRepository);
         mViewModel.setPresenter(presenter);
         binding.setViewModel((MainViewModel) mViewModel);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (mViewModel != null) {
             mViewModel.onRequestPermissionsResult(requestCode, permissions, grantResults);
