@@ -16,9 +16,10 @@ import java.util.List;
  */
 public class MakerApdater extends RecyclerView.Adapter<MakerApdater.ViewHolder> {
     private List<Producer> mMakers;
-
-    public MakerApdater(List<Producer> makers) {
+    private MarkerViewModel mMakerModel;
+    public MakerApdater(List<Producer> makers, MarkerViewModel viewModel) {
         mMakers = makers;
+        mMakerModel = viewModel;
     }
 
     @Override
@@ -52,6 +53,7 @@ public class MakerApdater extends RecyclerView.Adapter<MakerApdater.ViewHolder> 
                 return;
             }
             mBinding.setMaker(maker);
+            mBinding.setViewModel(mMakerModel);
         }
     }
 }

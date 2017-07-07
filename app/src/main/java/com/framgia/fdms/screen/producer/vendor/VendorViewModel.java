@@ -89,7 +89,8 @@ public class VendorViewModel extends BaseObservable
 
     @Override
     public void onEditProducerClick(Producer vendor) {
-        mVendorDialog = ProducerDialog.newInstant(vendor);
+        mVendorDialog = ProducerDialog.newInstant(vendor, mActivity.getResources()
+            .getString(R.string.action_edit));
         mTypeAction = ACTION_EDIT_VENDOR;
         mVendorEdit = vendor;
         mVendorDialog.show(mActivity.getSupportFragmentManager(),
@@ -142,7 +143,8 @@ public class VendorViewModel extends BaseObservable
     @Override
     public void onAddProducerClick() {
         mTypeAction = ACTION_ADD_VENDOR;
-        mVendorDialog = ProducerDialog.newInstant(new Producer());
+        mVendorDialog = ProducerDialog.newInstant(new Producer(), mActivity.getResources()
+            .getString(R.string.title_add_producer));
         mVendorDialog.show(mActivity.getSupportFragmentManager(),
             Constant.BundleConstant.BUNDLE_DEVICE);
     }

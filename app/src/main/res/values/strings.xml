@@ -239,4 +239,5 @@
     <string name="show_case_qr_code_description">This is the button that you use to view device information via qrcode</string>
     <string name="show_case_notification_description">This screen contains your notification</string>
     <string name="show_case_add_request_description">This is the button that you use to request a borrowed device</string>
+    <string name="title_add_producer">Add</string>
 </resources>
