@@ -8,15 +8,14 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.framgia.fdms.BR;
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.screen.producer.ProducerDialog;
+import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 import com.framgia.fdms.utils.Constant;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
  */
 public class VendorViewModel extends BaseObservable
     implements VendorContract.ViewModel, Parcelable {
-    private VendorContract.Presenter mPresenter;
+    private ProducerFunctionContract.ProducerPresenter mPresenter;
     private ListVendorAdapter mAdapter;
     private List<Producer> mVendors = new ArrayList<>();
     private AppCompatActivity mActivity;
@@ -39,7 +38,6 @@ public class VendorViewModel extends BaseObservable
     private int mPositionScroll = OUT_OF_INDEX;
     private Producer mVendorEdit;
     private int mTypeAction;
-    private String mMessageError;
 
     public VendorViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
@@ -57,7 +55,7 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void setPresenter(VendorContract.Presenter presenter) {
+    public void setPresenter(ProducerFunctionContract.ProducerPresenter presenter) {
         mPresenter = presenter;
     }
 
@@ -71,24 +69,27 @@ public class VendorViewModel extends BaseObservable
         return mPositionScroll;
     }
 
-    @Bindable
-    public String getMessageError() {
-        return mMessageError;
-    }
-
-    public void setMessageError(String messageError) {
-        mMessageError = messageError;
-        notifyPropertyChanged(BR.messageError);
-    }
-
     public void setPositionScroll(int positionScroll) {
         mPositionScroll = positionScroll;
         notifyPropertyChanged(BR.positionScroll);
     }
 
     @Override
-    public void onEditVendorClick(Producer vendor) {
-        mVendorDialog = ProducerDialog.newInstant(this, vendor);
+    public void onLoadVendorSuccess(List<Producer> vendors) {
+        mVendors.clear();
+        mVendors.addAll(vendors);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadVendorFailed() {
+        Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.msg_load_data_fails,
+            Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEditProducerClick(Producer vendor) {
+        mVendorDialog = ProducerDialog.newInstant(vendor);
         mTypeAction = ACTION_EDIT_VENDOR;
         mVendorEdit = vendor;
         mVendorDialog.show(mActivity.getSupportFragmentManager(),
@@ -96,7 +97,7 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onDeleteVendorClick(final Producer vendor) {
+    public void onDeleteProducerClick(final Producer vendor) {
         final int indexRemove = mVendors.indexOf(vendor);
         mVendors.remove(vendor);
         mAdapter.notifyItemRemoved(indexRemove);
@@ -122,32 +123,14 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onLoadVendorSuccess(List<Producer> vendors) {
-        mVendors.clear();
-        mVendors.addAll(vendors);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onLoadVendorFailed() {
-        Toast.makeText(FDMSApplication.getInstant(), R.string.msg_load_data_fails,
-            Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onEditSubmitClick(Producer vendor) {
-        if (TextUtils.isEmpty(vendor.getName())) {
-            setMessageError(mActivity.getString(R.string.msg_error_user_name));
-            return;
-        }
-        mVendorDialog.dismiss();
+    public void onEditSubmitClick(Producer producer) {
         switch (mTypeAction) {
             case ACTION_EDIT_VENDOR:
-                mVendorEdit.setName(vendor.getName());
-                mVendorEdit.setDescription(vendor.getDescription());
+                mVendorEdit.setName(producer.getName());
+                mVendorEdit.setDescription(producer.getDescription());
                 break;
             case ACTION_ADD_VENDOR:
-                mVendors.add(0, vendor);
+                mVendors.add(0, producer);
                 mAdapter.notifyItemInserted(0);
                 setPositionScroll(0);
                 break;
@@ -157,14 +140,9 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onEditCancelClick(Producer vendor) {
-        mVendorDialog.dismiss();
-    }
-
-    @Override
-    public void onAddVendorClick() {
+    public void onAddProducerClick() {
         mTypeAction = ACTION_ADD_VENDOR;
-        mVendorDialog = ProducerDialog.newInstant(this, new Producer());
+        mVendorDialog = ProducerDialog.newInstant(new Producer());
         mVendorDialog.show(mActivity.getSupportFragmentManager(),
             Constant.BundleConstant.BUNDLE_DEVICE);
     }
