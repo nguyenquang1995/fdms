@@ -7,14 +7,20 @@ import android.databinding.Bindable;
 import android.support.annotation.IntDef;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
+
 import com.framgia.fdms.BR;
+import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.ViewPagerScroll;
 import com.framgia.fdms.screen.request.requestmanager.RequestManagerFragment;
 import com.framgia.fdms.screen.request.userrequest.UserRequestFragment;
 import com.framgia.fdms.screen.requestcreation.RequestCreationActivity;
+import com.framgia.fdms.widget.FDMSShowcaseSequence;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static android.app.Activity.RESULT_OK;
 import static com.framgia.fdms.screen.request.RequestViewModel.Tab.TAB_MANAGER_REQUEST;
@@ -24,20 +30,23 @@ import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_CREATE_REQ
 /**
  * Exposes the data to be used in the Request screen.
  */
-
 public class RequestViewModel extends BaseObservable
-        implements RequestContract.ViewModel, ViewPagerScroll {
-
+    implements RequestContract.ViewModel, ViewPagerScroll {
     private RequestContract.Presenter mPresenter;
     private RequestPagerAdapter mAdapter;
     private RequestFragment mFragment;
     private Context mContext;
     private boolean mIsBo;
     private int mTab = TAB_MY_REQUEST;
+    private FDMSShowcaseSequence mSequence;
 
     public RequestViewModel(RequestFragment fragment) {
         mFragment = fragment;
         mContext = fragment.getContext();
+        mSequence = new FDMSShowcaseSequence(fragment.getActivity());
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setMaskColor(R.color.color_black_transprarent);
+        mSequence.setConfig(config);
     }
 
     @Override
@@ -66,24 +75,27 @@ public class RequestViewModel extends BaseObservable
     }
 
     @Override
+    public void onShowCase() {
+        mSequence.start();
+    }
+
+    @Override
     public void onRegisterRequestClick() {
         mFragment.startActivityForResult(
-                RequestCreationActivity.getInstance(mFragment.getActivity()),
-                REQUEST_CREATE_REQUEST);
+            RequestCreationActivity.getInstance(mFragment.getActivity()),
+            REQUEST_CREATE_REQUEST);
     }
 
     @Override
     public void onGetCurrentUserSuccess(User user) {
         String role = user.getRole();
         if (role == null) return;
-
         setBo(user.isBo());
-
         List<BaseRequestFragment> fragments = new ArrayList<>();
         fragments.add(UserRequestFragment.newInstance());
         if (mIsBo) fragments.add(RequestManagerFragment.newInstance());
         mAdapter =
-                new RequestPagerAdapter(mContext, mFragment.getChildFragmentManager(), fragments);
+            new RequestPagerAdapter(mContext, mFragment.getChildFragmentManager(), fragments);
         setAdapter(mAdapter);
     }
 
@@ -130,9 +142,19 @@ public class RequestViewModel extends BaseObservable
         notifyPropertyChanged(BR.tab);
     }
 
-    @IntDef({ TAB_MY_REQUEST, TAB_MANAGER_REQUEST })
+    @IntDef({TAB_MY_REQUEST, TAB_MANAGER_REQUEST})
     public @interface Tab {
         int TAB_MY_REQUEST = 0;
         int TAB_MANAGER_REQUEST = 1;
+    }
+
+    @Bindable
+    public FDMSShowcaseSequence getSequence() {
+        return mSequence;
+    }
+
+    public void setSequence(FDMSShowcaseSequence sequence) {
+        mSequence = sequence;
+        notifyPropertyChanged(BR.sequence);
     }
 }

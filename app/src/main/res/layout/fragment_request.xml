@@ -93,6 +93,9 @@
             android:onClick="@{() -> viewModel.onRegisterRequestClick()}"
             android:src="@drawable/ic_add_white_24dp"
             app:backgroundTint="@color/colorPrimaryDark"
+            bind:showcaseSequence="@{viewModel.sequence}"
+            bind:contentShowCase="@{@string/show_case_request_description}"
+            bind:dismissText="@{@string/action_close_show_case}"
             />
     </android.support.design.widget.CoordinatorLayout>
 </layout>
