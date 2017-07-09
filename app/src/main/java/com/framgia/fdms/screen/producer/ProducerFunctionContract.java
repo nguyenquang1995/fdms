@@ -12,7 +12,6 @@ public interface ProducerFunctionContract {
         extends BaseViewModel<ProducerFunctionContract.ProducerPresenter> {
         void onEditProducerClick(Producer producer);
         void onDeleteProducerClick(Producer producer);
-        void onEditSubmitClick(Producer producer);
         void onAddProducerClick();
     }
 

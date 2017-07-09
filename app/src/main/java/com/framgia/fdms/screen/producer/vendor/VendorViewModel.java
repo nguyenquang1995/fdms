@@ -5,7 +5,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,29 +14,26 @@ import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.screen.producer.ProducerDialog;
+import com.framgia.fdms.screen.producer.ProducerDialogContract;
 import com.framgia.fdms.screen.producer.ProducerFunctionContract;
-import com.framgia.fdms.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.framgia.fdms.screen.producer.vendor.VendorViewModel.Action.ACTION_ADD_VENDOR;
-import static com.framgia.fdms.screen.producer.vendor.VendorViewModel.Action.ACTION_EDIT_VENDOR;
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
+import static com.framgia.fdms.utils.Constant.TAG_MAKER_DIALOG;
 
 /**
  * Exposes the data to be used in the Vendor screen.
  */
 public class VendorViewModel extends BaseObservable
-    implements VendorContract.ViewModel, Parcelable {
+    implements VendorContract.ViewModel, ProducerDialogContract.ActionCallback {
     private ProducerFunctionContract.ProducerPresenter mPresenter;
     private ListVendorAdapter mAdapter;
     private List<Producer> mVendors = new ArrayList<>();
     private AppCompatActivity mActivity;
     private ProducerDialog mVendorDialog;
     private int mPositionScroll = OUT_OF_INDEX;
-    private Producer mVendorEdit;
-    private int mTypeAction;
 
     public VendorViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
@@ -90,11 +86,8 @@ public class VendorViewModel extends BaseObservable
     @Override
     public void onEditProducerClick(Producer vendor) {
         mVendorDialog = ProducerDialog.newInstant(vendor, mActivity.getResources()
-            .getString(R.string.action_edit));
-        mTypeAction = ACTION_EDIT_VENDOR;
-        mVendorEdit = vendor;
-        mVendorDialog.show(mActivity.getSupportFragmentManager(),
-            Constant.BundleConstant.BUNDLE_DEVICE);
+            .getString(R.string.action_edit), this);
+        mVendorDialog.show(mActivity.getSupportFragmentManager(), TAG_MAKER_DIALOG);
     }
 
     @Override
@@ -124,35 +117,24 @@ public class VendorViewModel extends BaseObservable
     }
 
     @Override
-    public void onEditSubmitClick(Producer producer) {
-        switch (mTypeAction) {
-            case ACTION_EDIT_VENDOR:
-                mVendorEdit.setName(producer.getName());
-                mVendorEdit.setDescription(producer.getDescription());
-                break;
-            case ACTION_ADD_VENDOR:
-                mVendors.add(0, producer);
-                mAdapter.notifyItemInserted(0);
-                setPositionScroll(0);
-                break;
-            default:
-                break;
-        }
+    public void onAddProducerClick() {
+        mVendorDialog = ProducerDialog.newInstant(new Producer(), mActivity.getResources()
+            .getString(R.string.title_add_producer), this);
+        mVendorDialog.show(mActivity.getSupportFragmentManager(), TAG_MAKER_DIALOG);
     }
 
     @Override
-    public void onAddProducerClick() {
-        mTypeAction = ACTION_ADD_VENDOR;
-        mVendorDialog = ProducerDialog.newInstant(new Producer(), mActivity.getResources()
-            .getString(R.string.title_add_producer));
-        mVendorDialog.show(mActivity.getSupportFragmentManager(),
-            Constant.BundleConstant.BUNDLE_DEVICE);
+    public void onAddCallback(Producer producer) {
+        mVendors.add(0, producer);
+        mAdapter.notifyItemInserted(0);
+        setPositionScroll(0);
     }
 
-    @IntDef({ACTION_EDIT_VENDOR, ACTION_ADD_VENDOR})
-    public @interface Action {
-        int ACTION_EDIT_VENDOR = 0;
-        int ACTION_ADD_VENDOR = 1;
+    @Override
+    public void onEditCallback(Producer oldProducer, Producer newProducer) {
+        if (oldProducer == null || newProducer == null) return;
+        oldProducer.setDescription(newProducer.getDescription());
+        oldProducer.setName(newProducer.getName());
     }
 
     protected VendorViewModel(Parcel in) {

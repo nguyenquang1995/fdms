@@ -13,8 +13,9 @@ import android.view.LayoutInflater;
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
-import com.framgia.fdms.databinding.DialogEditProducerBinding;
+import com.framgia.fdms.databinding.DialogConfirmProducerBinding;
 
+import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_ACTION_CALLBACK;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_PRODUCER;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_TITLE;
 
@@ -23,12 +24,19 @@ import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_TITLE;
  */
 public class ProducerDialog extends DialogFragment implements ProducerDialogContract {
     private ObservableField<String> mMessageError = new ObservableField<>();
-    private Producer mProducer, mEditProducer = new Producer();
+    private Producer mProducer, mTempProducer = new Producer();
     private ObservableField<String> mTitle = new ObservableField<>();
-    public static ProducerDialog newInstant(Producer producer, String title) {
+    private ProducerDialogContract.ActionCallback mActionCallback;
+    private DialogConfirmProducerBinding mBinding;
+    private static final String TITLE_EDIT = "Edit";
+    private static final String TITLE_ADD = "Add";
+
+    public static ProducerDialog newInstant(Producer producer, String title,
+                                            ProducerDialogContract.ActionCallback callback) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_PRODUCER, producer);
         bundle.putString(BUNDLE_TITLE, title);
+        bundle.putParcelable(BUNDLE_ACTION_CALLBACK, callback);
         ProducerDialog producerDialog = new ProducerDialog();
         producerDialog.setArguments(bundle);
         return producerDialog;
@@ -39,37 +47,42 @@ public class ProducerDialog extends DialogFragment implements ProducerDialogCont
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         mProducer = bundle.getParcelable(BUNDLE_PRODUCER);
-        mEditProducer.setName(mProducer.getName());
-        mEditProducer.setDescription(mProducer.getDescription());
+        mActionCallback = bundle.getParcelable(BUNDLE_ACTION_CALLBACK);
+        mTempProducer.setName(mProducer.getName());
+        mTempProducer.setDescription(mProducer.getDescription());
         mTitle.set(bundle.getString(BUNDLE_TITLE));
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        DialogEditProducerBinding binding =
+        mBinding =
             DataBindingUtil.inflate(LayoutInflater.from(getContext()),
-                R.layout.dialog_edit_producer, null, false);
-        binding.setProducer(mEditProducer);
-        binding.setDialog(this);
-        builder.setView(binding.getRoot());
+                R.layout.dialog_confirm_producer, null, false);
+        mBinding.setProducer(mTempProducer);
+        mBinding.setDialog(this);
+        builder.setView(mBinding.getRoot());
         return builder.create();
     }
 
     @Override
-    public void onEditSubmitClick() {
-        if (TextUtils.isEmpty(mEditProducer.getName())) {
-            mMessageError.set(FDMSApplication.getInstant()
-                .getResources().getString(R
-                    .string
-                    .msg_error_user_name));
-            return;
-        }
-        mProducer.setDescription(mEditProducer.getDescription());
-        mProducer.setName(mEditProducer.getName());
+    public void onCancelClick() {
         dismiss();
-        //todo later, send new data to server
     }
 
     @Override
-    public void onEditCancelClick() {
+    public void onSubmitClick() {
+        if (TextUtils.isEmpty(mTempProducer.getName())) {
+            mMessageError.set(FDMSApplication.getInstant()
+                .getResources()
+                .getString(R.string.msg_error_user_name));
+            return;
+        }
         dismiss();
+        switch (mTitle.get()) {
+            case TITLE_EDIT:
+                mActionCallback.onEditCallback(mProducer, mTempProducer);
+                break;
+            case TITLE_ADD:
+                mActionCallback.onAddCallback(mTempProducer);
+                break;
+        }
     }
 
     public ObservableField<String> getMessageError() {

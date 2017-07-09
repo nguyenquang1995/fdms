@@ -69,7 +69,7 @@
                 android:layout_width="@dimen/dp_70"
                 android:layout_height="@dimen/dp_50"
                 android:background="@color/color_white"
-                android:onClick="@{() -> dialog.onEditCancelClick()}"
+                android:onClick="@{() -> dialog.onCancelClick()}"
                 android:text="@string/action_cancel"
                 android:textColor="@color/colorAccent"
                 />
@@ -78,7 +78,7 @@
                 android:layout_width="@dimen/dp_70"
                 android:layout_height="@dimen/dp_50"
                 android:background="@color/color_white"
-                android:onClick="@{() -> dialog.onEditSubmitClick()}"
+                android:onClick="@{() -> dialog.onSubmitClick()}"
                 android:text="@string/title_ok"
                 android:textColor="@color/colorAccent"
                 />
