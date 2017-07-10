@@ -15,6 +15,7 @@ interface VendorContract {
     interface ViewModel extends ProducerFunctionContract.ViewModel<Presenter> {
         void onLoadVendorSuccess(List<Producer> vendors);
         void onLoadVendorFailed();
+        void onActionError();
     }
 
     /**
@@ -22,5 +23,8 @@ interface VendorContract {
      */
     interface Presenter extends ProducerFunctionContract.ProducerPresenter {
         void getVendors();
+        void addVendor(Producer producer);
+        void deleteVendor(Producer producer);
+        void editVendor(Producer producer);
     }
 }
