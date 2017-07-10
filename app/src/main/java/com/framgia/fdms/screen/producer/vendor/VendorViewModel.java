@@ -45,10 +45,22 @@ public class VendorViewModel extends BaseObservable
     private int mTypeAction;
     private Producer mOldVendor;
     private boolean mIsLoadMore;
+    private int mLoadingMoreVisibility;
 
     public VendorViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
         mAdapter = new ListVendorAdapter(FDMSApplication.getInstant(), this, mVendors);
+        setLoadingMoreVisibility(View.GONE);
+    }
+
+    public void setLoadingMoreVisibility(int visibility) {
+        mLoadingMoreVisibility = visibility;
+        notifyPropertyChanged(BR.loadingMoreVisibility);
+    }
+
+    @Bindable
+    public int getLoadingMoreVisibility() {
+        return mLoadingMoreVisibility;
     }
 
     @Override
@@ -83,15 +95,19 @@ public class VendorViewModel extends BaseObservable
 
     @Override
     public void onLoadVendorSuccess(List<Producer> vendors) {
-        mVendors.addAll(vendors);
-        mAdapter.notifyDataSetChanged();
+        if (vendors != null) {
+            mVendors.addAll(vendors);
+            mAdapter.notifyDataSetChanged();
+        }
         mIsLoadMore = false;
+        setLoadingMoreVisibility(View.GONE);
     }
 
     @Override
     public void onLoadVendorFailed() {
         Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.msg_load_data_fails,
             Snackbar.LENGTH_SHORT).show();
+        setLoadingMoreVisibility(View.GONE);
     }
 
     @Override
@@ -189,6 +205,7 @@ public class VendorViewModel extends BaseObservable
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
             if (!mIsLoadMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                 mIsLoadMore = true;
+                setLoadingMoreVisibility(View.VISIBLE);
                 ((VendorPresenter) mPresenter).getVendors();
             }
         }

@@ -16,7 +16,6 @@ import rx.subscriptions.CompositeSubscription;
  * the UI as required.
  */
 final class VendorPresenter implements VendorContract.Presenter {
-    private static final String TAG = VendorPresenter.class.getName();
     private final VendorContract.ViewModel mViewModel;
     private VendorRepository mRepository = VendorRepository.getInstances();
     private CompositeSubscription mSubscription;

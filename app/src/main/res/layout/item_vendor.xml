@@ -48,7 +48,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:onClick="@{() -> viewModel.onEditProducerClick(vendor)}"
-                    android:padding="@dimen/dp_3"
+                    android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_pencil_edit_button"
                     android:layout_marginRight="@dimen/dp_7"
                     />
@@ -56,7 +56,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:onClick="@{() -> viewModel.onDeleteProducerClick(vendor)}"
-                    android:padding="@dimen/dp_3"
+                    android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_delete"
                     />
             </LinearLayout>
