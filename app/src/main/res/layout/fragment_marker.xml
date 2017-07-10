@@ -38,6 +38,7 @@
                 app:layoutManager="LinearLayoutManager"
                 app:recyclerAdapter="@{viewModel.adapter}"
                 app:scrollPosition="@{viewModel.positionScroll}"
+                app:scrollListenner="@{viewModel.scrollListener}"
                 />
 
         </LinearLayout>
