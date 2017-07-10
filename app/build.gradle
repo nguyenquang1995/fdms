@@ -32,6 +32,11 @@ android {
   }
 }
 
+repositories {
+  mavenCentral()
+  maven { url "http://maven.aspose.com/artifactory/ext-release-local/" }
+}
+
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -61,4 +66,5 @@ dependencies {
   compile 'com.android.support:multidex:1.0.1'
   compile 'com.github.arimorty:floatingsearchview:2.1.1'
   compile 'com.github.deano2390:MaterialShowcaseView:1.1.0@aar'
+  compile (group: 'com.aspose', name: 'aspose-words', version: '17.5', classifier: 'android.via.java')
 }

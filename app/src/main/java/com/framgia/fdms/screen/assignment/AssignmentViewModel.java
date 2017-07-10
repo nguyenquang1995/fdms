@@ -8,33 +8,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.framgia.fdms.BR;
+import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Request;
-import com.framgia.fdms.screen.exportfile.FileExportContract;
-import com.framgia.fdms.screen.exportfile.FileExportImpl;
+import com.framgia.fdms.data.model.User;
+import com.framgia.fdms.data.source.UserRepository;
+import com.framgia.fdms.data.source.local.UserLocalDataSource;
+import com.framgia.fdms.data.source.local.sharepref.SharePreferenceImp;
+import com.framgia.fdms.screen.profile.chooseexport.ChooseExportActivity;
 
-import java.io.IOException;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.framgia.fdms.utils.Utils.hideSoftKeyboard;
 
 /**
  * Exposes the data to be used in the Assignment screen.
  */
-
 public class AssignmentViewModel extends BaseObservable implements AssignmentContract.ViewModel {
-
     private AssignmentContract.Presenter mPresenter;
     private AppCompatActivity mActivity;
     private int mProgressBarVisibility = View.GONE;
     private Request mRequest;
     private AssignmentAdapter mAdapter;
     private Context mContext;
-    private FileExportContract mExportFile;
+    private UserRepository mUserRepository;
+    private CompositeSubscription mSubscription;
 
     public AssignmentViewModel(AppCompatActivity activity) {
         mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new AssignmentAdapter(mContext, this);
-        mExportFile = new FileExportImpl();
+        mUserRepository =
+            new UserRepository(new UserLocalDataSource(new SharePreferenceImp(mContext)));
+        mSubscription = new CompositeSubscription();
     }
 
     @Override
@@ -45,6 +54,7 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     @Override
     public void onStop() {
         mPresenter.onStop();
+        mSubscription.clear();
     }
 
     @Override
@@ -66,7 +76,7 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     @Override
     public void onLoadError(String msg) {
         Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG)
-                .show();
+            .show();
     }
 
     @Override
@@ -76,8 +86,23 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     }
 
     @Override
-    public void onExportDocument() throws IOException {
-        mExportFile.exportToDocument();
+    public void openChooseExportActivity() {
+        Subscription subscription = mUserRepository.getCurrentUser()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<User>() {
+                @Override
+                public void call(User user) {
+                    mActivity.startActivity(ChooseExportActivity.newInstance(mContext, user));
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    Snackbar.make(mActivity.findViewById(android.R.id.content), R.string
+                        .error_authentication, Snackbar.LENGTH_LONG).show();
+                }
+            });
+        mSubscription.add(subscription);
     }
 
     public AppCompatActivity getActivity() {

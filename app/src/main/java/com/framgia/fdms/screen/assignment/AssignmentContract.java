@@ -4,8 +4,6 @@ import com.framgia.fdms.BasePresenter;
 import com.framgia.fdms.BaseViewModel;
 import com.framgia.fdms.data.model.Request;
 
-import java.io.IOException;
-
 /**
  * This specifies the contract between the view and the presenter.
  */
@@ -22,7 +20,7 @@ interface AssignmentContract {
 
         void onGetRequestSuccess(Request request);
 
-        void onExportDocument() throws IOException;
+        void openChooseExportActivity();
     }
 
     /**

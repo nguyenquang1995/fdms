@@ -1,10 +1,10 @@
-package com.framgia.fdms.screen.exportfile;
+package com.framgia.fdms.screen.export;
 
 /**
  * Created by beepi on 10/07/2017.
  * This class export data to another category, such as .doc, .xls....
  */
-public class FileExportImpl implements FileExportContract {
+public class FileExportDocumentImpl implements FileExportContract {
     @Override
     public void exportToDocument() {
         /**

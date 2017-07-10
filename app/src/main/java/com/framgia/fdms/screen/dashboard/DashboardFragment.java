@@ -30,7 +30,7 @@ public class DashboardFragment extends Fragment {
         mViewModel = new DashboardViewModel(this);
         DashboardContract.Presenter presenter = new DashboardPresenter(mViewModel,
             new UserRepository(new UserLocalDataSource(new SharePreferenceImp(getContext()))),
-            new SharePreferenceImp(getContext()));
+        new SharePreferenceImp(getContext()));
         mViewModel.setPresenter(presenter);
     }
 
