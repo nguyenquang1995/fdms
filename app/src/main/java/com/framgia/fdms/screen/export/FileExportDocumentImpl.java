@@ -145,6 +145,13 @@ public class FileExportDocumentImpl implements FileExportContract {
     }
 
     private void insertFooter() {
+        Section currentSection = mDocumentBuilder.getCurrentSection();
+        PageSetup pageSetup = currentSection.getPageSetup();
+        pageSetup.setDifferentFirstPageHeaderFooter(true);
+        pageSetup.setHeaderDistance(HEADER_DISTANCE);
+        mDocumentBuilder.moveToHeaderFooter(HeaderFooterType.FOOTER_FIRST);
+        mDocumentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.RIGHT);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_page_footer));
     }
 
     private void save() {
@@ -172,6 +179,7 @@ public class FileExportDocumentImpl implements FileExportContract {
     public void makeDocument() {
         if (mDocumentBuilder == null) return;
         insertHeader();
+        insertFooter();
         save();
     }
 
