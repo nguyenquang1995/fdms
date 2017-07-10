@@ -5,6 +5,8 @@ import android.databinding.Bindable;
 import android.os.Parcel;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -15,6 +17,7 @@ import com.framgia.fdms.screen.producer.ProducerDialog;
 import com.framgia.fdms.screen.producer.ProducerDialogContract;
 import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
@@ -30,11 +33,13 @@ public class MarkerViewModel extends BaseObservable
     private MakerApdater mAdapter;
     private FragmentActivity mActivity;
     private ProducerDialog mDialog;
-    private List<Producer> mMakers;
+    private List<Producer> mMakers = new ArrayList<>();
     private int mPositionScroll = OUT_OF_INDEX;
+    private boolean mIsLoadMore;
 
     public MarkerViewModel(FragmentActivity activity) {
         mActivity = activity;
+        setAdapter(new MakerApdater(mMakers, this));
     }
 
     @Override
@@ -60,9 +65,11 @@ public class MarkerViewModel extends BaseObservable
 
     @Override
     public void onLoadMakerSucessfully(List<Producer> makers) {
-        mMakers = makers;
-        mAdapter = new MakerApdater(makers, this);
-        setAdapter(mAdapter);
+        if (makers != null) {
+            mMakers.addAll(makers);
+            mAdapter.notifyDataSetChanged();
+        }
+        mIsLoadMore = false;
     }
 
     @Bindable
@@ -155,4 +162,28 @@ public class MarkerViewModel extends BaseObservable
     @Override
     public void writeToParcel(Parcel dest, int i) {
     }
+
+    @Bindable
+    public RecyclerView.OnScrollListener getScrollListener() {
+        return mScrollListener;
+    }
+
+    private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (dy <= 0) {
+                return;
+            }
+            LinearLayoutManager layoutManager =
+                (LinearLayoutManager) recyclerView.getLayoutManager();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+            if (!mIsLoadMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                mIsLoadMore = true;
+                ((MarkerPresenter) mPresenter).getMakers(0, 0);
+            }
+        }
+    };
 }
