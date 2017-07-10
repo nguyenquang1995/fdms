@@ -240,4 +240,6 @@
     <string name="show_case_notification_description">This screen contains your notification</string>
     <string name="show_case_add_request_description">This is the button that you use to request a borrowed device</string>
     <string name="title_add_producer">Add</string>
+    <string name="action_save_assigment">Save assigment</string>
+    <string name="action_export_file_doc">Export file document</string>
 </resources>
