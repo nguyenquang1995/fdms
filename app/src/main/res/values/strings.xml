@@ -215,8 +215,8 @@
     </string-array>
     <string name="title_delivery_device">Phan ban giao thiet bi moi</string>
     <string name="title_report_pledge">Nguoi nhan ban giao tai san phai chiu trach nhiem kiem tra theo dung yeu cau tren. Neu xay ra bat cu  hong hoc hoac mat mat do loi cua nguoi su dung thi nguoi su dung hoan toan chiu trach nhiem truoc cong ty.</string>
-    <string name="title_deliver">Nguoi ban giao</string>
-    <string name="title_receiver">Nguoi nhan ban giao</string>
+    <string name="title_deliver">Ten nguoi ban giao:</string>
+    <string name="title_receiver">Ten nguoi nhan ban giao:</string>
     <string name="title_sign_name">\n(Ky va ghi ro hon ten)</string>
     <string name="title_vendor">Vendor</string>
     <string name="title_maker">Maker</string>
@@ -250,4 +250,7 @@
     <string name="title_published_time">Lan ban hanh:1</string>
     <string name="title_date_publishment">Ngay ban hanh:</string>
     <string name="title_page_footer">Trang 1/1</string>
+    <string name="title_room">Phong:</string>
+    <string name="title_date">Ngay:</string>
+    <string name="title_note">Ghi chu:</string>
 </resources>
