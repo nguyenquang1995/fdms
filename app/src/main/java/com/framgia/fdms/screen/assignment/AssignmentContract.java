@@ -4,6 +4,8 @@ import com.framgia.fdms.BasePresenter;
 import com.framgia.fdms.BaseViewModel;
 import com.framgia.fdms.data.model.Request;
 
+import java.io.IOException;
+
 /**
  * This specifies the contract between the view and the presenter.
  */
@@ -14,11 +16,13 @@ interface AssignmentContract {
     interface ViewModel extends BaseViewModel<Presenter> {
         void onAddItemClick();
 
-        void onAssignClick();
+        void onSaveClick();
 
         void onLoadError(String msg);
 
         void onGetRequestSuccess(Request request);
+
+        void onExportDocument() throws IOException;
     }
 
     /**

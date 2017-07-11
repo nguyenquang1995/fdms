@@ -6,9 +6,13 @@ import android.databinding.Bindable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
 import com.framgia.fdms.BR;
 import com.framgia.fdms.data.model.Request;
-import com.framgia.fdms.utils.Utils;
+import com.framgia.fdms.screen.exportfile.FileExportContract;
+import com.framgia.fdms.screen.exportfile.FileExportImpl;
+
+import java.io.IOException;
 
 import static com.framgia.fdms.utils.Utils.hideSoftKeyboard;
 
@@ -24,11 +28,13 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     private Request mRequest;
     private AssignmentAdapter mAdapter;
     private Context mContext;
+    private FileExportContract mExportFile;
 
     public AssignmentViewModel(AppCompatActivity activity) {
         mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new AssignmentAdapter(mContext, this);
+        mExportFile = new FileExportImpl();
     }
 
     @Override
@@ -53,7 +59,7 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     }
 
     @Override
-    public void onAssignClick() {
+    public void onSaveClick() {
         // TODO: 19/06/2017
     }
 
@@ -67,6 +73,11 @@ public class AssignmentViewModel extends BaseObservable implements AssignmentCon
     public void onGetRequestSuccess(Request request) {
         if (request == null) return;
         setRequest(request);
+    }
+
+    @Override
+    public void onExportDocument() throws IOException {
+        mExportFile.exportToDocument();
     }
 
     public AppCompatActivity getActivity() {
