@@ -26,6 +26,7 @@ public class Constant {
     public static final String TYPE_WORD = "application/msword";
     public static final String TITLE_NOW = "NOW";
     public static final String TAG_MAKER_DIALOG = "MAKER_DIALOG";
+    public static final int FIRST_INDEX = 0;
 
     private Constant() {
         // No-op
@@ -92,6 +93,8 @@ public class Constant {
         public static final int REQUEST_CREATE_REQUEST = 8;
         public static final int REQUEST_CREATE_ASSIGNMENT = 9;
         public static final int REQUEST_BRANCH = 10;
+        public static final int REQUEST_VENDOR = 11;
+        public static final int REQUEST_MAKER = 12;
     }
 
     public class BundleRequest {

@@ -87,6 +87,9 @@ public class Device extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("device_id")
     private String mDeviceId;
+    private Status mVendor;
+    private Status mMaker;
+    private String mWarranty;
 
     public Device() {
     }
@@ -111,6 +114,9 @@ public class Device extends BaseObservable implements Parcelable {
         setUser(device.getUser());
         setDeviceCategoryGroupId(device.getDeviceCategoryGroupId());
         setDeviceId(device.getDeviceId());
+        setVendor(device.getVendor());
+        setMaker(device.getMaker());
+        setWarranty(device.getWarranty());
     }
 
     public Device(String deviceCode, String productionName, String deviceCategoryName) {
@@ -136,6 +142,9 @@ public class Device extends BaseObservable implements Parcelable {
         mStatus = in.readInt();
         mIsSelected = in.readByte() != 0;
         mUser = in.readParcelable(UserBorrow.class.getClassLoader());
+        mVendor = in.readParcelable(Status.class.getClassLoader());
+        mMaker = in.readParcelable(Status.class.getClassLoader());
+        mWarranty = in.readString();
     }
 
     @Override
@@ -156,6 +165,9 @@ public class Device extends BaseObservable implements Parcelable {
         dest.writeInt(mStatus);
         dest.writeByte((byte) (mIsSelected ? 1 : 0));
         dest.writeParcelable(mUser, flags);
+        dest.writeParcelable(mVendor, flags);
+        dest.writeParcelable(mMaker, flags);
+        dest.writeString(mWarranty);
     }
 
     @Bindable
@@ -347,6 +359,36 @@ public class Device extends BaseObservable implements Parcelable {
     public void setUser(UserBorrow user) {
         mUser = user;
         notifyPropertyChanged(BR.user);
+    }
+
+    @Bindable
+    public Status getVendor() {
+        return mVendor;
+    }
+
+    public void setVendor(Status vendor) {
+        mVendor = vendor;
+        notifyPropertyChanged(BR.vendor);
+    }
+
+    @Bindable
+    public Status getMaker() {
+        return mMaker;
+    }
+
+    public void setMaker(Status maker) {
+        mMaker = maker;
+        notifyPropertyChanged(BR.maker);
+    }
+
+    @Bindable
+    public String getWarranty() {
+        return mWarranty;
+    }
+
+    public void setWarranty(String warranty) {
+        mWarranty = warranty;
+        notifyPropertyChanged(BR.warranty);
     }
 
     @Bindable
