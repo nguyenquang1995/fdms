@@ -9,8 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.framgia.fdms.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Producer;
 import com.framgia.fdms.screen.producer.ProducerDialog;
@@ -20,6 +20,8 @@ import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
 import static com.framgia.fdms.utils.Constant.TAG_MAKER_DIALOG;
 
@@ -36,10 +38,12 @@ public class MarkerViewModel extends BaseObservable
     private List<Producer> mMakers = new ArrayList<>();
     private int mPositionScroll = OUT_OF_INDEX;
     private boolean mIsLoadMore;
+    private int mLoadingMoreVisibility;
 
     public MarkerViewModel(FragmentActivity activity) {
         mActivity = activity;
         setAdapter(new MakerApdater(mMakers, this));
+        setLoadMoreVisibility(GONE);
     }
 
     @Override
@@ -59,6 +63,7 @@ public class MarkerViewModel extends BaseObservable
 
     @Override
     public void onLoadMakerFail() {
+        setLoadMoreVisibility(GONE);
         Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.error_load_makers,
             Snackbar.LENGTH_LONG).show();
     }
@@ -69,7 +74,18 @@ public class MarkerViewModel extends BaseObservable
             mMakers.addAll(makers);
             mAdapter.notifyDataSetChanged();
         }
+        setLoadMoreVisibility(GONE);
         mIsLoadMore = false;
+    }
+
+    public void setLoadMoreVisibility(int visibility) {
+        mLoadingMoreVisibility = visibility;
+        notifyPropertyChanged(BR.loadingMoreVisibility);
+    }
+
+    @Bindable
+    public int getLoadMoreVisibility() {
+        return mLoadingMoreVisibility;
     }
 
     @Bindable
@@ -154,15 +170,6 @@ public class MarkerViewModel extends BaseObservable
         oldProducer.setName(newProducer.getName());
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-    }
-
     @Bindable
     public RecyclerView.OnScrollListener getScrollListener() {
         return mScrollListener;
@@ -182,8 +189,18 @@ public class MarkerViewModel extends BaseObservable
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
             if (!mIsLoadMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                 mIsLoadMore = true;
+                setLoadMoreVisibility(VISIBLE);
                 ((MarkerPresenter) mPresenter).getMakers(0, 0);
             }
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+    }
 }

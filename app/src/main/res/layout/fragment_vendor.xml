@@ -27,15 +27,16 @@
             app:floatingSearch_showSearchKey="true"/>
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:hideButton="@{fabAdd}"
                 app:layoutManager="LinearLayoutManager"
                 app:recyclerAdapter="@{viewModel.adapter}"
-                app:scrollPosition="@{viewModel.positionScroll}"
                 app:scrollListenner="@{viewModel.scrollListener}"
+                app:scrollPosition="@{viewModel.positionScroll}"
             />
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_add"
@@ -47,5 +48,12 @@
                 android:src="@drawable/fab_add"
                 app:backgroundTint="@color/colorPrimary"/>
         </FrameLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/rotate_progressbar"
+            android:visibility="@{viewModel.loadingMoreVisibility}"
+        />
     </LinearLayout>
 </layout>
