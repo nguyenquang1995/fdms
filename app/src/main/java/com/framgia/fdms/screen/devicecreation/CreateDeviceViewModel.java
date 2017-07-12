@@ -14,6 +14,7 @@ import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Category;
@@ -29,28 +30,34 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.widget.Toast.makeText;
 import static com.framgia.fdms.FDMSApplication.sUpdatedDevice;
 import static com.framgia.fdms.screen.devicecreation.DeviceStatusType.CREATE;
 import static com.framgia.fdms.screen.devicecreation.DeviceStatusType.EDIT;
+import static com.framgia.fdms.utils.Constant.ACTION_CLEAR;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_CATEGORY;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_STATUE;
+import static com.framgia.fdms.utils.Constant.FIRST_INDEX;
+import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
 import static com.framgia.fdms.utils.Constant.PICK_IMAGE_REQUEST;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_BRANCH;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_CATEGORY;
+import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_MAKER;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_STATUS;
+import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_VENDOR;
 
 /**
  * Exposes the data to be used in the Createdevice screen.
  */
-
 public class CreateDeviceViewModel extends BaseObservable
-        implements CreateDeviceContract.ViewModel, DatePickerDialog.OnDateSetListener {
+    implements CreateDeviceContract.ViewModel, DatePickerDialog.OnDateSetListener {
     private static final int DEFAULT_STATUS_ID = 2;
     private static final String DEFAULT_STATUS_NAME = "available";
     private static final int DEFAULT_BRANCH_ID = 1;
@@ -60,7 +67,6 @@ public class CreateDeviceViewModel extends BaseObservable
     private static final int DEFAULT_WIDTH_BARCODE = 200;
     private static final int DEFAULT_HEIGHT_BARCODE = 100;
     private static final int SCALE_BITMAP = 7;
-
     private DeviceStatusType mDeviceType = CREATE;
     private Context mContext;
     private CreateDeviceActivity mActivity;
@@ -71,23 +77,30 @@ public class CreateDeviceViewModel extends BaseObservable
     private String mModelNumberError;
     private String mBoughtDateError;
     private String mCategoryError;
+    private String mVendorError;
+    private String mMakerError;
     private String mOriginalPriceError;
+    private String mWarrantyError;
     private String mBoughtDate;
     private Device mDevice;
     private String mStatusError;
     private List<Status> mStatuses = new ArrayList<>();
     private List<Category> mCategories = new ArrayList<>();
     private List<Status> mBranches = new ArrayList<>();
+    private List<Status> mVendors = new ArrayList<>();
+    private List<Status> mMakers = new ArrayList<>();
     private Category mCategory;
     private Status mStatus;
     private Status mBranch;
+    private Status mVendor;
+    private Status mMaker;
     private Calendar mCalendar = Calendar.getInstance();
     private boolean mIsQrCode = true;
     private Bitmap mDeviceCode;
     private int mProgressBarVisibility = GONE;
 
     public CreateDeviceViewModel(CreateDeviceActivity activity, Device device,
-            DeviceStatusType type) {
+                                 DeviceStatusType type) {
         mContext = activity.getApplicationContext();
         mActivity = activity;
         if (device == null) {
@@ -125,8 +138,8 @@ public class CreateDeviceViewModel extends BaseObservable
         }
         if (mCalendar == null) mCalendar = Calendar.getInstance();
         DatePickerDialog datePicker =
-                DatePickerDialog.newInstance(this, mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+            DatePickerDialog.newInstance(this, mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
         datePicker.show(mActivity.getFragmentManager(), "");
     }
 
@@ -144,18 +157,16 @@ public class CreateDeviceViewModel extends BaseObservable
         if (mCategories == null || mDeviceType == EDIT) {
             return;
         }
-
         mActivity.startActivityForResult(
-                StatusSelectionActivity.getInstance(mContext, mCategories, mStatuses,
-                        StatusSelectionType.CATEGORY), REQUEST_CATEGORY);
+            StatusSelectionActivity.getInstance(mContext, mCategories, mStatuses,
+                StatusSelectionType.CATEGORY), REQUEST_CATEGORY);
     }
 
     public void onChooseStatus() {
         if (mStatuses == null || mStatus.getName() != null && mStatus.getName()
-                .equals(Status.USING_STATUS)) {
+            .equals(Status.USING_STATUS)) {
             return;
         }
-
         for (Status status : mStatuses) {
             if (status == null || status.getName().equals(Status.USING_STATUS)) {
                 mStatuses.remove(status);
@@ -163,8 +174,8 @@ public class CreateDeviceViewModel extends BaseObservable
             }
         }
         mActivity.startActivityForResult(
-                StatusSelectionActivity.getInstance(mContext, mCategories, mStatuses,
-                        StatusSelectionType.STATUS), REQUEST_STATUS);
+            StatusSelectionActivity.getInstance(mContext, mCategories, mStatuses,
+                StatusSelectionType.STATUS), REQUEST_STATUS);
     }
 
     public void onChooseBranch() {
@@ -172,8 +183,26 @@ public class CreateDeviceViewModel extends BaseObservable
             return;
         }
         mActivity.startActivityForResult(
-                StatusSelectionActivity.getInstance(mContext, mCategories, mBranches,
-                        StatusSelectionType.STATUS), REQUEST_BRANCH);
+            StatusSelectionActivity.getInstance(mContext, mCategories, mBranches,
+                StatusSelectionType.STATUS), REQUEST_BRANCH);
+    }
+
+    public void onChooseVendor() {
+        if (mVendors == null) {
+            return;
+        }
+        mActivity.startActivityForResult(
+            StatusSelectionActivity.getInstance(mContext, mCategories, mVendors,
+                StatusSelectionType.STATUS), REQUEST_BRANCH);
+    }
+
+    public void onChooseMaker() {
+        if (mMakers == null) {
+            return;
+        }
+        mActivity.startActivityForResult(
+            StatusSelectionActivity.getInstance(mContext, mCategories, mMakers,
+                StatusSelectionType.STATUS), REQUEST_BRANCH);
     }
 
     @Override
@@ -220,6 +249,24 @@ public class CreateDeviceViewModel extends BaseObservable
         mBranches.addAll(list);
     }
 
+    public void updateVendor(List<Status> list) {
+        if (list == null) {
+            return;
+        }
+        mVendors.clear();
+        mVendors.addAll(list);
+        mVendors.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
+    }
+
+    public void updateMaker(List<Status> list) {
+        if (list == null) {
+            return;
+        }
+        mMakers.clear();
+        mMakers.addAll(list);
+        mMakers.add(FIRST_INDEX, new Status(OUT_OF_INDEX, ACTION_CLEAR));
+    }
+
     @Override
     public void showProgressbar() {
         setProgressBarVisibility(View.VISIBLE);
@@ -233,7 +280,7 @@ public class CreateDeviceViewModel extends BaseObservable
     @Override
     public void onRegisterError() {
         Snackbar.make(mActivity.findViewById(android.R.id.content),
-                R.string.msg_create_device_error, Snackbar.LENGTH_LONG).show();
+            R.string.msg_create_device_error, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -290,6 +337,24 @@ public class CreateDeviceViewModel extends BaseObservable
     }
 
     @Override
+    public void onInputVendorError() {
+        mVendorError = mContext.getString(R.string.msg_error_user_name);
+        notifyPropertyChanged(BR.vendorError);
+    }
+
+    @Override
+    public void onInputMakerError() {
+        mMakerError = mContext.getString(R.string.msg_error_user_name);
+        notifyPropertyChanged(BR.makerError);
+    }
+
+    @Override
+    public void onInputWarrantyError() {
+        mWarrantyError = mContext.getString(R.string.msg_error_user_name);
+        notifyPropertyChanged(BR.warrantyError);
+    }
+
+    @Override
     public void onGetDeviceCodeSuccess(String deviceCode) {
         mDevice.setDeviceCode(deviceCode);
         onGenerateBarCode(mIsQrCode);
@@ -298,15 +363,12 @@ public class CreateDeviceViewModel extends BaseObservable
     @Override
     public void onPrintClick() {
         if (mDevice == null || mDevice.getDeviceCode() == null || mDeviceCode == null) return;
-
         Bitmap dstBitmap = Bitmap.createBitmap(mDeviceCode.getWidth() * SCALE_BITMAP,
-                mDeviceCode.getHeight() * SCALE_BITMAP, Bitmap.Config.ARGB_8888);
-
+            mDeviceCode.getHeight() * SCALE_BITMAP, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(dstBitmap);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(mDeviceCode, mDeviceCode.getWidth() * (SCALE_BITMAP - 1),
-                mDeviceCode.getHeight() * (SCALE_BITMAP - 1), null);
-
+            mDeviceCode.getHeight() * (SCALE_BITMAP - 1), null);
         PrintHelper photoPrinter = new PrintHelper(getActivity());
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
         photoPrinter.printBitmap(mDevice.getDeviceCode(), dstBitmap);
@@ -327,8 +389,8 @@ public class CreateDeviceViewModel extends BaseObservable
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         mActivity.startActivityForResult(
-                Intent.createChooser(intent, mContext.getString(R.string.title_select_file_upload)),
-                PICK_IMAGE_REQUEST);
+            Intent.createChooser(intent, mContext.getString(R.string.title_select_file_upload)),
+            PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -369,6 +431,22 @@ public class CreateDeviceViewModel extends BaseObservable
                 if (mCategory != null && mCategory.getId() > 0) {
                     mPresenter.getDeviceCode(mCategory.getId(), mBranch.getId());
                 }
+                break;
+            case REQUEST_VENDOR:
+                bundle = data.getExtras();
+                Status vendor = bundle.getParcelable(BUNDLE_STATUE);
+                if (vendor.getName().equals(mContext.getString(R.string.action_clear))) {
+                    vendor.setName(mContext.getString(R.string.title_empty));
+                }
+                setVendor(vendor);
+                break;
+            case REQUEST_MAKER:
+                bundle = data.getExtras();
+                Status maker = bundle.getParcelable(BUNDLE_STATUE);
+                if (maker.getName().equals(mContext.getString(R.string.action_clear))) {
+                    maker.setName(mContext.getString(R.string.title_empty));
+                }
+                setMaker(maker);
                 break;
             default:
                 break;
@@ -437,6 +515,21 @@ public class CreateDeviceViewModel extends BaseObservable
     }
 
     @Bindable
+    public String getVendorError() {
+        return mVendorError;
+    }
+
+    @Bindable
+    public String getMakerError() {
+        return mMakerError;
+    }
+
+    @Bindable
+    public String getWarrantyError() {
+        return mWarrantyError;
+    }
+
+    @Bindable
     public Category getCategory() {
         return mCategory;
     }
@@ -469,14 +562,14 @@ public class CreateDeviceViewModel extends BaseObservable
         mDevice = device;
         setProgressBarVisibility(GONE);
         Snackbar.make(mActivity.findViewById(android.R.id.content),
-                R.string.msg_update_device_success, Snackbar.LENGTH_LONG).show();
+            R.string.msg_update_device_success, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onUpdateError() {
         setProgressBarVisibility(GONE);
         Snackbar.make(mActivity.findViewById(android.R.id.content),
-                R.string.msg_update_device_error, Snackbar.LENGTH_LONG).show();
+            R.string.msg_update_device_error, Snackbar.LENGTH_LONG).show();
     }
 
     public AppCompatActivity getActivity() {
@@ -530,6 +623,28 @@ public class CreateDeviceViewModel extends BaseObservable
     public void setBranch(Status branch) {
         mBranch = branch;
         notifyPropertyChanged(BR.branch);
+    }
+
+    @Bindable
+    public Status getVendor() {
+        return mVendor;
+    }
+
+    public void setVendor(Status vendor) {
+        mDevice.setVendor(vendor);
+        mVendor = vendor;
+        notifyPropertyChanged(BR.vendor);
+    }
+
+    @Bindable
+    public Status getMaker() {
+        return mMaker;
+    }
+
+    public void setMaker(Status maker) {
+        mDevice.setMaker(maker);
+        mMaker = maker;
+        notifyPropertyChanged(BR.maker);
     }
 
     @Bindable

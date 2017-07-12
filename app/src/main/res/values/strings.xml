@@ -242,4 +242,5 @@
     <string name="title_add_producer">Add</string>
     <string name="action_save_assigment">Save assigment</string>
     <string name="action_export_file_doc">Export file document</string>
+    <string name="title_warranty">Warranty (Month)</string>
 </resources>

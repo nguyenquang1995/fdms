@@ -40,6 +40,12 @@ interface CreateDeviceContract {
 
         void onInputStatusError();
 
+        void onInputVendorError();
+
+        void onInputMakerError();
+
+        void onInputWarrantyError();
+
         void onAddImageClick();
 
         void onCreateDeviceClick();
