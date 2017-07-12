@@ -45,6 +45,7 @@ import com.framgia.fdms.screen.main.MainViewModel;
 import com.framgia.fdms.screen.requestcreation.RequestCreationViewModel;
 import com.framgia.fdms.screen.requestdetail.RequestDetailViewModel;
 import com.framgia.fdms.widget.FDMSShowcaseSequence;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -568,5 +569,21 @@ public final class BindingUtils {
                     }
                 }
             });
+    }
+
+    @BindingAdapter("hideMenuButton")
+    public static void hideFloatMenuButton(RecyclerView recyclerView,
+                                           final FloatingActionsMenu button) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    button.setVisibility(View.GONE);
+                } else {
+                    button.setVisibility(View.VISIBLE);
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 }

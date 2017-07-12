@@ -92,6 +92,7 @@
                         app:layoutManager="LinearLayoutManager"
                         app:recyclerAdapter="@{viewModel.adapter}"
                         app:scrollListenner="@{viewModel.scrollListenner}"
+                        app:hideMenuButton="@{floatActionMenu}"
                         />
 
                     <ProgressBar
