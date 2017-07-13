@@ -1,4 +1,4 @@
-package com.framgia.fdms.screen.exportfile;
+package com.framgia.fdms.screen.export;
 
 /**
  * Created by beepi on 10/07/2017.

@@ -151,22 +151,23 @@
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onSaveClick()}"
                 app:fab_colorNormal="@android:color/white"
                 app:fab_colorPressed="@color/color_seashell"
                 app:fab_icon="@drawable/ic_save_24dp"
                 app:fab_size="mini"
                 app:fab_title="@string/action_save_assigment"
-                android:onClick="@{()->viewModel.onSaveClick()}"
                 />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.openChooseExportActivity()}"
                 app:fab_colorNormal="@android:color/white"
                 app:fab_colorPressed="@color/color_seashell"
-                app:fab_icon="@drawable/ic_wb_auto_black_24px"
+                app:fab_icon="@drawable/ic_import_export_black_24px"
                 app:fab_size="mini"
-                app:fab_title="@string/action_export_file_doc"
+                app:fab_title="@string/action_export_file"
                 />
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
@@ -174,8 +175,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.progressBarVisibility}"
             android:indeterminateDrawable="@drawable/rotate_progressbar"
+            android:visibility="@{viewModel.progressBarVisibility}"
             />
     </RelativeLayout>
 </layout>
