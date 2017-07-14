@@ -2,15 +2,17 @@ package com.framgia.fdms.data.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+
 import com.framgia.fdms.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by framgia on 23/05/2017.
  */
-
 public class DeviceUsingHistory extends BaseObservable {
     @Expose
     @SerializedName("staff")
@@ -21,6 +23,17 @@ public class DeviceUsingHistory extends BaseObservable {
     @Expose
     @SerializedName("return_date")
     private Date mEndDate;
+    private List<Device> mUsingDevices;
+
+    @Bindable
+    public List<Device> getUsingDevices() {
+        return mUsingDevices;
+    }
+
+    public void setUsingDevices(List<Device> usingDevices) {
+        mUsingDevices = usingDevices;
+        notifyPropertyChanged(BR.usingDevices);
+    }
 
     @Bindable
     public String getStaffName() {
