@@ -36,11 +36,6 @@ public class DeviceViewModel extends BaseObservable
 
     public DeviceViewModel(Fragment fragment) {
         mFragment = fragment;
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(ListDeviceFragment.newInstance(TAB_MY_DEVICE));
-        fragments.add(ListDeviceFragment.newInstance(TAB_MANAGE_DEVICE));
-        mAdapter = new ViewPagerAdapter(mFragment.getChildFragmentManager(), fragments);
-        setAdapter(mAdapter);
     }
 
     @Override
@@ -83,6 +78,7 @@ public class DeviceViewModel extends BaseObservable
     @Override
     public void setTabWithDevice(int tab, Device device) {
         setTab(tab);
+        ((ListDeviceFragment)mAdapter.getItem(tab)).getDataWithDevice(device);
     }
 
     @Override

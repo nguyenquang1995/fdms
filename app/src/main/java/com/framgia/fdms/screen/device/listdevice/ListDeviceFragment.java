@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.CategoryRepository;
 import com.framgia.fdms.data.source.DeviceRepository;
 import com.framgia.fdms.data.source.DeviceReturnRepository;
@@ -81,5 +82,12 @@ public class ListDeviceFragment extends Fragment {
     public void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    public void getDataWithDevice(Device device) {
+        if (mViewModel == null) {
+            return;
+        }
+        mViewModel.getDataWithDevice(device);
     }
 }
