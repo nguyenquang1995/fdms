@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.UserRepository;
 import com.framgia.fdms.data.source.local.UserLocalDataSource;
 import com.framgia.fdms.data.source.local.sharepref.SharePreferenceImp;
@@ -53,5 +54,12 @@ public class DeviceFragment extends Fragment {
     public void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    public void setTabWithDevice(@DeviceViewModel.Tab int tab, Device device) {
+        if (mViewModel == null) {
+            return;
+        }
+        mViewModel.setTabWithDevice(tab, device);
     }
 }

@@ -304,8 +304,8 @@ public class DashBoardDetailViewModel extends BaseObservable
     }
 
     @Override
-    public void onDeviceClick(int categoryId) {
+    public void onDeviceDashBoardClick(Device device) {
         ((MainActivity) mFragment.getActivity())
-            .setTabWithCategoryId(TAB_DEVICE_MANAGER, categoryId);
+            .setTabWithDevice(TAB_DEVICE_MANAGER, device);
     }
 }

@@ -208,9 +208,10 @@ public class MainViewModel extends BaseObservable
     }
 
     @Override
-    public void setTabWithCategoryId(int tab, int categoryId) {
+    public void setTabWithDevice(int tab, Device device) {
         setTab(tab);
-        // TODO: 14/07/2017 call setTabWithCategoryId(TAB_MANAGE_DEVICE, categoryId);
+        ((DeviceFragment) mPagerAdapter.getItem(tab)).setTabWithDevice(
+            TAB_MANAGE_DEVICE, device);
     }
 
     @IntDef({TAB_DASH_BOARD, TAB_REQUEST_MANAGER, TAB_DEVICE_MANAGER, TAB_PROFILE})

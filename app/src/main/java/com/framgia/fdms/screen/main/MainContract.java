@@ -27,7 +27,7 @@ public interface MainContract {
 
         void setShowCaseRequest(boolean showCaseRequest);
 
-        void setTabWithCategoryId(int tab, int categoryId);
+        void setTabWithDevice(int tab, Device device);
     }
 
     /**

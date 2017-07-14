@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fdms.R;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.DeviceRepository;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
 import com.framgia.fdms.data.source.local.sharepref.SharePreferenceImp;
@@ -67,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setTabWithCategoryId(@MainViewModel.Tab int tab, int categoryId) {
+    public void setTabWithDevice(@MainViewModel.Tab int tab, Device device) {
         if (mViewModel == null) {
             return;
         }
-        mViewModel.setTabWithCategoryId(tab, categoryId);
+        mViewModel.setTabWithDevice(tab, device);
     }
 }

@@ -3,6 +3,7 @@ package com.framgia.fdms.screen.device;
 import android.support.v4.view.ViewPager;
 import com.framgia.fdms.BasePresenter;
 import com.framgia.fdms.BaseViewModel;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.User;
 
 /**
@@ -18,6 +19,8 @@ interface DeviceContract {
         void setupViewPager(User user);
 
         void onError(String message);
+
+        void setTabWithDevice(int tab, Device device);
     }
 
     /**

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.User;
 import com.framgia.fdms.screen.ViewPagerScroll;
 import com.framgia.fdms.screen.device.listdevice.ListDeviceFragment;
@@ -77,6 +78,11 @@ public class DeviceViewModel extends BaseObservable
     public void onError(String message) {
         Snackbar.make(mFragment.getActivity().findViewById(android.R.id.content), message,
             Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setTabWithDevice(int tab, Device device) {
+        setTab(tab);
     }
 
     @Override
