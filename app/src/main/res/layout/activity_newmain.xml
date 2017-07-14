@@ -32,6 +32,7 @@
                 android:layout_weight="1"
                 bind:adapter="@{viewModel.pagerAdapter}"
                 bind:model="@{viewModel}"
+                bind:tabNumber="@{viewModel.tab}"
                 />
             <LinearLayout
                 android:id="@+id/bottom_navigation"

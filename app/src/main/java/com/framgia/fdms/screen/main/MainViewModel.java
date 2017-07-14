@@ -29,6 +29,7 @@ import java.util.List;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static android.app.Activity.RESULT_OK;
+import static com.framgia.fdms.screen.device.DeviceViewModel.Tab.TAB_MANAGE_DEVICE;
 import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_DASH_BOARD;
 import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_DEVICE_MANAGER;
 import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_PROFILE;
@@ -204,6 +205,12 @@ public class MainViewModel extends BaseObservable
     @Override
     public void setShowCaseRequest(boolean showCaseRequest) {
         mIsShowCaseRequest = showCaseRequest;
+    }
+
+    @Override
+    public void setTabWithCategoryId(int tab, int categoryId) {
+        setTab(tab);
+        // TODO: 14/07/2017 call setTabWithCategoryId(TAB_MANAGE_DEVICE, categoryId);
     }
 
     @IntDef({TAB_DASH_BOARD, TAB_REQUEST_MANAGER, TAB_DEVICE_MANAGER, TAB_PROFILE})

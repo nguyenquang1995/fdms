@@ -66,4 +66,11 @@ public class MainActivity extends AppCompatActivity {
             mViewModel.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+    public void setTabWithCategoryId(@MainViewModel.Tab int tab, int categoryId) {
+        if (mViewModel == null) {
+            return;
+        }
+        mViewModel.setTabWithCategoryId(tab, categoryId);
+    }
 }
