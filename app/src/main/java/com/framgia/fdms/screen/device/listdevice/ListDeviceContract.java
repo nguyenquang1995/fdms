@@ -49,6 +49,8 @@ interface ListDeviceContract {
         void onStartReturnDevice(FloatingActionsMenu floatingActionsMenu);
 
         void onRegisterDeviceClick(FloatingActionsMenu floatingActionsMenu);
+
+        void getDataWithDevice(Device device);
     }
 
     /**

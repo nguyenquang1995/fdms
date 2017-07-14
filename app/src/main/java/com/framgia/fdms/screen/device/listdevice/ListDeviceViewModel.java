@@ -43,9 +43,8 @@ import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_SELECTION;
 /**
  * Exposes the data to be used in the ListDevice screen.
  */
-
 public class ListDeviceViewModel extends BaseObservable
-        implements ListDeviceContract.ViewModel, ItemDeviceClickListenner {
+    implements ListDeviceContract.ViewModel, ItemDeviceClickListenner {
     private ListDeviceFragment mFragment;
     private ObservableField<Integer> mProgressBarVisibility = new ObservableField<>();
     private ObservableBoolean mIsLoadingMore = new ObservableBoolean(false);
@@ -66,15 +65,14 @@ public class ListDeviceViewModel extends BaseObservable
     }
 
     private boolean mIsRefresh;
-
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener =
-            new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    mAdapter.clear();
-                    loadData();
-                }
-            };
+        new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.clear();
+                loadData();
+            }
+        };
 
     public ListDeviceViewModel(ListDeviceFragment fragment, int tabDevice) {
         mFragment = fragment;
@@ -132,7 +130,6 @@ public class ListDeviceViewModel extends BaseObservable
     public void setupFloatingActionsMenu(User user) {
         String role = user.getRole();
         if (role == null) return;
-
         setBo(user.isBo());
     }
 
@@ -140,16 +137,16 @@ public class ListDeviceViewModel extends BaseObservable
     public void onChooseCategory() {
         if (mCategories == null) return;
         mFragment.startActivityForResult(
-                StatusSelectionActivity.getInstance(mContext, mCategories, null,
-                        StatusSelectionType.CATEGORY), REQUEST_SELECTION);
+            StatusSelectionActivity.getInstance(mContext, mCategories, null,
+                StatusSelectionType.CATEGORY), REQUEST_SELECTION);
     }
 
     @Override
     public void onChooseStatus() {
         if (mStatuses == null) return;
         mFragment.startActivityForResult(
-                StatusSelectionActivity.getInstance(mContext, null, mStatuses,
-                        StatusSelectionType.STATUS), REQUEST_SELECTION);
+            StatusSelectionActivity.getInstance(mContext, null, mStatuses,
+                StatusSelectionType.STATUS), REQUEST_SELECTION);
     }
 
     @Override
@@ -181,7 +178,7 @@ public class ListDeviceViewModel extends BaseObservable
     @Override
     public void onDeviceLoaded(List<Device> devices) {
         setEmptyViewVisible(
-                devices.isEmpty() && mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            devices.isEmpty() && mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         mIsLoadingMore.set(false);
         mAdapter.onUpdatePage(devices);
         setRefresh(false);
@@ -235,7 +232,18 @@ public class ListDeviceViewModel extends BaseObservable
     public void onRegisterDeviceClick(FloatingActionsMenu floatingActionsMenu) {
         floatingActionsMenu.collapse();
         mFragment.startActivity(
-                CreateDeviceActivity.getInstance(mFragment.getContext(), DeviceStatusType.CREATE));
+            CreateDeviceActivity.getInstance(mFragment.getContext(), DeviceStatusType.CREATE));
+    }
+
+    @Override
+    public void getDataWithDevice(Device device) {
+        if (device == null || device.getDeviceCategoryId() <= 0 || device.getDeviceCategoryName()
+            == null) {
+            return;
+        }
+        setCategory(new Category(device.getDeviceCategoryId(), device.getDeviceCategoryName()));
+        mAdapter.clear();
+        mPresenter.getData(mKeyWord, mCategory, mStatus);
     }
 
     public void updateCategory(List<Category> list) {
@@ -267,14 +275,11 @@ public class ListDeviceViewModel extends BaseObservable
             if (dy <= 0) {
                 return;
             }
-
             LinearLayoutManager layoutManager =
-                    (LinearLayoutManager) recyclerView.getLayoutManager();
-
+                (LinearLayoutManager) recyclerView.getLayoutManager();
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
-
             if (!mIsLoadingMore.get() && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                 mIsLoadingMore.set(true);
                 mPresenter.loadMoreData();
