@@ -586,4 +586,9 @@ public final class BindingUtils {
             }
         });
     }
+
+    @BindingAdapter("tabNumber")
+    public static void setTab(ViewPager view, int tab) {
+        view.setCurrentItem(tab);
+    }
 }

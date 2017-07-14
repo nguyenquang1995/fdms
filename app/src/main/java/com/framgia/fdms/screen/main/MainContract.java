@@ -26,6 +26,8 @@ public interface MainContract {
         void setShowCase(boolean showCase);
 
         void setShowCaseRequest(boolean showCaseRequest);
+
+        void setTabWithCategoryId(int tab, int categoryId);
     }
 
     /**

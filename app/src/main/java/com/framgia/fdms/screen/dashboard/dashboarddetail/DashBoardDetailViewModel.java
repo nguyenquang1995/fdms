@@ -13,6 +13,7 @@ import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import com.framgia.fdms.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Dashboard;
@@ -20,30 +21,31 @@ import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.model.Request;
 import com.framgia.fdms.data.model.Respone;
 import com.framgia.fdms.data.model.User;
+import com.framgia.fdms.screen.device.OnDeviceClickListenner;
+import com.framgia.fdms.screen.main.MainActivity;
 import com.framgia.fdms.screen.request.OnRequestClickListenner;
 import com.framgia.fdms.screen.request.userrequest.UserRequestAdapter;
 import com.framgia.fdms.screen.requestdetail.RequestDetailActivity;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment
-        .DEVICE_DASHBOARD;
-import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment
-        .REQUEST_DASHBOARD;
+import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment.DEVICE_DASHBOARD;
+import static com.framgia.fdms.screen.dashboard.dashboarddetail.DashBoardDetailFragment.REQUEST_DASHBOARD;
+import static com.framgia.fdms.screen.main.MainViewModel.Tab.TAB_DEVICE_MANAGER;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_RESPONE;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_DETAIL;
 
 /**
  * Exposes the data to be used in the Scanner screen.
  */
-
 public class DashBoardDetailViewModel extends BaseObservable
-        implements DashBoardDetailContract.ViewModel, OnRequestClickListenner {
-
+    implements DashBoardDetailContract.ViewModel, OnRequestClickListenner,
+    OnDeviceClickListenner {
     private static final float PIE_DATA_SLICE_SPACE = 3f;
     private static final float PIE_DATA_SLECTION_SHIFT = 5f;
     private DashBoardDetailContract.Presenter mPresenter;
@@ -63,8 +65,8 @@ public class DashBoardDetailViewModel extends BaseObservable
         mContext = fragment.getContext();
         mPieData = new PieData();
         mAdapterTopRequest =
-                new UserRequestAdapter(mContext, new ArrayList<Request>(), this, new User());
-        mAdapterTopDevice = new TopDeviceAdapter(mContext, new ArrayList<Device>());
+            new UserRequestAdapter(mContext, new ArrayList<Request>(), this, new User());
+        mAdapterTopDevice = new TopDeviceAdapter(mContext, this, new ArrayList<Device>());
         initDashboardTitle(dashboardType);
         mDashboardType = dashboardType;
     }
@@ -98,10 +100,9 @@ public class DashBoardDetailViewModel extends BaseObservable
             return;
         }
         Bundle bundle = data.getExtras();
-
         if (requestCode == REQUEST_DETAIL) {
             Respone<Request> requestRespone =
-                    (Respone<Request>) bundle.getSerializable(BUNDLE_RESPONE);
+                (Respone<Request>) bundle.getSerializable(BUNDLE_RESPONE);
             if (requestRespone != null) {
                 onUpdateActionSuccess(requestRespone);
             }
@@ -141,29 +142,24 @@ public class DashBoardDetailViewModel extends BaseObservable
         int total = 0;
         List<Integer> colors = new ArrayList<Integer>();
         List<PieEntry> values = new ArrayList<PieEntry>();
-
         if (dashboards != null && dashboards.size() != 0) {
             setEmptyViewVisible(View.GONE);
         } else {
             setEmptyViewVisible(View.VISIBLE);
         }
-
         for (Dashboard dashboard : dashboards) {
             total += dashboard.getCount();
         }
-
         for (int i = 0; i < dashboards.size(); i++) {
             Dashboard dashboard = dashboards.get(i);
             float percent = (float) dashboard.getCount() / total * 100f;
             values.add(new PieEntry(percent, dashboard.getTitle(), i));
             colors.add(Color.parseColor(dashboard.getBackgroundColor()));
         }
-
         PieDataSet dataSet = new PieDataSet(values, mContext.getString(R.string.title_chart));
         dataSet.setSliceSpace(PIE_DATA_SLICE_SPACE);
         dataSet.setSelectionShift(PIE_DATA_SLECTION_SHIFT);
         dataSet.setColors(colors);
-
         setDataSet(dataSet);
         setTotal(total);
     }
@@ -192,7 +188,7 @@ public class DashBoardDetailViewModel extends BaseObservable
         if (requestRespone == null || requestRespone.getData() == null) return;
         mAdapterTopRequest.updateItem(requestRespone.getData());
         Snackbar.make(mFragment.getView(), requestRespone.getMessage(), Snackbar.LENGTH_LONG)
-                .show();
+            .show();
     }
 
     @Override
@@ -250,8 +246,8 @@ public class DashBoardDetailViewModel extends BaseObservable
     @Override
     public void onMenuClick(View v, final UserRequestAdapter.RequestModel request) {
         if (request == null
-                || request.getRequest() == null
-                || request.getRequest().getRequestActionList() == null) {
+            || request.getRequest() == null
+            || request.getRequest().getRequestActionList() == null) {
             return;
         }
         Request requestModel = request.getRequest();
@@ -259,16 +255,16 @@ public class DashBoardDetailViewModel extends BaseObservable
         for (int i = 0; i < requestModel.getRequestActionList().size(); i++) {
             final Request.RequestAction action = requestModel.getRequestActionList().get(i);
             popupMenu.getMenu()
-                    .add(action.getName())
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            // TODO: 22/05/2017 update request status
-                            mPresenter.updateActionRequest(request.getRequest().getId(),
-                                    action.getId());
-                            return false;
-                        }
-                    });
+                .add(action.getName())
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        // TODO: 22/05/2017 update request status
+                        mPresenter.updateActionRequest(request.getRequest().getId(),
+                            action.getId());
+                        return false;
+                    }
+                });
         }
         popupMenu.show();
     }
@@ -276,12 +272,11 @@ public class DashBoardDetailViewModel extends BaseObservable
     @Override
     public void onDetailRequestClick(Request request) {
         mFragment.startActivityForResult(RequestDetailActivity.newInstance(mContext, request),
-                REQUEST_DETAIL);
+            REQUEST_DETAIL);
     }
 
     @Override
     public void onAddDeviceClick(int requestId) {
-
     }
 
     @Bindable
@@ -295,16 +290,22 @@ public class DashBoardDetailViewModel extends BaseObservable
     }
 
     private SwipeRefreshLayout.OnRefreshListener mRefreshLayout =
-            new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    mAdapterTopDevice.clear();
-                    mAdapterTopRequest.clear();
-                    getData();
-                }
-            };
+        new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapterTopDevice.clear();
+                mAdapterTopRequest.clear();
+                getData();
+            }
+        };
 
     public SwipeRefreshLayout.OnRefreshListener getRefreshLayout() {
         return mRefreshLayout;
+    }
+
+    @Override
+    public void onDeviceClick(int categoryId) {
+        ((MainActivity) mFragment.getActivity())
+            .setTabWithCategoryId(TAB_DEVICE_MANAGER, categoryId);
     }
 }
