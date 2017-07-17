@@ -233,7 +233,7 @@ public class ExportPresenter implements ExportContract.Presenter {
         mTableSignature = new PdfPTable(COLUMN_TABLE_SIGNATURE);
         mTableSignature.setWidthPercentage(WIDTH_PERCENTAGE);
         Paragraph paraReceiver = new Paragraph();
-        paraReceiver.add(new Chunk(mViewModel.getString(R.string.title_receiver),
+        paraReceiver.add(new Chunk(mViewModel.getString(R.string.title_name_receiver),
             new Font(TIMES_ROMAN, NORMAL_FONT_SIZE, BOLD)));
         paraReceiver.add(new Chunk(mViewModel.getString(R.string.title_sign_name)));
         for (int i = 0; i < TOTAL_LINE_SIGN; i++) {
@@ -243,7 +243,7 @@ public class ExportPresenter implements ExportContract.Presenter {
         receiver.setHorizontalAlignment(Element.ALIGN_CENTER);
         mTableSignature.addCell(receiver);
         Paragraph paraDeliver = new Paragraph();
-        paraDeliver.add(new Chunk(mViewModel.getString(R.string.title_deliver),
+        paraDeliver.add(new Chunk(mViewModel.getString(R.string.title_name_deliver),
             new Font(TIMES_ROMAN, NORMAL_FONT_SIZE, BOLD)));
         paraDeliver.add(new Chunk(mViewModel.getString(R.string.title_sign_name)));
         PdfPCell deliver = new PdfPCell(paraDeliver);
