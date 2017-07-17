@@ -67,13 +67,23 @@ public class ListUserAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        ItemGroupDeviceHistoryBinding binding =
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.item_group_device_history, viewGroup, false);
-        binding.setViewModel((DeviceHistoryViewModel) mViewModel);
+    public View getGroupView(int i, boolean isExpanded, View view, ViewGroup viewGroup) {
+        ItemGroupDeviceHistoryBinding binding;
+        if (view == null) {
+            binding =
+                DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                    R.layout.item_group_device_history, viewGroup, false);
+            binding.setViewModel((DeviceHistoryViewModel) mViewModel);
+            ((DeviceHistoryViewModel) mViewModel).setExpanded(isExpanded);
+            view = binding.getRoot();
+            view.setTag(binding);
+        } else {
+            binding = (ItemGroupDeviceHistoryBinding) view.getTag();
+            binding.setDeviceHistory(mDeviceUsingHistories.get(i));
+        }
         binding.setDeviceHistory(mDeviceUsingHistories.get(i));
-        return binding.getRoot();
+        ((DeviceHistoryViewModel) mViewModel).setExpanded(isExpanded);
+        return view;
     }
 
     @Override

@@ -27,6 +27,7 @@ import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
@@ -598,5 +599,11 @@ public final class BindingUtils {
     public static void setExpandableAdapter(ExpandableListView expandableListView,
                                             BaseExpandableListAdapter baseExpandableListAdapter) {
         expandableListView.setAdapter(baseExpandableListAdapter);
+    }
+
+    @BindingAdapter("scrollListener")
+    public static void setOnScrollListener(ExpandableListView expandableListView, AbsListView
+        .OnScrollListener listener) {
+        expandableListView.setOnScrollListener(listener);
     }
 }
