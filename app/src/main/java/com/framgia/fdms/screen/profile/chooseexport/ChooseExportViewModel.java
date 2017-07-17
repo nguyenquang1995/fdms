@@ -131,4 +131,6 @@ public class ChooseExportViewModel extends BaseObservable
         mNavigator.startActivity(
             DeviceDetailActivity.getInstance(mNavigator.getContext(), device));
     }
+
+
 }

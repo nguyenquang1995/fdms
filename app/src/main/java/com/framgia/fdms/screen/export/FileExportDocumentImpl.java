@@ -45,6 +45,8 @@ public class FileExportDocumentImpl implements FileExportContract {
     private static final double WIDTH_170 = 170;
     private static final double HEADER_DISTANCE = 20;
     private static final double FONT_SIZE_11 = 11;
+    private static final double WIDTH_350 = 350;
+    private static final double WIDTH_140 = 140;
     private Document mDocument;
     private DocumentBuilder mDocumentBuilder;
     private OutputStream mOutputStream;
@@ -139,6 +141,45 @@ public class FileExportDocumentImpl implements FileExportContract {
     }
 
     private void inseartAssignmentTable() {
+        if (mDocumentBuilder == null) return;
+        mDocumentBuilder.moveToDocumentStart();
+        mDocumentBuilder.getFont().setSize(FONT_SIZE_12);
+        mDocumentBuilder.getFont().setBold(false);
+        mDocumentBuilder.startTable();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_350);
+        mDocumentBuilder.getRowFormat().setHeight(CELL_HEIGHT_20);
+        mDocumentBuilder.getParagraphFormat().setAlignment(LEFT);
+        mDocumentBuilder.getCellFormat().setVerticalAlignment(CENTER);
+        /**
+         * insert row 1
+         */
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_350);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_deliver));
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_140);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_room));
+        mDocumentBuilder.endRow();
+        /**
+         * insert row 2
+         */
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_350);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_receiver));
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_140);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_room));
+        mDocumentBuilder.endRow();
+        /**
+         * insert row 2
+         */
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_350);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_note));
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_140);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_date));
+        mDocumentBuilder.endRow();
     }
 
     private void insertDeviceTable() {
@@ -179,6 +220,8 @@ public class FileExportDocumentImpl implements FileExportContract {
     public void makeDocument() {
         if (mDocumentBuilder == null) return;
         insertHeader();
+        inseartAssignmentTable();
+        insertDeviceTable();
         insertFooter();
         save();
     }
