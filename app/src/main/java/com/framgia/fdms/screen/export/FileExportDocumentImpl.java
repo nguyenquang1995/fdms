@@ -13,6 +13,7 @@ import com.aspose.words.PageSetup;
 import com.aspose.words.ParagraphAlignment;
 import com.aspose.words.SaveFormat;
 import com.aspose.words.Section;
+import com.aspose.words.Underline;
 import com.framgia.fdms.FDMSApplication;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Device;
@@ -47,6 +48,10 @@ public class FileExportDocumentImpl implements FileExportContract {
     private static final double FONT_SIZE_11 = 11;
     private static final double WIDTH_350 = 350;
     private static final double WIDTH_140 = 140;
+    private static final double WIDTH_168 = 168;
+    private static final double WIDTH_22 = 22;
+    private static final double WIDTH_490 = 490;
+    private static final double CELL_HEIGHT_80 = 80;
     private Document mDocument;
     private DocumentBuilder mDocumentBuilder;
     private OutputStream mOutputStream;
@@ -155,7 +160,7 @@ public class FileExportDocumentImpl implements FileExportContract {
          */
         mDocumentBuilder.insertCell();
         mDocumentBuilder.getCellFormat().setWidth(WIDTH_350);
-        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_deliver));
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_name_deliver));
         mDocumentBuilder.insertCell();
         mDocumentBuilder.getCellFormat().setWidth(WIDTH_140);
         mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_room));
@@ -165,7 +170,8 @@ public class FileExportDocumentImpl implements FileExportContract {
          */
         mDocumentBuilder.insertCell();
         mDocumentBuilder.getCellFormat().setWidth(WIDTH_350);
-        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_receiver));
+        mDocumentBuilder
+            .write(FDMSApplication.getInstant().getString(R.string.title_name_receiver));
         mDocumentBuilder.insertCell();
         mDocumentBuilder.getCellFormat().setWidth(WIDTH_140);
         mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_room));
@@ -180,9 +186,54 @@ public class FileExportDocumentImpl implements FileExportContract {
         mDocumentBuilder.getCellFormat().setWidth(WIDTH_140);
         mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_date));
         mDocumentBuilder.endRow();
+        mDocumentBuilder.endTable();
     }
 
     private void insertDeviceTable() {
+        mDocumentBuilder.getFont().setBold(true);
+        mDocumentBuilder.getFont().setSize(FONT_SIZE_12);
+        mDocumentBuilder.getFont().setUnderline(Underline.SINGLE);
+        mDocumentBuilder.writeln();
+        mDocumentBuilder.writeln(FDMSApplication.getInstant().getString(R.string
+            .title_assignment_device));
+        mDocumentBuilder.writeln();
+        mDocumentBuilder.startTable();
+        mDocumentBuilder.getFont().setBold(false);
+        mDocumentBuilder.getFont().setUnderline(Underline.NONE);
+        mDocumentBuilder.writeln();
+        mDocumentBuilder.getCellFormat().setVerticalAlignment(CENTER);
+        mDocumentBuilder.getParagraphFormat().setAlignment(CENTER);
+        int index = 1;
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_22);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_stt));
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_168);
+        mDocumentBuilder.write(FDMSApplication.getInstant()
+            .getString(R.string.title_device_name_vi));
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_168);
+        mDocumentBuilder.write(FDMSApplication.getInstant()
+            .getString(R.string.title_code_non_colon));
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_168);
+        mDocumentBuilder.write(FDMSApplication.getInstant()
+            .getString(R.string.title_note_non_colon));
+        mDocumentBuilder.endRow();
+        while (index <= 12) {
+            mDocumentBuilder.insertCell();
+            mDocumentBuilder.getCellFormat().setWidth(WIDTH_22);
+            mDocumentBuilder.write(String.valueOf(index));
+            mDocumentBuilder.insertCell();
+            mDocumentBuilder.getCellFormat().setWidth(WIDTH_168);
+            mDocumentBuilder.insertCell();
+            mDocumentBuilder.getCellFormat().setWidth(WIDTH_168);
+            mDocumentBuilder.insertCell();
+            mDocumentBuilder.getCellFormat().setWidth(WIDTH_168);
+            mDocumentBuilder.endRow();
+            index++;
+        }
+        mDocumentBuilder.endTable();
     }
 
     private void insertFooter() {
@@ -222,8 +273,52 @@ public class FileExportDocumentImpl implements FileExportContract {
         insertHeader();
         inseartAssignmentTable();
         insertDeviceTable();
+        insertAssurance();
+        insertSignatureArea();
         insertFooter();
         save();
+    }
+
+    private void insertAssurance() {
+        mDocumentBuilder.getFont().setItalic(true);
+        mDocumentBuilder.getFont().setSize(FONT_SIZE_12);
+        mDocumentBuilder.getParagraphFormat().setAlignment(LEFT);
+        mDocumentBuilder.writeln();
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_assurance));
+    }
+
+    private void insertSignatureArea() {
+        mDocumentBuilder.getParagraphFormat().clearFormatting();
+        mDocumentBuilder.getCellFormat().clearFormatting();
+        mDocumentBuilder.writeln();
+        mDocumentBuilder.getFont().setSize(FONT_SIZE_12);
+        mDocumentBuilder.getFont().setBold(true);
+        mDocumentBuilder.getParagraphFormat().setAlignment(CENTER);
+        mDocumentBuilder.startTable();
+        mDocumentBuilder.getRowFormat().setHeight(CELL_HEIGHT_80);
+        /**
+         * insert cell 1
+         */
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getFont().setItalic(false);
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_490 / 2);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_deliver));
+        mDocumentBuilder.getFont().setBold(false);
+        mDocumentBuilder.getFont().setItalic(true);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_sign_name));
+        /**
+         * insert cell 2
+         */
+        mDocumentBuilder.insertCell();
+        mDocumentBuilder.getCellFormat().setWidth(WIDTH_490 / 2);
+        mDocumentBuilder.getFont().setBold(true);
+        mDocumentBuilder.getFont().setItalic(false);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_receiver));
+        mDocumentBuilder.getFont().setBold(false);
+        mDocumentBuilder.getFont().setItalic(true);
+        mDocumentBuilder.write(FDMSApplication.getInstant().getString(R.string.title_sign_name));
+        mDocumentBuilder.endRow();
+        mDocumentBuilder.endTable();
     }
 
     private String getCurentTime() {
