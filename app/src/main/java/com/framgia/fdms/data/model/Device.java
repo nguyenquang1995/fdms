@@ -81,6 +81,7 @@ public class Device extends BaseObservable implements Parcelable {
     @SerializedName("summary")
     private Summary mSummary;
     private boolean mIsSelected;
+    private boolean mIsDeviceMeetingRoom;
     @SerializedName("user")
     private UserBorrow mUser;
     @Expose
@@ -405,6 +406,16 @@ public class Device extends BaseObservable implements Parcelable {
             default:
                 return R.drawable.ic_avaiable;
         }
+    }
+
+    @Bindable
+    public boolean isDeviceMeetingRoom() {
+        return mIsDeviceMeetingRoom;
+    }
+
+    public void setDeviceMeetingRoom(boolean deviceMeetingRoom) {
+        mIsDeviceMeetingRoom = deviceMeetingRoom;
+        notifyPropertyChanged(BR.deviceMeetingRoom);
     }
 
     @Override
