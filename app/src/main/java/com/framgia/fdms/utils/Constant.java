@@ -113,7 +113,8 @@ public class Constant {
         public static final int CANCEL = 1;
         public static final int WAITING_APPROVE = 2;
         public static final int APPROVED = 3;
-        public static final int WAITING_DONE = 4;
+        public static final int RECEIVE = 4;
         public static final int DONE = 5;
+        public static final int EDIT = 6;
     }
 }

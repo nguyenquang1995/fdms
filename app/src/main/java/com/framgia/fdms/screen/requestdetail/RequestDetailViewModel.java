@@ -1,6 +1,5 @@
 package com.framgia.fdms.screen.requestdetail;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.BaseObservable;
@@ -12,28 +11,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
+
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fdms.R;
 import com.framgia.fdms.data.model.Category;
 import com.framgia.fdms.data.model.Request;
 import com.framgia.fdms.data.model.Respone;
 import com.framgia.fdms.data.model.User;
-import com.framgia.fdms.data.source.CategoryRepository;
-import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
-import com.framgia.fdms.data.source.remote.CategoryRemoteDataSource;
 import com.framgia.fdms.screen.assignment.AssignmentActivity;
 import com.framgia.fdms.screen.selection.StatusSelectionActivity;
 import com.framgia.fdms.screen.selection.StatusSelectionType;
 import com.framgia.fdms.utils.Constant;
-import com.framgia.fdms.widget.FdmsProgressDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+
 import java.util.ArrayList;
 import java.util.List;
-import rx.subscriptions.CompositeSubscription;
 
 import static android.app.Activity.RESULT_OK;
 import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_CATEGORY;
@@ -41,8 +34,9 @@ import static com.framgia.fdms.utils.Constant.BundleConstant.BUNDLE_RESPONE;
 import static com.framgia.fdms.utils.Constant.RequestAction.APPROVED;
 import static com.framgia.fdms.utils.Constant.RequestAction.CANCEL;
 import static com.framgia.fdms.utils.Constant.RequestAction.DONE;
+import static com.framgia.fdms.utils.Constant.RequestAction.EDIT;
+import static com.framgia.fdms.utils.Constant.RequestAction.RECEIVE;
 import static com.framgia.fdms.utils.Constant.RequestAction.WAITING_APPROVE;
-import static com.framgia.fdms.utils.Constant.RequestAction.WAITING_DONE;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_CATEGORY;
 import static com.framgia.fdms.utils.Constant.RequestConstant.REQUEST_CREATE_ASSIGNMENT;
 import static com.framgia.fdms.utils.Utils.hideSoftKeyboard;
@@ -51,24 +45,19 @@ import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 /**
  * Created by tuanbg on 5/24/17.
  */
-
 public class RequestDetailViewModel extends BaseObservable
-        implements RequestDetailContract.ViewModel {
+    implements RequestDetailContract.ViewModel {
     private Context mContext;
     private FragmentActivity mActivity;
     private ObservableBoolean mIsEdit = new ObservableBoolean();
     private RequestDetailAdapter mAdapter;
-    private CategoryRepository mCategoryRepository;
-    private CompositeSubscription mSubscription;
     private List<Category> mCategories = new ArrayList<>();
     private RequestDetailContract.Presenter mPresenter;
     private ObservableField<Category> mCategory = new ObservableField<>();
     private List<Request.RequestAction> mListAction = new ArrayList<>();
-    private FloatingActionMenu mActionMenu;
     private String mStatusRequest;
     private Request mRequest;
     private int mPosition;
-    private FdmsProgressDialog mProgressDialog;
     private int mProgressBarVisibility = View.GONE;
     private User mUser;
     private FloatingActionMenu mFloatingActionsMenu;
@@ -76,8 +65,9 @@ public class RequestDetailViewModel extends BaseObservable
     private int mActionMenuVisibility;
 
     public RequestDetailViewModel(AppCompatActivity activity, List<Request.DeviceRequest> request,
-            List<Request.RequestAction> actions, String statusRequest, Request actionRequest,
-            FloatingActionMenu floatingActionsMenu) {
+                                  List<Request.RequestAction> actions, String statusRequest,
+                                  Request actionRequest,
+                                  FloatingActionMenu floatingActionsMenu) {
         mContext = activity;
         mActivity = activity;
         setRequest(actionRequest);
@@ -85,10 +75,7 @@ public class RequestDetailViewModel extends BaseObservable
         mIsEdit.set(false);
         mAdapter = new RequestDetailAdapter(activity, this);
         mAdapter.onUpdatePage(request);
-        mSubscription = new CompositeSubscription();
         mListAction.addAll(actions);
-        mCategoryRepository = new CategoryRepository(
-                new CategoryRemoteDataSource(FDMSServiceClient.getInstance()));
         mFloatingActionsMenu = floatingActionsMenu;
     }
 
@@ -104,7 +91,8 @@ public class RequestDetailViewModel extends BaseObservable
 
     @Override
     public void onLoadError(String message) {
-        Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+        Snackbar.make(mActivity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+            .show();
     }
 
     @Override
@@ -145,8 +133,8 @@ public class RequestDetailViewModel extends BaseObservable
     public void onCategoryClick() {
         if (mCategories == null) return;
         mActivity.startActivityForResult(
-                StatusSelectionActivity.getInstance(mContext, mCategories, null,
-                        StatusSelectionType.CATEGORY), REQUEST_CATEGORY);
+            StatusSelectionActivity.getInstance(mContext, mCategories, null,
+                StatusSelectionType.CATEGORY), REQUEST_CATEGORY);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,7 +156,7 @@ public class RequestDetailViewModel extends BaseObservable
     @Override
     public void onSubmitEditClick() {
         mPresenter.updateRequest(mRequest);
-        mActionMenu.showMenu(true);
+        mFloatingActionsMenu.showMenu(true);
         mIsEdit.set(false);
         hideSoftKeyboard(mActivity);
     }
@@ -176,7 +164,7 @@ public class RequestDetailViewModel extends BaseObservable
     @Override
     public void onCancelEditClick() {
         mIsEdit.set(false);
-        mActionMenu.showMenu(true);
+        mFloatingActionsMenu.showMenu(true);
         if (mRequestTemp != null) {
             setRequest(mRequestTemp);
             mAdapter.clear();
@@ -194,13 +182,17 @@ public class RequestDetailViewModel extends BaseObservable
         return true;
     }
 
-    public void initFloatActionButton(final FloatingActionMenu menu) {
-        mActionMenu = menu;
-        for (int i = 0; i < mListAction.size(); i++) {
-            mPosition = i;
+    @Override
+    public void initFloatActionButton(final boolean isEdit) {
+        if (isEdit) {
+            Request.RequestAction editAction = new Request().new RequestAction();
+            editAction.setId(EDIT);
+            editAction.setName(mContext.getString(R.string.action_edit));
+            mListAction.add(editAction);
+        }
+        for (final Request.RequestAction requestAction : mListAction) {
             FloatingActionButton button = new FloatingActionButton(mContext);
-            button.setLabelText(mListAction.get(i).getName());
-            switch (mListAction.get(i).getId()) {
+            switch (requestAction.getId()) {
                 case CANCEL:
                     button.setImageResource(R.drawable.ic_cancel_white_24px);
                     break;
@@ -210,25 +202,33 @@ public class RequestDetailViewModel extends BaseObservable
                 case APPROVED:
                     button.setImageResource(R.drawable.ic_done_white_24dp);
                     break;
-                case WAITING_DONE:
-                    button.setImageResource(R.drawable.ic_timer);
+                case RECEIVE:
+                    button.setImageResource(R.drawable.ic_receive_24dp);
                     break;
                 case DONE:
                     button.setImageResource(R.drawable.ic_done_white_24dp);
                     break;
+                case EDIT:
+                    button.setImageResource(R.drawable.ic_edit_white_24dp);
+                    break;
                 default:
                     break;
             }
-            button.setButtonSize(SIZE_MINI);
-            menu.addMenuButton(button);
+            button.setLabelText(requestAction.getName());
+            mFloatingActionsMenu.addMenuButton(button);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (requestAction.getId() == EDIT) {
+                        initEditRequest();
+                        return;
+                    }
                     mPresenter.updateActionRequest(mRequest.getId(),
-                            mListAction.get(mPosition).getId());
-                    menu.hideMenu(true);
+                        mListAction.get(mPosition).getId());
+                    mFloatingActionsMenu.hideMenu(true);
                 }
             });
+            button.setButtonSize(SIZE_MINI);
         }
     }
 
@@ -247,32 +247,36 @@ public class RequestDetailViewModel extends BaseObservable
         if (user == null) return;
         mUser = user;
         if (mUser.isBoStaff() && mRequest.getRequestStatus()
-                .equals(Constant.DeviceStatus.WAITING_DONE) && mRequest.getId() > 0) {
+            .equals(Constant.DeviceStatus.WAITING_DONE) && mRequest.getId() > 0) {
             FloatingActionButton button = new FloatingActionButton(mContext);
             button.setImageResource(R.drawable.ic_timer);
-            button.setLabelText(mContext.getString(R.string.title_add_device));
+            button.setLabelText(mContext.getString(R.string.title_assignment));
             button.setButtonSize(SIZE_MINI);
             mFloatingActionsMenu.addMenuButton(button);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mActivity.startActivityForResult(
-                            AssignmentActivity.getInstance(mContext, mRequest.getId()),
-                            REQUEST_CREATE_ASSIGNMENT);
+                        AssignmentActivity.getInstance(mContext, mRequest.getId()),
+                        REQUEST_CREATE_ASSIGNMENT);
                 }
             });
             return;
         }
-
         setActionMenuVisibility(
-                mListAction != null && mListAction.size() > 0 ? View.VISIBLE : View.GONE);
+            mListAction != null && mListAction.size() > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onUploadRequestError(String message) {
         Snackbar.make(mActivity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .show();
+            .show();
         onCancelEditClick();
+    }
+
+    @Override
+    public void initActionEdit(Request request) {
+        mPresenter.initFloatActionButton(request);
     }
 
     public ObservableField<Category> getCategory() {
@@ -286,7 +290,7 @@ public class RequestDetailViewModel extends BaseObservable
 
     public void initEditRequest() {
         mIsEdit.set(true);
-        mActionMenu.hideMenu(true);
+        mFloatingActionsMenu.hideMenu(true);
         try {
             mRequestTemp = (Request) mRequest.clone();
             List<Request.DeviceRequest> list = new ArrayList<>();
