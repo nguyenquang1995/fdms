@@ -3,6 +3,7 @@ package com.framgia.fdms;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+
 import com.framgia.fdms.data.model.Device;
 import com.framgia.fdms.data.source.api.service.FDMSServiceClient;
 
@@ -18,7 +19,6 @@ public class FDMSApplication extends Application {
         super.onCreate();
         FDMSServiceClient.initialize(this);
         sInstant = this;
-
     }
 
     @Override
