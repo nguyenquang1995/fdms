@@ -20,8 +20,6 @@ import com.framgia.fdms.screen.producer.ProducerFunctionContract;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.framgia.fdms.utils.Constant.OUT_OF_INDEX;
 import static com.framgia.fdms.utils.Constant.TAG_MAKER_DIALOG;
 
@@ -37,13 +35,23 @@ public class MarkerViewModel extends BaseObservable
     private ProducerDialog mDialog;
     private List<Producer> mMakers = new ArrayList<>();
     private int mPositionScroll = OUT_OF_INDEX;
+
+    @Bindable
+    public boolean isLoadMore() {
+        return mIsLoadMore;
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        mIsLoadMore = loadMore;
+        notifyPropertyChanged(BR.loadMore);
+    }
+
     private boolean mIsLoadMore;
-    private int mLoadingMoreVisibility;
 
     public MarkerViewModel(FragmentActivity activity) {
         mActivity = activity;
         setAdapter(new MakerApdater(mMakers, this));
-        setLoadMoreVisibility(GONE);
+        setLoadMore(false);
     }
 
     @Override
@@ -63,7 +71,7 @@ public class MarkerViewModel extends BaseObservable
 
     @Override
     public void onLoadMakerFail() {
-        setLoadMoreVisibility(GONE);
+        setLoadMore(false);
         Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.error_load_makers,
             Snackbar.LENGTH_LONG).show();
     }
@@ -74,18 +82,7 @@ public class MarkerViewModel extends BaseObservable
             mMakers.addAll(makers);
             mAdapter.notifyDataSetChanged();
         }
-        setLoadMoreVisibility(GONE);
-        mIsLoadMore = false;
-    }
-
-    public void setLoadMoreVisibility(int visibility) {
-        mLoadingMoreVisibility = visibility;
-        notifyPropertyChanged(BR.loadingMoreVisibility);
-    }
-
-    @Bindable
-    public int getLoadMoreVisibility() {
-        return mLoadingMoreVisibility;
+        setLoadMore(false);
     }
 
     @Bindable
@@ -188,8 +185,7 @@ public class MarkerViewModel extends BaseObservable
             int totalItemCount = layoutManager.getItemCount();
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
             if (!mIsLoadMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                mIsLoadMore = true;
-                setLoadMoreVisibility(VISIBLE);
+                setLoadMore(true);
                 ((MarkerPresenter) mPresenter).getMakers(0, 0);
             }
         }

@@ -10,6 +10,7 @@
             name="viewModel"
             type="com.framgia.fdms.screen.producer.marker.MarkerViewModel"
         />
+        <import type="android.view.View"/>
 
     </data>
 
@@ -63,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminateDrawable="@drawable/rotate_progressbar"
-                android:visibility="@{viewModel.loadMoreVisibility}"
+                android:visibility="@{viewModel.loadMore ? View.VISIBLE : View.GONE}"
             />
         </LinearLayout>
 
