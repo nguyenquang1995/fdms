@@ -5,7 +5,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 
@@ -24,7 +23,6 @@ public class DeviceHistoryViewModel extends BaseObservable
     private DeviceHistoryContract.Presenter mPresenter;
     private ListUserAdapter mAdapter;
     private List<DeviceUsingHistory> mDeviceUsingHistories = new ArrayList<>();
-    private int mLoadingMoreVisibility;
     private AppCompatActivity mActivity;
     private boolean mIsLoadMore;
     private boolean mIsExpanded;
@@ -32,7 +30,7 @@ public class DeviceHistoryViewModel extends BaseObservable
     public DeviceHistoryViewModel(Activity activity) {
         mActivity = (AppCompatActivity) activity;
         mAdapter = new ListUserAdapter(this, mDeviceUsingHistories);
-        setLoadingMoreVisibility(View.GONE);
+        setLoadMore(false);
     }
 
     @Override
@@ -62,8 +60,7 @@ public class DeviceHistoryViewModel extends BaseObservable
 
     @Override
     public void onLoadDeviceHistorySuccess(List<DeviceUsingHistory> deviceUsingHistories) {
-        mIsLoadMore = false;
-        setLoadingMoreVisibility(View.GONE);
+        setLoadMore(false);
         if (deviceUsingHistories != null) {
             mDeviceUsingHistories.addAll(deviceUsingHistories);
             mAdapter.notifyDataSetChanged();
@@ -74,16 +71,17 @@ public class DeviceHistoryViewModel extends BaseObservable
     public void onLoadDeviceHistoryFailed() {
         Snackbar.make(mActivity.findViewById(android.R.id.content), R.string.msg_load_data_fails,
             Snackbar.LENGTH_SHORT).show();
-        setLoadingMoreVisibility(View.GONE);
-        mIsLoadMore = false;
+        setLoadMore(false);
     }
 
-    public int getLoadingMoreVisibility() {
-        return mLoadingMoreVisibility;
+    @Bindable
+    public boolean isLoadMore() {
+        return mIsLoadMore;
     }
 
-    public void setLoadingMoreVisibility(int loadingMoreVisibility) {
-        mLoadingMoreVisibility = loadingMoreVisibility;
+    public void setLoadMore(boolean loadMore) {
+        mIsLoadMore = loadMore;
+        notifyPropertyChanged(BR.loadMore);
     }
 
     @Bindable
@@ -111,8 +109,7 @@ public class DeviceHistoryViewModel extends BaseObservable
             public void onScroll(AbsListView absListView, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 if (!mIsLoadMore && firstVisibleItem + visibleItemCount >= totalItemCount) {
-                    mIsLoadMore = true;
-                    setLoadingMoreVisibility(View.VISIBLE);
+                    setLoadMore(true);
                     mPresenter.getDeviceUsingHistory();
                 }
             }
